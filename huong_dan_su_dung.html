@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hướng Dẫn Sử Dụng</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(135deg, #e0f7fa, #fce4ec);
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+        color: #444;
+      }
+      .top-buttons-container {
+        position: sticky;
+        top: 20px;
+        left: 20px;
+        z-index: 1000;
+        display: flex;
+        gap: 10px;
+        padding: 10px;
+        background-color: transparent;
+        border-radius: 10px;
+        box-shadow: none;
+      }
+      .home-button,
+      .drive-button,
+      .calendar-button {
+        display: flex;
+        align-items: center;
+        background: linear-gradient(
+          to right,
+          #ff80ab,
+          #f48fb1
+        );
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s;
+        text-decoration: none;
+      }
+      .home-button:hover,
+      .drive-button:hover,
+      .calendar-button:hover {
+        transform: scale(1.05);
+      }
+      .container {
+        max-width: 800px;
+        margin: 80px auto 20px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        text-align: center;
+        color: #ff4081;
+        margin-bottom: 20px;
+      }
+      h2 {
+        color: #c2185b;
+        border-bottom: 2px solid #fce4ec;
+        padding-bottom: 5px;
+        margin-top: 30px;
+      }
+      ul {
+        list-style-type: disc;
+        padding-left: 20px;
+      }
+      li {
+        margin-bottom: 10px;
+      }
+      strong {
+        color: #c2185b;
+      }
+      code {
+        background-color: #fce4ec;
+        padding: 2px 5px;
+        border-radius: 3px;
+        font-family: monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="top-buttons-container">
+      <a class="home-button" href="giaodien.html">
+        <i class="fas fa-home"></i> Home
+      </a>
+      <a
+        class="drive-button"
+        href="https://drive.google.com/drive/folders/1cR4KwCDcmGDenk9qNfdYm23x5a2c-t3n?usp=sharing"
+        target="_blank"
+      >
+        <i class="fas fa-folder"></i> Lưu trữ
+      </a>
+      <a class="calendar-button" href="calendar.html">
+        <i class="fas fa-calendar-alt"></i> Lịch
+      </a>
+    </div>
+
+    <div class="container">
+      <h1>Hướng Dẫn Sử Dụng Giao Diện Web</h1>
+      <p>
+        Giao diện web này được thiết kế để bạn quản lý công việc và nhật ký học
+        tập một cách dễ dàng. Dưới đây là các phần chính và cách sử dụng chúng:
+      </p>
+
+      <h2>1. Thanh điều hướng</h2>
+      <p>Thanh điều hướng ở góc trên bên trái màn hình bao gồm ba nút chính:</p>
+      <ul>
+        <li>
+          <strong>Home:</strong> Quay lại trang chính (<code>giaodien.html</code>).
+        </li>
+        <li>
+          <strong>Lưu trữ:</strong> Mở Google Drive để lưu trữ tài liệu.
+        </li>
+        <li>
+          <strong>Lịch:</strong> Chuyển đến trang lịch (<code>calendar.html</code>)
+          để theo dõi sự kiện.
+        </li>
+      </ul>
+
+      <h2>2. Nhật ký học tập</h2>
+      <p>
+        Khu vực trung tâm để bạn đăng các bài viết nhật ký hoặc công việc cần
+        làm.
+      </p>
+      <ul>
+        <li>
+          <strong>Tiêu đề bài viết:</strong> Nhập tiêu đề cho bài viết của bạn.
+        </li>
+        <li>
+          <strong>Nội dung bài viết:</strong> Viết nội dung chi tiết.
+        </li>
+        <li>
+          <strong>Tải ảnh lên:</strong> Tải lên hình ảnh liên quan.
+        </li>
+        <li>
+          <strong>Hoàn thành:</strong> Đánh dấu công việc đã hoàn thành.
+        </li>
+        <li>
+          <strong>Lọc theo ngày:</strong> Nhập ngày (<code>YYYY-MM-DD</code>) để
+          xem các bài viết cụ thể.
+        </li>
+        <li><strong>Đăng:</strong> Đăng bài viết mới.</li>
+      </ul>
+
+      <h2>3. Danh sách trạng thái</h2>
+      <p>Mỗi bài viết sau khi đăng sẽ có các tùy chọn:</p>
+      <ul>
+        <li>
+          <strong>Hoàn thành tất cả:</strong> Đánh dấu tất cả công việc trong
+          bài viết là đã hoàn thành.
+        </li>
+        <li><strong>Sửa:</strong> Chỉnh sửa nội dung bài viết.</li>
+        <li><strong>Xóa:</strong> Xóa bài viết.</li>
+        <li>
+          <strong>Nhật ký chỉnh sửa:</strong> Xem lịch sử các lần chỉnh sửa.
+        </li>
+        <li><strong>Thêm ghi chú:</strong> Thêm ghi chú vào bài viết.</li>
+      </ul>
+
+      <h2>4. Ghi chú công việc</h2>
+      <p>
+        Phần này giúp bạn tạo và quản lý danh sách công việc đơn giản ở bên
+        phải màn hình.
+      </p>
+      <ul>
+        <li>
+          <strong>Thêm công việc mới:</strong> Nhập tên và nhấn "Thêm".
+        </li>
+        <li>
+          <strong>Tích vào ô vuông:</strong> Đánh dấu công việc đã hoàn thành.
+        </li>
+        <li><strong>Xóa:</strong> Xóa một công việc.</li>
+      </ul>
+
+      <h2>5. Lưu ý quan trọng</h2>
+      <p>
+        Bảng đen ảo ở góc trên bên trái để bạn ghi lại những điều quan trọng.
+      </p>
+      <ul>
+        <li>
+          <strong>Nhập lưu ý:</strong> Viết lưu ý vào ô văn bản.
+        </li>
+        <li>
+          <strong>Lưu:</strong> Lưu nội dung (sẽ được giữ lại khi tải lại
+          trang).
+        </li>
+        <li>
+          <strong>Xóa:</strong> Xóa toàn bộ nội dung đã lưu.
+        </li>
+      </ul>
+
+      <h2>6. Biểu tượng Cỏ ba lá (🍀)</h2>
+      <p>Biểu tượng ở góc dưới bên phải màn hình:</p>
+      <ul>
+        <li>
+          <strong>Kéo:</strong> Di chuyển biểu tượng đến vị trí bất kỳ.
+        </li>
+        <li><strong>Nhấn:</strong> Tải lại trang về mặc định.</li>
+      </ul>
+    </div>
+  </body>
+</html>

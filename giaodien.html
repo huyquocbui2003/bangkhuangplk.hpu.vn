@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BÂNG KHUÂNG - PHƯU LƯU KÝ</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(135deg, #e0f7fa, #fce4ec);
+        margin: 0;
+        padding: 0;
+      }
+      .top-buttons-container {
+        position: sticky;
+        top: 20px;
+        left: 20px;
+        z-index: 1000;
+        display: flex;
+        gap: 10px;
+        padding: 10px;
+        background-color: transparent;
+        border-radius: 10px;
+        box-shadow: none;
+      }
+      .home-button,
+      .drive-button,
+      .calendar-button {
+        display: flex;
+        align-items: center;
+        background: linear-gradient(
+          to right,
+          #ff80ab,
+          #f48fb1
+        );
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s;
+        text-decoration: none;
+      }
+      .home-button:hover,
+      .drive-button:hover,
+      .calendar-button:hover {
+        transform: scale(1.05);
+      }
+      .main-content {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        padding: 20px;
+        flex-wrap: wrap;
+        margin-top: 60px;
+      }
+      .container {
+        max-width: 600px;
+        flex-grow: 1;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        text-align: center;
+        color: #ff4081;
+        cursor: pointer;
+      }
+      textarea,
+      input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+      }
+      .flatpickr-input {
+        width: calc(100% - 22px);
+        padding: 10px;
+        margin: 5px 0 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+      }
+      button {
+        padding: 8px 14px;
+        margin: 6px 4px 6px 0;
+        border: none;
+        border-radius: 6px;
+        background: linear-gradient(to right, #ff80ab, #f48fb1);
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      button:hover {
+        background: linear-gradient(to right, #d81b60, #f06292);
+      }
+      button i {
+        margin-right: 5px;
+      }
+      .file-upload-container {
+        display: block;
+        width: 150px;
+        margin: 10px auto 15px;
+        border: 2px dashed #ff80ab;
+        border-radius: 10px;
+        padding: 15px;
+        text-align: center;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      .file-upload-container:hover {
+        background-color: #fce4ec;
+      }
+      .file-upload-container i {
+        font-size: 1.8em;
+        color: #ff4081;
+      }
+      .file-upload-container p {
+        margin: 5px 0 0;
+        color: #c2185b;
+        font-weight: bold;
+        font-size: 0.9em;
+      }
+      input[type="file"] {
+        display: none;
+      }
+      .image-preview {
+        margin-top: 15px;
+        text-align: center;
+      }
+      .image-preview img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .status {
+        background: #fce4ec;
+        border: 1px solid #f8bbd0;
+        padding: 12px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        transition: transform 0.2s ease;
+      }
+      .status:hover {
+        transform: scale(1.01);
+      }
+      .status-title {
+        font-weight: bold;
+        font-size: 1.2em;
+        color: #c2185b;
+      }
+      .status-time {
+        font-size: 0.8em;
+        color: #888;
+        margin-top: 5px;
+      }
+      .status-notes {
+        margin-top: 10px;
+        padding-left: 15px;
+      }
+      .note {
+        font-size: 0.9em;
+        background-color: #fff0f5;
+        padding: 6px 10px;
+        border-radius: 5px;
+        margin: 5px 0;
+      }
+      label input[type="checkbox"] {
+        margin-right: 6px;
+      }
+      .footer {
+        margin-top: 40px;
+        padding: 20px;
+        background: linear-gradient(90deg, #ffe0f0, #e0f7fa);
+        font-family: "Segoe UI", sans-serif;
+        font-size: 14px;
+        color: #444;
+        border-top: 1px solid #ddd;
+        text-align: center;
+        border-radius: 10px;
+      }
+      .footer a {
+        color: #ff4081;
+        text-decoration: none;
+        font-weight: bold;
+      }
+      .footer a:hover {
+        text-decoration: underline;
+      }
+      .footer .label {
+        color: #888;
+        font-weight: normal;
+      }
+      .footer i {
+        margin-right: 5px;
+        color: #ff4081;
+      }
+      .footer div {
+        margin: 5px 0;
+      }
+      .note-container {
+        width: 300px;
+        padding: 15px;
+        background-color: #fffacd;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transform: rotate(-2deg);
+        position: relative;
+        align-self: flex-start;
+      }
+      .note-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 20px;
+        background-color: #ffb74d;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+      }
+      .note-container h3 {
+        text-align: center;
+        color: #c2185b;
+        margin-top: 10px;
+        margin-bottom: 15px;
+        font-family: "Comic Sans MS", cursive, sans-serif;
+      }
+      .note-list {
+        list-style: none;
+        padding: 0;
+        margin-bottom: 10px;
+      }
+      .note-list li {
+        background-color: #fffbe0;
+        padding: 8px;
+        border-radius: 5px;
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-left: 5px solid #ff80ab;
+      }
+      .note-list li.completed {
+        text-decoration: line-through;
+        color: #888;
+      }
+      .note-list li input[type="checkbox"] {
+        margin-right: 10px;
+      }
+      .note-list li button {
+        background: none;
+        border: none;
+        color: #ff4081;
+        cursor: pointer;
+        padding: 0;
+        font-size: 1.1em;
+      }
+      .note-container input[type="text"] {
+        width: calc(100% - 70px);
+        display: inline-block;
+        vertical-align: middle;
+      }
+      .note-container .note-button {
+        width: 60px;
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 5px;
+      }
+      .blackboard-container {
+        width: 300px;
+        background-color: #2c3e50;
+        border: 10px solid #a0522d;
+        border-radius: 12px;
+        padding: 15px;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5),
+          0 5px 15px rgba(0, 0, 0, 0.3);
+        align-self: flex-start;
+      }
+      .blackboard-container h3 {
+        color: #ecf0f1;
+        text-align: center;
+        font-family: "Comic Sans MS", cursive, sans-serif;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        margin-top: 0;
+      }
+      .blackboard-container .important-notes {
+        color: #ffffa0;
+        font-family: "Chalkduster", "Marker Felt", "Comic Sans MS", cursive,
+          sans-serif;
+        font-size: 1.1em;
+        line-height: 1.6;
+        white-space: pre-wrap;
+      }
+      .blackboard-container textarea {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #ffffa0;
+        resize: none;
+        height: 150px;
+        font-family: "Chalkduster", "Marker Felt", "Comic Sans MS", cursive,
+          sans-serif;
+        font-size: 1.1em;
+      }
+      .blackboard-container button {
+        background: linear-gradient(to right, #ffb74d, #ff80ab);
+        color: #fff;
+      }
+      #clover-reload-icon {
+        position: fixed;
+        font-size: 2em;
+        cursor: grab;
+        z-index: 1001;
+        user-select: none;
+        transition: transform 0.2s ease-in-out;
+        bottom: 20px;
+        right: 20px;
+      }
+      #clover-reload-icon:active {
+        cursor: grabbing;
+      }
+
+      /* Style for the embedded guide */
+      .guide-header {
+        cursor: pointer;
+        padding: 10px;
+        border-radius: 8px;
+        background-color: #ff80ab;
+        color: white;
+        text-align: center;
+        font-weight: bold;
+        transition: background-color 0.3s;
+        margin-bottom: 10px; /* Thêm khoảng cách với phần còn lại của footer */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        text-decoration: none; /* Bỏ gạch chân cho link */
+      }
+      .guide-header:hover {
+        background-color: #d81b60;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="clover-reload-icon">🍀</div>
+
+    <div class="top-buttons-container">
+      <a class="home-button" href="giaodien.html">
+        <i class="fas fa-home"></i> Home
+      </a>
+      <a
+        class="drive-button"
+        href="https://drive.google.com/drive/folders/1cR4KwCDcmGDenk9qNfdYm23x5a2c-t3n?usp=sharing"
+        target="_blank"
+      >
+        <i class="fas fa-folder"></i> Lưu trữ
+      </a>
+      <a class="calendar-button" href="calendar.html">
+        <i class="fas fa-calendar-alt"></i> Lịch
+      </a>
+    </div>
+
+    <div class="main-content">
+      <div class="blackboard-container">
+        <h3><i class="fas fa-exclamation-triangle"></i> Lưu ý quan trọng</h3>
+        <textarea
+          id="importantNotes"
+          placeholder="Viết những lưu ý quan trọng tại đây..."
+        ></textarea>
+        <button onclick="saveImportantNotes()">
+          <i class="fas fa-save"></i> Lưu
+        </button>
+        <button onclick="clearImportantNotes()">
+          <i class="fas fa-eraser"></i> Xóa
+        </button>
+      </div>
+
+      <div class="container">
+        <h2 onclick="scrollToTop()">
+          <i class="fas fa-book-open"></i> Locket Huy - Nhật ký học tập
+        </h2>
+        <input type="text" id="title" placeholder="Tiêu đề bài viết" />
+        <textarea
+          id="content"
+          placeholder="Nội dung bài viết"
+          rows="4"
+        ></textarea>
+
+        <label for="imageUpload" class="file-upload-container">
+          <i class="fas fa-camera"></i>
+          <p>Tải ảnh lên</p>
+        </label>
+        <input type="file" id="imageUpload" accept="image/*" />
+        <div id="imagePreview" class="image-preview"></div>
+
+        <label><input type="checkbox" id="completed" /> Hoàn thành</label>
+        <br />
+        <input type="text" id="filterDate" placeholder="Lọc theo ngày..." />
+        <br />
+        <button onclick="addStatus()">
+          <i class="fas fa-plus-circle"></i> Đăng
+        </button>
+        <div id="statusList"></div>
+      </div>
+
+      <div class="note-container">
+        <h3><i class="fas fa-sticky-note"></i> Ghi chú công việc</h3>
+        <div id="noteList" class="note-list"></div>
+        <input
+          type="text"
+          id="newNoteInput"
+          placeholder="Thêm công việc mới..."
+        />
+        <button class="note-button" onclick="addNoteItem()">Thêm</button>
+      </div>
+    </div>
+
+    <div class="footer">
+      <a href="huong_dan_su_dung.html" class="guide-header">
+        <i class="fas fa-info-circle"></i> Hướng dẫn sử dụng
+      </a>
+      
+      <hr style="border-color:#f48fb1; margin: 20px 0;">
+      <div>
+        <i class="fas fa-user"></i><span class="label">Website created by:</span> Bùi Quốc Huy
+      </div>
+      <div>
+        <i class="fab fa-facebook"></i><span class="label">Facebook:</span>
+        <a href="https://www.facebook.com/bangkhuang187" target="_blank"
+          >facebook.com/bangkhuang187</a
+        >
+      </div>
+      <div>
+        <i class="fas fa-phone"></i><span class="label">Phone:</span> 0905640544
+      </div>
+      <div>
+        <i class="fas fa-code-branch"></i><span class="label">Version:</span> 0.0.2 (Cập nhật)
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+      // IndexedDB Helper Functions
+      const DB_NAME = 'LocketHuyDB';
+      const DB_VERSION = 1;
+      let db;
+
+      function openDB() {
+        return new Promise((resolve, reject) => {
+          const request = indexedDB.open(DB_NAME, DB_VERSION);
+          request.onerror = (event) => reject('IndexedDB error: ' + event.target.errorCode);
+          request.onsuccess = (event) => {
+            db = event.target.result;
+            resolve(db);
+          };
+          request.onupgradeneeded = (event) => {
+            const db = event.target.result;
+            if (!db.objectStoreNames.contains('statuses')) {
+              db.createObjectStore('statuses', { keyPath: 'id', autoIncrement: true });
+            }
+            if (!db.objectStoreNames.contains('noteItems')) {
+              db.createObjectStore('noteItems', { keyPath: 'id', autoIncrement: true });
+            }
+            if (!db.objectStoreNames.contains('importantNotes')) {
+              db.createObjectStore('importantNotes', { keyPath: 'id', autoIncrement: true });
+            }
+          };
+        });
+      }
+
+      async function saveToDB(storeName, data) {
+        if (!db) await openDB();
+        const transaction = db.transaction([storeName], 'readwrite');
+        const store = transaction.objectStore(storeName);
+        store.put(data);
+        return new Promise((resolve, reject) => {
+          transaction.oncomplete = () => resolve();
+          transaction.onerror = (event) => reject(event.target.error);
+        });
+      }
+
+      async function getAllFromDB(storeName) {
+        if (!db) await openDB();
+        const transaction = db.transaction([storeName], 'readonly');
+        const store = transaction.objectStore(storeName);
+        const request = store.getAll();
+        return new Promise((resolve, reject) => {
+          request.onsuccess = (event) => resolve(event.target.result);
+          request.onerror = (event) => reject(event.target.error);
+        });
+      }
+      
+      async function getByIdFromDB(storeName, id) {
+          if (!db) await openDB();
+          return new Promise((resolve, reject) => {
+              const transaction = db.transaction([storeName], 'readonly');
+              const store = transaction.objectStore(storeName);
+              const request = store.get(id);
+              request.onsuccess = (event) => resolve(event.target.result);
+              request.onerror = (event) => reject(event.target.error);
+          });
+      }
+
+      async function deleteFromDB(storeName, id) {
+        if (!db) await openDB();
+        const transaction = db.transaction([storeName], 'readwrite');
+        const store = transaction.objectStore(storeName);
+        store.delete(id);
+        return new Promise((resolve, reject) => {
+          transaction.oncomplete = () => resolve();
+          transaction.onerror = (event) => reject(event.target.error);
+        });
+      }
+
+      const statusList = document.getElementById("statusList");
+      
+      flatpickr("#filterDate", {
+        dateFormat: "Y-m-d",
+        onChange: function (selectedDates, dateStr, instance) {
+          renderStatuses();
+        },
+      });
+
+      function formatTimeAgo(date) {
+        const seconds = Math.floor((new Date() - date) / 1000);
+        if (seconds < 60) return `${seconds} giây trước`;
+        const minutes = Math.floor(seconds / 60);
+        if (minutes < 60) return `${minutes} phút trước`;
+        const hours = Math.floor(minutes / 60);
+        if (hours < 24) return `${hours} giờ trước`;
+        const days = Math.floor(hours / 24);
+        return `${days} ngày trước`;
+      }
+
+      async function addStatus() {
+        const title = document.getElementById("title").value.trim();
+        const content = document.getElementById("content").value.trim();
+        const completed = document.getElementById("completed").checked;
+        const imageFile = document.getElementById("imageUpload").files[0];
+        const timestamp = new Date();
+
+        if (title === "" && content === "" && !imageFile) return;
+
+        const status = {
+          title,
+          content,
+          completed,
+          timestamp,
+          image: null,
+          notes: [],
+          history: [],
+        };
+
+        const reader = new FileReader();
+        reader.onload = async function () {
+          status.image = imageFile ? reader.result : null;
+          await saveToDB('statuses', status);
+          renderStatuses();
+        };
+
+        if (imageFile) {
+          reader.readAsDataURL(imageFile);
+        } else {
+          await saveToDB('statuses', status);
+          renderStatuses();
+        }
+
+        document.getElementById("title").value = "";
+        document.getElementById("content").value = "";
+        document.getElementById("completed").checked = false;
+        document.getElementById("imageUpload").value = "";
+        document.getElementById("imagePreview").innerHTML = "";
+      }
+
+      async function renderStatuses() {
+        statusList.innerHTML = "";
+        const statuses = await getAllFromDB('statuses');
+        statuses.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        const filterDate = document.getElementById("filterDate").value;
+
+        statuses.forEach((status) => {
+          const dateMatch =
+            !filterDate ||
+            new Date(status.timestamp).toISOString().slice(0, 10) ===
+              filterDate;
+          if (!dateMatch) return;
+          const div = document.createElement("div");
+          div.className = "status";
+          div.innerHTML = `
+          <div class="status-title">${status.title}</div>
+          <div>
+            ${status.content
+              .split("\n")
+              .map(
+                (line) => `
+              <div><label><input type="checkbox" ${
+                status.completed ? "checked" : ""
+              }/> ${line}</label></div>
+            `
+              )
+              .join("")}
+          </div>
+          ${
+            status.image
+              ? `<img src="${status.image}" style="max-width:100%;margin-top:10px;border-radius:8px;" />`
+              : ""
+          }
+          <div>
+            <label><input type="checkbox" onchange="toggleCompleted(${status.id})" ${
+            status.completed ? "checked" : ""
+          } /> <span>Hoàn thành tất cả</span></label>
+          </div>
+          <div class="status-time">
+            ${formatTimeAgo(new Date(status.timestamp))} -
+            ${new Date(status.timestamp).toLocaleDateString("vi-VN", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </div>
+          <button onclick="editStatus(${status.id})"><i class="fas fa-edit"></i> Sửa</button>
+          <button onclick="deleteStatus(${status.id})"><i class="fas fa-trash-alt"></i> Xóa</button>
+          <button onclick="viewHistory(${status.id})"><i class="fas fa-history"></i> Nhật ký chỉnh sửa</button>
+          <div>
+            <input type="text" id="noteInput-${status.id}" placeholder="Thêm ghi chú..." />
+            <button onclick="addNote(${status.id})"><i class="fas fa-paper-plane"></i> Gửi</button>
+          </div>
+          <div class="status-notes">
+            ${status.notes
+              .map((note) => `<div class="note">${note}</div>`)
+              .join("")}
+          </div>
+          <div id="history-${status.id}" style="display:none; font-size: 0.85em; margin-top: 8px;"></div>
+        `;
+          statusList.appendChild(div);
+        });
+      }
+
+      async function toggleCompleted(id) {
+        const status = await getByIdFromDB('statuses', id);
+        if (status) {
+          status.completed = !status.completed;
+          await saveToDB('statuses', status);
+          renderStatuses();
+        }
+      }
+
+      async function deleteStatus(id) {
+        if (confirm("Bạn chắc chắn muốn xóa bài viết này?")) {
+          await deleteFromDB('statuses', id);
+          renderStatuses();
+        }
+      }
+
+      function editStatus(id) {
+        window.location.href = `edit_status.html?id=${id}`;
+      }
+
+      async function viewHistory(id) {
+        const status = await getByIdFromDB('statuses', id);
+        const container = document.getElementById(`history-${id}`);
+        if (!status || !status.history || status.history.length === 0) {
+          container.innerHTML = "<i>Không có chỉnh sửa nào.</i>";
+        } else {
+          container.innerHTML = status.history
+            .map(
+              (h) => `
+          <div style="margin-bottom:6px;">
+            <strong>${new Date(h.editedAt).toLocaleString()}</strong><br/>
+            <div>Tiêu đề cũ: ${h.oldTitle}</div>
+            <div>Tiêu đề mới: ${h.newTitle}</div>
+            <div>Nội dung cũ: ${h.oldContent.replace(/\n/g, "<br/>")}</div>
+            <div>Nội dung mới: ${h.newContent.replace(/\n/g, "<br/>")}</div>
+          </div>
+        `
+            )
+            .join("");
+        }
+        container.style.display =
+          container.style.display === "none" ? "block" : "none";
+      }
+
+      async function addNote(id) {
+        const input = document.getElementById(`noteInput-${id}`);
+        const note = input.value.trim();
+        if (note) {
+          const status = await getByIdFromDB('statuses', id);
+          if (status) {
+            status.notes.push(note);
+            await saveToDB('statuses', status);
+            input.value = "";
+            renderStatuses();
+          }
+        }
+      }
+
+      async function renderNoteItems() {
+        const noteList = document.getElementById("noteList");
+        noteList.innerHTML = "";
+        const noteItems = await getAllFromDB('noteItems');
+        noteItems.forEach((item) => {
+          const li = document.createElement("li");
+          li.className = item.completed ? "completed" : "";
+          li.innerHTML = `
+            <div>
+              <input type="checkbox" onchange="toggleNoteCompleted(${item.id})" ${
+            item.completed ? "checked" : ""
+          } />
+              <span>${item.text}</span>
+            </div>
+            <button onclick="deleteNoteItem(${item.id})"><i class="fas fa-times-circle"></i></button>
+          `;
+          noteList.appendChild(li);
+        });
+      }
+
+      async function addNoteItem() {
+        const input = document.getElementById("newNoteInput");
+        const text = input.value.trim();
+        if (text) {
+          const noteItem = { text, completed: false };
+          await saveToDB('noteItems', noteItem);
+          input.value = "";
+          renderNoteItems();
+        }
+      }
+
+      async function toggleNoteCompleted(id) {
+        const item = await getByIdFromDB('noteItems', id);
+        if (item) {
+          item.completed = !item.completed;
+          await saveToDB('noteItems', item);
+          renderNoteItems();
+        }
+      }
+
+      async function deleteNoteItem(id) {
+        await deleteFromDB('noteItems', id);
+        renderNoteItems();
+      }
+
+      async function saveImportantNotes() {
+        const notes = document.getElementById("importantNotes").value;
+        const noteData = { id: 1, notes: notes };
+        await saveToDB('importantNotes', noteData);
+        alert("Đã lưu lưu ý quan trọng!");
+      }
+
+      async function loadImportantNotes() {
+        const noteData = await getByIdFromDB('importantNotes', 1);
+        if (noteData && noteData.notes) {
+          document.getElementById("importantNotes").value = noteData.notes;
+        }
+      }
+
+      async function clearImportantNotes() {
+        document.getElementById("importantNotes").value = "";
+        await deleteFromDB('importantNotes', 1);
+      }
+
+      document
+        .getElementById("imageUpload")
+        .addEventListener("change", function () {
+          const preview = document.getElementById("imagePreview");
+          preview.innerHTML = "";
+          const file = this.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              const img = document.createElement("img");
+              img.src = e.target.result;
+              preview.appendChild(img);
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+
+      function scrollToTop() {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }
+
+      window.addEventListener("DOMContentLoaded", async () => {
+        await openDB();
+        document.getElementById("filterDate").value = "";
+        renderStatuses();
+        renderNoteItems();
+        loadImportantNotes();
+      });
+    </script>
+    <script>
+      const cloverIcon = document.getElementById("clover-reload-icon");
+      let isDragging = false;
+      let offsetX, offsetY;
+
+      cloverIcon.addEventListener("mousedown", (e) => {
+        isDragging = true;
+        cloverIcon.style.cursor = "grabbing";
+        offsetX = e.clientX - cloverIcon.getBoundingClientRect().left;
+        offsetY = e.clientY - cloverIcon.getBoundingClientRect().top;
+      });
+
+      document.addEventListener("mousemove", (e) => {
+        if (!isDragging) return;
+        cloverIcon.style.left = e.clientX - offsetX + "px";
+        cloverIcon.style.top = e.clientY - offsetY + "px";
+      });
+
+      document.addEventListener("mouseup", () => {
+        if (!isDragging) return;
+        isDragging = false;
+        cloverIcon.style.cursor = "grab";
+      });
+
+      cloverIcon.addEventListener("click", (e) => {
+        if (!isDragging) {
+          window.location.href = "index.html";
+        }
+      });
+    </script>
+  </body>
+</html>

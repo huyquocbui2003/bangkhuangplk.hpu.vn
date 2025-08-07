@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lịch học tập - Locket Huy</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(135deg, #e0f7fa, #fce4ec);
+        margin: 0;
+        padding: 0;
+      }
+      .top-buttons-container {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 1000;
+        display: flex;
+        gap: 10px;
+      }
+      .home-button,
+      .drive-button,
+      .calendar-button {
+        display: flex;
+        align-items: center;
+        background: linear-gradient(to right, #ff4081, #ff80ab);
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s;
+        text-decoration: none;
+      }
+      .home-button:hover,
+      .drive-button:hover,
+      .calendar-button:hover {
+        transform: scale(1.05);
+      }
+      .calendar-container {
+        max-width: 900px;
+        margin: 100px auto 20px;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        text-align: center;
+        color: #ff4081;
+        margin-bottom: 20px;
+      }
+      .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .calendar-header button {
+        background: linear-gradient(to right, #ff4081, #ff80ab);
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+      .calendar-header button:hover {
+        background: linear-gradient(to right, #d81b60, #f06292);
+      }
+      #monthYear {
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #c2185b;
+      }
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 10px;
+      }
+      .weekday {
+        text-align: center;
+        font-weight: bold;
+        color: #c2185b;
+      }
+      .day {
+        position: relative;
+        height: 100px;
+        background-color: #fce4ec;
+        border-radius: 8px;
+        padding: 5px;
+        text-align: right;
+        font-weight: bold;
+        color: #888;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+        overflow-y: auto;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      .day::-webkit-scrollbar {
+        display: none;
+      }
+      .day:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+      .day.current-month {
+        background-color: #fff0f5;
+        color: #444;
+      }
+      .day.current-day {
+        border: 2px solid #ff4081;
+        background-color: #fff5e8;
+      }
+      .event {
+        font-size: 0.8em;
+        color: #fff;
+        background-color: #ff80ab;
+        padding: 2px 5px;
+        border-radius: 3px;
+        margin-top: 2px;
+        text-align: left;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .event span {
+        flex-grow: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin-right: 5px;
+      }
+      .delete-event {
+        color: white;
+        cursor: pointer;
+        margin-left: auto;
+        flex-shrink: 0;
+        transition: color 0.2s;
+      }
+      .delete-event:hover {
+        color: #d81b60;
+      }
+      .footer {
+        margin-top: 40px;
+        padding: 20px;
+        background: linear-gradient(90deg, #ffe0f0, #e0f7fa);
+        font-family: "Segoe UI", sans-serif;
+        font-size: 14px;
+        color: #444;
+        border-top: 1px solid #ddd;
+        text-align: center;
+        border-radius: 10px;
+      }
+      .footer a {
+        color: #ff4081;
+        text-decoration: none;
+        font-weight: bold;
+      }
+      .footer a:hover {
+        text-decoration: underline;
+      }
+      .footer .label {
+        color: #888;
+        font-weight: normal;
+      }
+      .footer i {
+        margin-right: 5px;
+        color: #ff4081;
+      }
+      .footer div {
+        margin: 5px 0;
+      }
+
+      /* Modal */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+      .modal-content {
+        background-color: #fff;
+        margin: 15% auto;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        width: 80%;
+        max-width: 500px;
+        position: relative;
+      }
+      .close-button {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+      .close-button:hover,
+      .close-button:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      #eventTitle,
+      #eventDescription,
+      #eventDate,
+      #eventTime {
+        width: calc(100% - 22px);
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+      }
+      .flatpickr-input {
+        width: calc(100% - 22px);
+      }
+
+      #eventsList .event-detail {
+        background-color: #f0f0f0;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        border-left: 5px solid #ff4081;
+        display: flex;
+        flex-direction: column;
+      }
+      #eventsList .event-detail .title {
+        font-weight: bold;
+        color: #c2185b;
+      }
+      #eventsList .event-detail .time {
+        font-style: italic;
+        font-size: 0.9em;
+        color: #888;
+      }
+      #eventsList .event-detail .description {
+        margin-top: 5px;
+        color: #555;
+        font-size: 0.95em;
+        white-space: pre-wrap;
+      }
+      #eventsList .event-detail button {
+        align-self: flex-end;
+        background: #ff4081;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="top-buttons-container">
+      <a class="home-button" href="giaodien.html">
+        <i class="fas fa-home"></i> Home
+      </a>
+      <a
+        class="drive-button"
+        href="https://drive.google.com/drive/folders/1cR4KwCDcmGDenk9qNfdYm23x5a2c-t3n?usp=sharing"
+        target="_blank"
+      >
+        <i class="fas fa-folder"></i> Drive
+      </a>
+      <a class="calendar-button" href="calendar.html">
+        <i class="fas fa-calendar-alt"></i> Lịch
+      </a>
+    </div>
+
+    <div class="calendar-container">
+      <h2>Lịch học tập và công việc</h2>
+      <div class="calendar-header">
+        <button id="prevMonth"><i class="fas fa-chevron-left"></i></button>
+        <div id="monthYear"></div>
+        <button id="nextMonth"><i class="fas fa-chevron-right"></i></button>
+      </div>
+      <div class="calendar-grid">
+        <div class="weekday">CN</div>
+        <div class="weekday">T2</div>
+        <div class="weekday">T3</div>
+        <div class="weekday">T4</div>
+        <div class="weekday">T5</div>
+        <div class="weekday">T6</div>
+        <div class="weekday">T7</div>
+      </div>
+      <div id="calendar-days" class="calendar-grid"></div>
+    </div>
+
+    <div id="eventModal" class="modal">
+      <div class="modal-content">
+        <span class="close-button" onclick="closeModal()">&times;</span>
+        <h3>Thêm sự kiện</h3>
+        <input type="text" id="eventTitle" placeholder="Tiêu đề sự kiện" />
+        <textarea
+          id="eventDescription"
+          placeholder="Mô tả chi tiết"
+        ></textarea>
+        <input type="text" id="eventDate" placeholder="Chọn ngày" />
+        <input type="text" id="eventTime" placeholder="Chọn giờ" />
+        <button id="saveEventButton"><i class="fas fa-save"></i> Lưu</button>
+      </div>
+    </div>
+
+    <div id="viewEventsModal" class="modal">
+      <div class="modal-content">
+        <span class="close-button" onclick="closeViewModal()">&times;</span>
+        <h3 id="viewEventsTitle">Sự kiện ngày ...</h3>
+        <div id="eventsList"></div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+      const calendarDays = document.getElementById("calendar-days");
+      const monthYear = document.getElementById("monthYear");
+      const prevMonthBtn = document.getElementById("prevMonth");
+      const nextMonthBtn = document.getElementById("nextMonth");
+
+      let currentDate = new Date();
+      let db;
+
+      function openDB() {
+        return new Promise((resolve, reject) => {
+          const request = indexedDB.open("CalendarDB", 1);
+
+          request.onupgradeneeded = (event) => {
+            db = event.target.result;
+            if (!db.objectStoreNames.contains("events")) {
+              db.createObjectStore("events", { keyPath: "id", autoIncrement: true });
+            }
+          };
+
+          request.onsuccess = (event) => {
+            db = event.target.result;
+            resolve(db);
+          };
+
+          request.onerror = (event) => {
+            reject(event.target.error);
+          };
+        });
+      }
+
+      async function getEvents(date) {
+        return new Promise((resolve) => {
+          const transaction = db.transaction(["events"], "readonly");
+          const store = transaction.objectStore("events");
+          const request = store.getAll();
+
+          request.onsuccess = (event) => {
+            const allEvents = event.target.result;
+            if (date) {
+              const dayEvents = allEvents.filter(event => event.date === date);
+              resolve(dayEvents);
+            } else {
+              resolve(allEvents);
+            }
+          };
+        });
+      }
+
+      async function renderCalendar() {
+        calendarDays.innerHTML = "";
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+
+        monthYear.textContent = new Date(year, month).toLocaleString("vi-VN", {
+          month: "long",
+          year: "numeric",
+        });
+
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+        const prevLastDay = new Date(year, month, 0);
+        const prevDays = prevLastDay.getDate() - firstDay.getDay() + 1;
+        const totalDays = lastDay.getDate();
+
+        const events = await getEvents();
+
+        for (let i = prevDays; i <= prevLastDay.getDate(); i++) {
+          const dayEl = document.createElement("div");
+          dayEl.className = "day";
+          dayEl.textContent = i;
+          calendarDays.appendChild(dayEl);
+        }
+
+        for (let i = 1; i <= totalDays; i++) {
+          const dayEl = document.createElement("div");
+          dayEl.className = "day current-month";
+          dayEl.textContent = i;
+
+          const fullDate = `${year}-${String(month + 1).padStart(2, "0")}-${String(i).padStart(2, "0")}`;
+
+          if (
+            i === new Date().getDate() &&
+            month === new Date().getMonth() &&
+            year === new Date().getFullYear()
+          ) {
+            dayEl.classList.add("current-day");
+          }
+
+          dayEl.addEventListener("click", () => showDayDetails(fullDate));
+
+          const dayEvents = events.filter((event) => event.date === fullDate);
+          dayEvents.forEach((event) => {
+            const eventEl = document.createElement("div");
+            eventEl.className = "event";
+            eventEl.innerHTML = `
+              <span>${event.time} - ${event.title}</span>
+              <i class="fas fa-times-circle delete-event" onclick="deleteEvent(${event.id}, '${fullDate}')"></i>
+            `;
+            dayEl.appendChild(eventEl);
+          });
+
+          calendarDays.appendChild(dayEl);
+        }
+      }
+
+      function openModal(date) {
+        const modal = document.getElementById("eventModal");
+        const dateInput = document.getElementById("eventDate");
+        dateInput.value = date;
+        modal.style.display = "block";
+      }
+
+      function closeModal() {
+        const modal = document.getElementById("eventModal");
+        modal.style.display = "none";
+        document.getElementById("eventTitle").value = "";
+        document.getElementById("eventDescription").value = "";
+        document.getElementById("eventDate").value = "";
+        document.getElementById("eventTime").value = "";
+      }
+
+      async function saveEvent() {
+        const title = document.getElementById("eventTitle").value;
+        const description = document.getElementById("eventDescription").value;
+        const date = document.getElementById("eventDate").value;
+        const time = document.getElementById("eventTime").value;
+
+        if (title && date) {
+          const newEvent = { title, description, date, time };
+          const transaction = db.transaction(["events"], "readwrite");
+          const store = transaction.objectStore("events");
+          store.add(newEvent);
+
+          transaction.oncomplete = () => {
+            closeModal();
+            renderCalendar();
+          };
+        } else {
+          alert("Vui lòng điền tiêu đề và ngày!");
+        }
+      }
+
+      async function showDayDetails(date) {
+        const modal = document.getElementById("viewEventsModal");
+        const titleEl = document.getElementById("viewEventsTitle");
+        const eventsListEl = document.getElementById("eventsList");
+
+        const formattedDate = date.split('-').reverse().join('-');
+        titleEl.textContent = `Sự kiện ngày ${formattedDate}`;
+        eventsListEl.innerHTML = "";
+
+        const dayEvents = await getEvents(date);
+
+        if (dayEvents.length > 0) {
+          dayEvents.forEach((event) => {
+            const eventDetailEl = document.createElement("div");
+            eventDetailEl.className = "event-detail";
+            eventDetailEl.innerHTML = `
+              <div class="title">${event.title}</div>
+              <div class="time">${event.time}</div>
+              <div class="description">${event.description}</div>
+              <button class="delete-event" onclick="deleteEvent(${event.id}, '${date}')">Xóa</button>
+            `;
+            eventsListEl.appendChild(eventDetailEl);
+          });
+        } else {
+          eventsListEl.innerHTML = "<p>Không có sự kiện nào trong ngày này.</p>";
+        }
+        
+        const addButton = document.createElement("button");
+        addButton.textContent = "Thêm sự kiện";
+        addButton.style.marginTop = "15px";
+        addButton.style.padding = "10px";
+        addButton.style.cursor = "pointer";
+        addButton.style.backgroundColor = "#ff4081";
+        addButton.style.color = "white";
+        addButton.style.border = "none";
+        addButton.style.borderRadius = "5px";
+        addButton.onclick = () => {
+          closeViewModal();
+          openModal(date);
+        };
+        eventsListEl.appendChild(addButton);
+        
+        modal.style.display = "block";
+      }
+
+      function closeViewModal() {
+        const modal = document.getElementById("viewEventsModal");
+        modal.style.display = "none";
+      }
+
+      function deleteEvent(id, date) {
+        if (confirm("Bạn có chắc chắn muốn xóa sự kiện này không?")) {
+          const transaction = db.transaction(["events"], "readwrite");
+          const store = transaction.objectStore("events");
+          store.delete(id);
+
+          transaction.oncomplete = () => {
+            renderCalendar();
+            const viewModal = document.getElementById("viewEventsModal");
+            if (viewModal.style.display === "block") {
+              showDayDetails(date);
+            }
+          };
+        }
+      }
+
+      prevMonthBtn.addEventListener("click", () => {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar();
+      });
+
+      nextMonthBtn.addEventListener("click", () => {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderCalendar();
+      });
+
+      document
+        .getElementById("eventModal")
+        .querySelector(".close-button")
+        .addEventListener("click", closeModal);
+      document
+        .getElementById("saveEventButton")
+        .addEventListener("click", saveEvent);
+      window.addEventListener("click", (event) => {
+        const modal1 = document.getElementById("eventModal");
+        const modal2 = document.getElementById("viewEventsModal");
+        if (event.target == modal1) {
+          closeModal();
+        }
+        if (event.target == modal2) {
+          closeViewModal();
+        }
+      });
+
+      window.addEventListener("DOMContentLoaded", async () => {
+        await openDB();
+        renderCalendar();
+      });
+
+      flatpickr("#eventDate", {
+        dateFormat: "Y-m-d",
+      });
+      flatpickr("#eventTime", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+        time_24hr: true,
+      });
+    </script>
+    <div class="footer">
+      <div>
+        <i class="fas fa-user"></i><span class="label">Website created by:</span> Bùi Quốc Huy
+      </div>
+      <div>
+        <i class="fab fa-facebook"></i><span class="label">Facebook:</span>
+        <a href="https://www.facebook.com/bangkhuang187" target="_blank"
+          >facebook.com/bangkhuang187</a
+        >
+      </div>
+      <div>
+        <i class="fas fa-phone"></i><span class="label">Phone:</span> 0905640544
+      </div>
+      <div>
+        <i class="fas fa-code-branch"></i><span class="label">Version:</span> 0.0.2 (Cập nhật)
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sửa bài viết</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(135deg, #e0f7fa, #fce4ec);
+        margin: 0;
+        padding: 0;
+      }
+      .home-button {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background: linear-gradient(to right, #ff4081, #ff80ab);
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 1000;
+        font-weight: bold;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s;
+      }
+      .home-button:hover {
+        transform: scale(1.05);
+      }
+      .container {
+        max-width: 600px;
+        margin: 20px auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+      h2 {
+        color: #ff4081;
+        margin-bottom: 20px;
+      }
+      textarea,
+      input[type="text"] {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        box-sizing: border-box;
+      }
+      .button-group {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+      }
+      button {
+        padding: 12px 24px;
+        background: linear-gradient(to right, #ff4081, #ff80ab);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background 0.3s ease, transform 0.2s ease;
+      }
+      button:hover {
+        background: linear-gradient(to right, #d81b60, #f06292);
+        transform: translateY(-2px);
+      }
+      button i {
+        margin-right: 8px;
+      }
+      .footer {
+        margin-top: 40px;
+        padding: 20px;
+        background: linear-gradient(90deg, #ffe0f0, #e0f7fa);
+        font-family: "Segoe UI", sans-serif;
+        font-size: 14px;
+        color: #444;
+        border-top: 1px solid #ddd;
+        text-align: center;
+        border-radius: 10px;
+      }
+      .footer a {
+        color: #ff4081;
+        text-decoration: none;
+        font-weight: bold;
+      }
+      .footer a:hover {
+        text-decoration: underline;
+      }
+      .footer .label {
+        color: #888;
+        font-weight: normal;
+      }
+      .footer i {
+        margin-right: 5px;
+        color: #ff4081;
+      }
+      .footer div {
+        margin: 5px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="giaodien.html" class="home-button">
+      <i class="fas fa-home"></i> Trở về
+    </a>
+
+    <div class="container">
+      <h2>Sửa bài viết</h2>
+      <input type="text" id="edit-title" placeholder="Tiêu đề bài viết" />
+      <textarea
+        id="edit-content"
+        placeholder="Nội dung bài viết"
+        rows="8"
+      ></textarea>
+      <label
+        ><input type="checkbox" id="edit-completed" /> Đánh dấu đã hoàn
+        thành</label
+      >
+      <div class="button-group">
+        <button onclick="saveChanges()"><i class="fas fa-save"></i> Lưu</button>
+        <button onclick="cancelEdit()"><i class="fas fa-times"></i> Hủy</button>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div>
+        <i class="fas fa-user"></i><span class="label">Website created by:</span> Bùi Quốc Huy
+      </div>
+      <div>
+        <i class="fab fa-facebook"></i><span class="label">Facebook:</span>
+        <a href="https://www.facebook.com/bangkhuang187" target="_blank"
+          >facebook.com/bangkhuang187</a
+        >
+      </div>
+      <div>
+        <i class="fas fa-phone"></i><span class="label">Phone:</span> 0905640544
+      </div>
+      <div>
+        <i class="fas fa-code-branch"></i><span class="label">Version:</span> 0.0.2 (Cập nhật)
+      </div>
+    </div>
+
+    <script>
+      // IndexedDB Helper Functions
+      const DB_NAME = 'LocketHuyDB';
+      const DB_VERSION = 1;
+      let db;
+
+      function openDB() {
+        return new Promise((resolve, reject) => {
+          const request = indexedDB.open(DB_NAME, DB_VERSION);
+          request.onerror = (event) => reject('IndexedDB error: ' + event.target.errorCode);
+          request.onsuccess = (event) => {
+            db = event.target.result;
+            resolve(db);
+          };
+          request.onupgradeneeded = (event) => {
+            const db = event.target.result;
+            if (!db.objectStoreNames.contains('statuses')) {
+              db.createObjectStore('statuses', { keyPath: 'id', autoIncrement: true });
+            }
+          };
+        });
+      }
+
+      async function saveToDB(storeName, data) {
+        if (!db) await openDB();
+        const transaction = db.transaction([storeName], 'readwrite');
+        const store = transaction.objectStore(storeName);
+        store.put(data);
+        return new Promise((resolve, reject) => {
+          transaction.oncomplete = () => resolve();
+          transaction.onerror = (event) => reject(event.target.error);
+        });
+      }
+      
+      async function getByIdFromDB(storeName, id) {
+          if (!db) await openDB();
+          return new Promise((resolve, reject) => {
+              const transaction = db.transaction([storeName], 'readonly');
+              const store = transaction.objectStore(storeName);
+              const request = store.get(id);
+              request.onsuccess = (event) => resolve(event.target.result);
+              request.onerror = (event) => reject(event.target.error);
+          });
+      }
+
+      let statusId = null;
+      let oldStatus = {};
+
+      async function loadStatus() {
+        const params = new URLSearchParams(window.location.search);
+        statusId = parseInt(params.get('id'));
+        
+        if (isNaN(statusId)) {
+            alert('Không tìm thấy ID bài viết!');
+            window.location.href = 'giaodien.html';
+            return;
+        }
+
+        oldStatus = await getByIdFromDB('statuses', statusId);
+
+        if (oldStatus) {
+            document.getElementById('edit-title').value = oldStatus.title;
+            document.getElementById('edit-content').value = oldStatus.content;
+            document.getElementById('edit-completed').checked = oldStatus.completed;
+        } else {
+            alert('Không tìm thấy bài viết để sửa!');
+            window.location.href = 'giaodien.html';
+        }
+      }
+
+      async function saveChanges() {
+        const newTitle = document.getElementById('edit-title').value;
+        const newContent = document.getElementById('edit-content').value;
+        const newCompleted = document.getElementById('edit-completed').checked;
+
+        if (newTitle === oldStatus.title && newContent === oldStatus.content && newCompleted === oldStatus.completed) {
+            alert('Không có thay đổi nào để lưu!');
+            return;
+        }
+
+        const updatedStatus = { ...oldStatus };
+        updatedStatus.title = newTitle;
+        updatedStatus.content = newContent;
+        updatedStatus.completed = newCompleted;
+        updatedStatus.history.push({
+            editedAt: new Date(),
+            oldTitle: oldStatus.title,
+            newTitle: newTitle,
+            oldContent: oldStatus.content,
+            newContent: newContent
+        });
+
+        await saveToDB('statuses', updatedStatus);
+        alert('Đã lưu thay đổi!');
+        window.location.href = 'giaodien.html';
+      }
+
+      function cancelEdit() {
+        window.location.href = 'giaodien.html';
+      }
+
+      window.addEventListener("DOMContentLoaded", async () => {
+          await openDB();
+          loadStatus();
+      });
+    </script>
+  </body>
+</html>
