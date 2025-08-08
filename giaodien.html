@@ -28,7 +28,11 @@
 
       body {
         font-family: "Segoe UI", sans-serif;
-        background: linear-gradient(135deg, var(--background-light), var(--background-dark));
+        background: linear-gradient(
+          135deg,
+          var(--background-light),
+          var(--background-dark)
+        );
         margin: 0;
         padding: 0;
         color: var(--text-color);
@@ -48,7 +52,10 @@
         align-items: center;
       }
 
-      .home-button, .drive-button, .calendar-button, .contact-button {
+      .home-button,
+      .drive-button,
+      .calendar-button,
+      .contact-button {
         display: flex;
         align-items: center;
         background: linear-gradient(to right, var(--secondary-color), #f48fb1);
@@ -62,7 +69,10 @@
         transition: transform 0.2s, box-shadow 0.2s;
         text-decoration: none;
       }
-      .home-button:hover, .drive-button:hover, .calendar-button:hover, .contact-button:hover {
+      .home-button:hover,
+      .drive-button:hover,
+      .calendar-button:hover,
+      .contact-button:hover {
         transform: scale(1.05);
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
       }
@@ -88,7 +98,8 @@
       }
 
       /* Khung bên trái (Bảng đen) và bên phải (Ghi chú) */
-      .blackboard-container, .note-container {
+      .blackboard-container,
+      .note-container {
         width: 300px;
         padding: 15px;
         border-radius: var(--border-radius-large);
@@ -98,7 +109,8 @@
       .blackboard-container {
         background-color: #2c3e50;
         border: 10px solid #a0522d;
-        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), 0 5px 15px rgba(0, 0, 0, 0.3);
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5),
+          0 5px 15px rgba(0, 0, 0, 0.3);
       }
       .note-container {
         background-color: #fffacd;
@@ -107,19 +119,24 @@
       }
 
       /* Tiêu đề */
-      .main-title, h2, h3 {
+      .main-title,
+      h2,
+      h3 {
         text-align: center;
         color: var(--primary-color);
         cursor: pointer;
       }
 
-      .main-title i, h2 i, h3 i {
+      .main-title i,
+      h2 i,
+      h3 i {
         margin: 0 5px;
         color: var(--secondary-color);
       }
 
       /* Các trường nhập liệu */
-      textarea, input[type="text"] {
+      textarea,
+      input[type="text"] {
         width: 100%;
         padding: 10px;
         margin: 5px 0 10px;
@@ -133,7 +150,8 @@
       }
 
       /* Nút bấm */
-      button, .button {
+      button,
+      .button {
         padding: 8px 14px;
         margin: 6px 4px 6px 0;
         border: none;
@@ -144,11 +162,13 @@
         cursor: pointer;
         transition: all 0.3s ease;
       }
-      button:hover, .button:hover {
+      button:hover,
+      .button:hover {
         background: linear-gradient(to right, var(--primary-color), #f06292);
         transform: translateY(-2px);
       }
-      button i, .button i {
+      button i,
+      .button i {
         margin-right: 5px;
       }
 
@@ -277,7 +297,8 @@
         color: #ffffa0;
         resize: none;
         height: 150px;
-        font-family: "Chalkduster", "Marker Felt", "Comic Sans MS", cursive, sans-serif;
+        font-family: "Chalkduster", "Marker Felt", "Comic Sans MS", cursive,
+          sans-serif;
         font-size: 1.1em;
       }
       .blackboard-container button {
@@ -327,11 +348,21 @@
         animation: whaleSwim 10s infinite alternate;
       }
       @keyframes whaleSwim {
-        0% { transform: translate(0, 0) rotate(0deg); }
-        25% { transform: translate(-100px, -50px) rotate(-10deg); }
-        50% { transform: translate(-200px, 0) rotate(0deg); }
-        75% { transform: translate(-100px, 50px) rotate(10deg); }
-        100% { transform: translate(0, 0) rotate(0deg); }
+        0% {
+          transform: translate(0, 0) rotate(0deg);
+        }
+        25% {
+          transform: translate(-100px, -50px) rotate(-10deg);
+        }
+        50% {
+          transform: translate(-200px, 0) rotate(0deg);
+        }
+        75% {
+          transform: translate(-100px, 50px) rotate(10deg);
+        }
+        100% {
+          transform: translate(0, 0) rotate(0deg);
+        }
       }
       .animate-whale {
         position: fixed;
@@ -342,8 +373,14 @@
         z-index: 9999;
       }
       @keyframes whaleFly {
-        0% { transform: scale(0); opacity: 1; }
-        100% { transform: scale(1.5) translate(var(--randX), var(--randY)); opacity: 0; }
+        0% {
+          transform: scale(0);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1.5) translate(var(--randX), var(--randY));
+          opacity: 0;
+        }
       }
 
       /* Footer */
@@ -502,10 +539,10 @@
           <i class="fas fa-heart"></i> BÂNG KHUÂNG PHIÊU LƯU KÝ
           <i class="fas fa-heart"></i>
         </h2>
-        <input type="text" id="title" placeholder="Tại đây nhập Tiêu đề bài viết" />
+        <input type="text" id="title" placeholder="Tại đây nhập Tiêu đề" />
         <textarea
           id="content"
-          placeholder="Tại đây nhập Nội dung/Các mục cần làm. Khi bấm enter sẽ tạo ra một check box"
+          placeholder="Tại đây nhập Nội dung/Các mục đã hoàn thành. Khi ấn Enter sẽ xuống dòng và tạo ra một check box"
           rows="4"
         ></textarea>
 
@@ -585,7 +622,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
       // Script cho các chức năng tương tác và lưu trữ dữ liệu
-      
+
       // Xử lý icon cá voi và âm thanh
       const whaleIcon = document.getElementById("whale-icon");
       const audio = document.getElementById("bangkhieng-audio");
@@ -609,7 +646,9 @@
         const hours = String(now.getHours()).padStart(2, "0");
         const minutes = String(now.getMinutes()).padStart(2, "0");
         const seconds = String(now.getSeconds()).padStart(2, "0");
-        document.getElementById("realtime-clock").textContent = `${hours}:${minutes}:${seconds}`;
+        document.getElementById(
+          "realtime-clock"
+        ).textContent = `${hours}:${minutes}:${seconds}`;
       }
       updateClock();
       setInterval(updateClock, 1000);
@@ -622,7 +661,8 @@
       function openDB() {
         return new Promise((resolve, reject) => {
           const request = indexedDB.open(DB_NAME, DB_VERSION);
-          request.onerror = (event) => reject("IndexedDB error: " + event.target.errorCode);
+          request.onerror = (event) =>
+            reject("IndexedDB error: " + event.target.errorCode);
           request.onsuccess = (event) => {
             db = event.target.result;
             resolve(db);
@@ -630,13 +670,22 @@
           request.onupgradeneeded = (event) => {
             const db = event.target.result;
             if (!db.objectStoreNames.contains("statuses")) {
-              db.createObjectStore("statuses", { keyPath: "id", autoIncrement: true });
+              db.createObjectStore("statuses", {
+                keyPath: "id",
+                autoIncrement: true,
+              });
             }
             if (!db.objectStoreNames.contains("noteItems")) {
-              db.createObjectStore("noteItems", { keyPath: "id", autoIncrement: true });
+              db.createObjectStore("noteItems", {
+                keyPath: "id",
+                autoIncrement: true,
+              });
             }
             if (!db.objectStoreNames.contains("importantNotes")) {
-              db.createObjectStore("importantNotes", { keyPath: "id", autoIncrement: true });
+              db.createObjectStore("importantNotes", {
+                keyPath: "id",
+                autoIncrement: true,
+              });
             }
           };
         });
@@ -708,7 +757,15 @@
         const timestamp = new Date();
         if (title === "" && content === "" && !imageFile) return;
 
-        const status = { title, content, completed, timestamp, image: null, notes: [], history: [] };
+        const status = {
+          title,
+          content,
+          completed,
+          timestamp,
+          image: null,
+          notes: [],
+          history: [],
+        };
 
         const reader = new FileReader();
         reader.onload = async function () {
@@ -743,24 +800,65 @@
         const filterDate = document.getElementById("filterDate").value;
 
         statuses.forEach((status) => {
-          const dateMatch = !filterDate || new Date(status.timestamp).toISOString().slice(0, 10) === filterDate;
+          const dateMatch =
+            !filterDate ||
+            new Date(status.timestamp).toISOString().slice(0, 10) ===
+              filterDate;
           if (!dateMatch) return;
           const div = document.createElement("div");
           div.className = "status";
           div.innerHTML = `
           <div class="status-title">${status.title}</div>
           <div>
-            ${status.content.split("\n").map((line) => `<div><label><input type="checkbox" ${status.completed ? "checked" : ""}/> ${line}</label></div>`).join("")}
+            ${status.content
+              .split("\n")
+              .map(
+                (line) =>
+                  `<div><label><input type="checkbox" ${
+                    status.completed ? "checked" : ""
+                  }/> ${line}</label></div>`
+              )
+              .join("")}
           </div>
-          ${status.image ? `<img src="${status.image}" style="max-width:100%;margin-top:10px;border-radius:8px;" />` : ""}
-          <div><label><input type="checkbox" onchange="toggleCompleted(${status.id})" ${status.completed ? "checked" : ""} /> <span>Hoàn thành tất cả</span></label></div>
-          <div class="status-time">${formatTimeAgo(new Date(status.timestamp))} - ${new Date(status.timestamp).toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" })}</div>
-          <button onclick="editStatus(${status.id})"><i class="fas fa-edit"></i> Sửa</button>
-          <button onclick="deleteStatus(${status.id})"><i class="fas fa-trash-alt"></i> Xóa</button>
-          <button onclick="viewHistory(${status.id})"><i class="fas fa-history"></i> Nhật ký chỉnh sửa</button>
-          <div><input type="text" id="noteInput-${status.id}" placeholder="Thêm ghi chú..." /><button onclick="addNote(${status.id})"><i class="fas fa-paper-plane"></i> Gửi</button></div>
-          <div class="status-notes">${status.notes.map((note) => `<div class="note">${note}</div>`).join("")}</div>
-          <div id="history-${status.id}" style="display:none; font-size: 0.85em; margin-top: 8px;"></div>
+          ${
+            status.image
+              ? `<img src="${status.image}" style="max-width:100%;margin-top:10px;border-radius:8px;" />`
+              : ""
+          }
+          <div><label><input type="checkbox" onchange="toggleCompleted(${
+            status.id
+          })" ${
+            status.completed ? "checked" : ""
+          } /> <span>Hoàn thành tất cả</span></label></div>
+          <div class="status-time">${formatTimeAgo(
+            new Date(status.timestamp)
+          )} - ${new Date(status.timestamp).toLocaleDateString("vi-VN", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          })}</div>
+          <button onclick="editStatus(${
+            status.id
+          })"><i class="fas fa-edit"></i> Sửa</button>
+          <button onclick="deleteStatus(${
+            status.id
+          })"><i class="fas fa-trash-alt"></i> Xóa</button>
+          <button onclick="viewHistory(${
+            status.id
+          })"><i class="fas fa-history"></i> Nhật ký chỉnh sửa</button>
+          <div><input type="text" id="noteInput-${
+            status.id
+          }" placeholder="Thêm ghi chú..." /><button onclick="addNote(${
+            status.id
+          })"><i class="fas fa-paper-plane"></i> Gửi</button></div>
+          <div class="status-notes">${status.notes
+            .map((note) => `<div class="note">${note}</div>`)
+            .join("")}</div>
+          <div id="history-${
+            status.id
+          }" style="display:none; font-size: 0.85em; margin-top: 8px;"></div>
         `;
           statusList.appendChild(div);
         });
@@ -792,16 +890,21 @@
         if (!status || !status.history || status.history.length === 0) {
           container.innerHTML = "<i>Không có chỉnh sửa nào.</i>";
         } else {
-          container.innerHTML = status.history.map((h) => `
+          container.innerHTML = status.history
+            .map(
+              (h) => `
           <div style="margin-bottom:6px;">
             <strong>${new Date(h.editedAt).toLocaleString()}</strong><br/>
             <div>Tiêu đề cũ: ${h.oldTitle}</div>
             <div>Tiêu đề mới: ${h.newTitle}</div>
             <div>Nội dung cũ: ${h.oldContent.replace(/\n/g, "<br/>")}</div>
             <div>Nội dung mới: ${h.newContent.replace(/\n/g, "<br/>")}</div>
-          </div>`).join("");
+          </div>`
+            )
+            .join("");
         }
-        container.style.display = container.style.display === "none" ? "block" : "none";
+        container.style.display =
+          container.style.display === "none" ? "block" : "none";
       }
 
       async function addNote(id) {
@@ -826,8 +929,14 @@
           const li = document.createElement("li");
           li.className = item.completed ? "completed" : "";
           li.innerHTML = `
-            <div><input type="checkbox" onchange="toggleNoteCompleted(${item.id})" ${item.completed ? "checked" : ""} /><span>${item.text}</span></div>
-            <button onclick="deleteNoteItem(${item.id})"><i class="fas fa-times-circle"></i></button>`;
+            <div><input type="checkbox" onchange="toggleNoteCompleted(${
+              item.id
+            })" ${item.completed ? "checked" : ""} /><span>${
+            item.text
+          }</span></div>
+            <button onclick="deleteNoteItem(${
+              item.id
+            })"><i class="fas fa-times-circle"></i></button>`;
           noteList.appendChild(li);
         });
       }
@@ -876,20 +985,22 @@
         await deleteFromDB("importantNotes", 1);
       }
 
-      document.getElementById("imageUpload").addEventListener("change", function () {
-        const preview = document.getElementById("imagePreview");
-        preview.innerHTML = "";
-        const file = this.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = function (e) {
-            const img = document.createElement("img");
-            img.src = e.target.result;
-            preview.appendChild(img);
-          };
-          reader.readAsDataURL(file);
-        }
-      });
+      document
+        .getElementById("imageUpload")
+        .addEventListener("change", function () {
+          const preview = document.getElementById("imagePreview");
+          preview.innerHTML = "";
+          const file = this.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              const img = document.createElement("img");
+              img.src = e.target.result;
+              preview.appendChild(img);
+            };
+            reader.readAsDataURL(file);
+          }
+        });
 
       function scrollToTop() {
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -908,7 +1019,9 @@
         whale.style.setProperty("--randX", randX);
         whale.style.setProperty("--randY", randY);
         document.body.appendChild(whale);
-        setTimeout(() => { whale.remove(); }, 2000);
+        setTimeout(() => {
+          whale.remove();
+        }, 2000);
       }
 
       window.addEventListener("DOMContentLoaded", async () => {
@@ -941,10 +1054,9 @@
       });
       cloverIcon.addEventListener("click", (e) => {
         if (!isDragging) {
-          window.location.reload();
+          window.location.href = 'index.html';
         }
       });
     </script>
   </body>
 </html>
-
