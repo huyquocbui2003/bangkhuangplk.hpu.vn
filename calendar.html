@@ -333,10 +333,7 @@
         <span class="close-button" onclick="closeModal()">&times;</span>
         <h3>Thêm sự kiện</h3>
         <input type="text" id="eventTitle" placeholder="Tiêu đề sự kiện" />
-        <textarea
-          id="eventDescription"
-          placeholder="Mô tả chi tiết"
-        ></textarea>
+        <textarea id="eventDescription" placeholder="Mô tả chi tiết"></textarea>
         <input type="text" id="eventDate" placeholder="Chọn ngày" />
         <input type="text" id="eventTime" placeholder="Chọn giờ" />
         <button id="saveEventButton"><i class="fas fa-save"></i> Lưu</button>
@@ -358,7 +355,8 @@
 
       <hr style="border-color: #f48fb1; margin: 20px 0" />
       <div>
-        <i class="fas fa-user"></i><span class="label">Designed and developed by:</span>Bùi Quốc Huy
+        <i class="fas fa-user"></i
+        ><span class="label">Designed and developed by:</span>Bùi Quốc Huy
       </div>
       <div>
         <i class="fab fa-facebook"></i><span class="label">Facebook:</span>
@@ -393,7 +391,10 @@
           request.onupgradeneeded = (event) => {
             db = event.target.result;
             if (!db.objectStoreNames.contains("events")) {
-              db.createObjectStore("events", { keyPath: "id", autoIncrement: true });
+              db.createObjectStore("events", {
+                keyPath: "id",
+                autoIncrement: true,
+              });
             }
           };
 
@@ -417,7 +418,9 @@
           request.onsuccess = (event) => {
             const allEvents = event.target.result;
             if (date) {
-              const dayEvents = allEvents.filter(event => event.date === date);
+              const dayEvents = allEvents.filter(
+                (event) => event.date === date
+              );
               resolve(dayEvents);
             } else {
               resolve(allEvents);
@@ -456,7 +459,10 @@
           dayEl.className = "day current-month";
           dayEl.textContent = i;
 
-          const fullDate = `${year}-${String(month + 1).padStart(2, "0")}-${String(i).padStart(2, "0")}`;
+          const fullDate = `${year}-${String(month + 1).padStart(
+            2,
+            "0"
+          )}-${String(i).padStart(2, "0")}`;
 
           if (
             i === new Date().getDate() &&
@@ -525,7 +531,7 @@
         const titleEl = document.getElementById("viewEventsTitle");
         const eventsListEl = document.getElementById("eventsList");
 
-        const formattedDate = date.split('-').reverse().join('-');
+        const formattedDate = date.split("-").reverse().join("-");
         titleEl.textContent = `Sự kiện ngày ${formattedDate}`;
         eventsListEl.innerHTML = "";
 
@@ -544,9 +550,10 @@
             eventsListEl.appendChild(eventDetailEl);
           });
         } else {
-          eventsListEl.innerHTML = "<p>Không có sự kiện nào trong ngày này.</p>";
+          eventsListEl.innerHTML =
+            "<p>Không có sự kiện nào trong ngày này.</p>";
         }
-        
+
         const addButton = document.createElement("button");
         addButton.textContent = "Thêm sự kiện";
         addButton.style.marginTop = "15px";
@@ -561,7 +568,7 @@
           openModal(date);
         };
         eventsListEl.appendChild(addButton);
-        
+
         modal.style.display = "block";
       }
 
