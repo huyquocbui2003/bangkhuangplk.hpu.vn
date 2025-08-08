@@ -41,6 +41,7 @@
         background-color: transparent;
         border-radius: 10px;
         box-shadow: none;
+        align-items: center; /* Căn giữa các item theo chiều dọc */
       }
       .home-button,
       .drive-button,
@@ -342,7 +343,7 @@
       #clover-reload-icon:active {
         cursor: grabbing;
       }
-      
+
       /* Style for the embedded guide */
       .guide-header {
         cursor: pointer;
@@ -400,7 +401,7 @@
         pointer-events: none;
         z-index: 9999;
       }
-      
+
       /* CSS thêm mới cho icon cá voi bơi */
       #whale-icon {
         position: fixed;
@@ -412,7 +413,7 @@
         right: 50px;
         animation: whaleSwim 10s infinite alternate;
       }
-      
+
       @keyframes whaleSwim {
         0% {
           transform: translate(0, 0) rotate(0deg);
@@ -430,14 +431,37 @@
           transform: translate(0, 0) rotate(0deg);
         }
       }
+
+      /* CSS cho đồng hồ thời gian thực */
+      .clock-container {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      #realtime-clock {
+        display: inline-block;
+        background: linear-gradient(to right, #f48fb1, #ce93d8);
+        padding: 10px 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        font-family: "Courier New", monospace;
+        font-size: 1.5em;
+        color: white;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        font-weight: bold;
+      }
     </style>
   </head>
   <body>
     <div id="clover-reload-icon">🍀</div>
-    
+
     <div id="whale-icon">
-        🐋
-        <audio id="bangkhieng-audio" src="duong_dan_den_bai_hat_bang_khuang.mp3" loop></audio>
+      🐋
+      <audio
+        id="bangkhieng-audio"
+        src="duong_dan_den_bai_hat_bang_khuang.mp3"
+        loop
+      ></audio>
     </div>
 
     <div class="top-buttons-container">
@@ -472,6 +496,10 @@
       </div>
 
       <div class="container">
+        <div class="clock-container">
+          <div id="realtime-clock"></div>
+        </div>
+
         <h2 class="main-title" onclick="scrollToTop()">
           <i class="fas fa-heart"></i> BÂNG KHUÂNG PHIÊU LƯU KÝ
           <i class="fas fa-heart"></i>
@@ -520,7 +548,7 @@
       <hr style="border-color: #f48fb1; margin: 20px 0" />
       <div>
         <i class="fas fa-user"></i
-        ><span class="label">Website created by:</span>Bùi Quốc Huy
+        ><span class="label">Designed and developed by:</span>Bùi Quốc Huy
       </div>
       <div>
         <i class="fab fa-facebook"></i><span class="label">Facebook:</span>
@@ -534,7 +562,7 @@
       </div>
       <div>
         <i class="fas fa-code-branch"></i><span class="label">Version:</span>
-        0.0.2 (Cập nhật)
+        0.1.1
       </div>
     </div>
 
@@ -548,15 +576,29 @@
       whaleIcon.addEventListener("click", () => {
         if (isPlaying) {
           audio.pause();
-          whaleIcon.style.animationPlayState = 'paused';
+          whaleIcon.style.animationPlayState = "paused";
           isPlaying = false;
         } else {
           audio.play();
-          whaleIcon.style.animationPlayState = 'running';
+          whaleIcon.style.animationPlayState = "running";
           isPlaying = true;
         }
       });
       // Kết thúc script mới
+
+      // Script cho đồng hồ thời gian thực
+      function updateClock() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, "0");
+        const minutes = String(now.getMinutes()).padStart(2, "0");
+        const seconds = String(now.getSeconds()).padStart(2, "0");
+        document.getElementById(
+          "realtime-clock"
+        ).textContent = `${hours}:${minutes}:${seconds}`;
+      }
+
+      updateClock(); // Cập nhật ngay khi tải trang
+      setInterval(updateClock, 1000); // Cập nhật mỗi giây
 
       // IndexedDB Helper Functions
       const DB_NAME = "LocketHuyDB";
