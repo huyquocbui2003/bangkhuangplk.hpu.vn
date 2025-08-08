@@ -14,22 +14,27 @@
       href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
     />
     <style>
-      .main-title {
-        text-align: center;
-        color: #ff4081;
-        cursor: pointer;
+      :root {
+        --primary-color: #d81b60;
+        --secondary-color: #ff80ab;
+        --background-light: #e0f7fa;
+        --background-dark: #fce4ec;
+        --text-color: #333;
+        --card-bg: #fff;
+        --border-radius-large: 10px;
+        --border-radius-small: 6px;
+        --box-shadow-main: 0 4px 20px rgba(0, 0, 0, 0.1);
       }
 
-      .main-title i {
-        margin: 0 5px; /* Thêm khoảng cách hai bên cho icon */
-        color: #ff4081; /* Đảm bảo icon có màu hồng */
-      }
       body {
         font-family: "Segoe UI", sans-serif;
-        background: linear-gradient(135deg, #e0f7fa, #fce4ec);
+        background: linear-gradient(135deg, var(--background-light), var(--background-dark));
         margin: 0;
         padding: 0;
+        color: var(--text-color);
       }
+
+      /* Nút điều hướng đầu trang */
       .top-buttons-container {
         position: sticky;
         top: 20px;
@@ -39,33 +44,30 @@
         gap: 10px;
         padding: 10px;
         background-color: transparent;
-        border-radius: 10px;
         box-shadow: none;
-        align-items: center; /* Căn giữa các item theo chiều dọc */
+        align-items: center;
       }
-      .home-button,
-      .drive-button,
-      .calendar-button,
-      .contact-button {
+
+      .home-button, .drive-button, .calendar-button, .contact-button {
         display: flex;
         align-items: center;
-        background: linear-gradient(to right, #ff80ab, #f48fb1);
+        background: linear-gradient(to right, var(--secondary-color), #f48fb1);
         color: white;
         border: none;
         padding: 10px 15px;
-        border-radius: 5px;
+        border-radius: var(--border-radius-small);
         cursor: pointer;
         font-weight: bold;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        transition: transform 0.2s;
+        transition: transform 0.2s, box-shadow 0.2s;
         text-decoration: none;
       }
-      .home-button:hover,
-      .drive-button:hover,
-      .calendar-button:hover,
-      .contact-button:hover {
+      .home-button:hover, .drive-button:hover, .calendar-button:hover, .contact-button:hover {
         transform: scale(1.05);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
       }
+
+      /* Khung nội dung chính */
       .main-content {
         display: flex;
         justify-content: center;
@@ -74,95 +76,123 @@
         flex-wrap: wrap;
         margin-top: 60px;
       }
+
+      /* Khung giữa (Bài viết) */
       .container {
         max-width: 600px;
         flex-grow: 1;
-        background-color: #fff;
+        background-color: var(--card-bg);
         padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        border-radius: var(--border-radius-large);
+        box-shadow: var(--box-shadow-main);
       }
-      h2 {
+
+      /* Khung bên trái (Bảng đen) và bên phải (Ghi chú) */
+      .blackboard-container, .note-container {
+        width: 300px;
+        padding: 15px;
+        border-radius: var(--border-radius-large);
+        box-shadow: var(--box-shadow-main);
+        align-self: flex-start;
+      }
+      .blackboard-container {
+        background-color: #2c3e50;
+        border: 10px solid #a0522d;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+      .note-container {
+        background-color: #fffacd;
+        transform: rotate(-2deg);
+        position: relative;
+      }
+
+      /* Tiêu đề */
+      .main-title, h2, h3 {
         text-align: center;
-        color: #ff4081;
+        color: var(--primary-color);
         cursor: pointer;
       }
-      textarea,
-      input[type="text"] {
+
+      .main-title i, h2 i, h3 i {
+        margin: 0 5px;
+        color: var(--secondary-color);
+      }
+
+      /* Các trường nhập liệu */
+      textarea, input[type="text"] {
         width: 100%;
         padding: 10px;
         margin: 5px 0 10px;
         border: 1px solid #ccc;
-        border-radius: 6px;
+        border-radius: var(--border-radius-small);
         font-size: 14px;
+        box-sizing: border-box;
       }
       .flatpickr-input {
         width: calc(100% - 22px);
-        padding: 10px;
-        margin: 5px 0 10px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        font-size: 14px;
       }
-      button {
+
+      /* Nút bấm */
+      button, .button {
         padding: 8px 14px;
         margin: 6px 4px 6px 0;
         border: none;
-        border-radius: 6px;
-        background: linear-gradient(to right, #ff80ab, #f48fb1);
+        border-radius: var(--border-radius-small);
+        background: linear-gradient(to right, var(--secondary-color), #f48fb1);
         color: white;
         font-weight: bold;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        transition: all 0.3s ease;
       }
-      button:hover {
-        background: linear-gradient(to right, #d81b60, #f06292);
+      button:hover, .button:hover {
+        background: linear-gradient(to right, var(--primary-color), #f06292);
+        transform: translateY(-2px);
       }
-      button i {
+      button i, .button i {
         margin-right: 5px;
       }
+
+      /* Tải ảnh */
       .file-upload-container {
         display: block;
         width: 150px;
         margin: 10px auto 15px;
-        border: 2px dashed #ff80ab;
-        border-radius: 10px;
+        border: 2px dashed var(--secondary-color);
+        border-radius: var(--border-radius-large);
         padding: 15px;
         text-align: center;
         cursor: pointer;
         transition: background-color 0.3s ease;
       }
       .file-upload-container:hover {
-        background-color: #fce4ec;
+        background-color: var(--background-dark);
       }
       .file-upload-container i {
         font-size: 1.8em;
-        color: #ff4081;
+        color: var(--primary-color);
       }
       .file-upload-container p {
         margin: 5px 0 0;
-        color: #c2185b;
+        color: var(--primary-color);
         font-weight: bold;
         font-size: 0.9em;
       }
       input[type="file"] {
         display: none;
       }
-      .image-preview {
-        margin-top: 15px;
-        text-align: center;
-      }
       .image-preview img {
         max-width: 100%;
         height: auto;
-        border-radius: 8px;
+        border-radius: var(--border-radius-small);
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       }
+
+      /* Hiển thị trạng thái */
       .status {
-        background: #fce4ec;
+        background: var(--background-dark);
         border: 1px solid #f8bbd0;
-        padding: 12px;
-        border-radius: 10px;
+        padding: 15px;
+        border-radius: var(--border-radius-large);
         margin-bottom: 20px;
         transition: transform 0.2s ease;
       }
@@ -172,12 +202,12 @@
       .status-title {
         font-weight: bold;
         font-size: 1.2em;
-        color: #c2185b;
+        color: var(--primary-color);
       }
       .status-time {
         font-size: 0.8em;
         color: #888;
-        margin-top: 5px;
+        margin: 5px 0 10px;
       }
       .status-notes {
         margin-top: 10px;
@@ -190,49 +220,8 @@
         border-radius: 5px;
         margin: 5px 0;
       }
-      label input[type="checkbox"] {
-        margin-right: 6px;
-      }
-      .footer {
-        margin-top: 40px;
-        padding: 20px;
-        background: linear-gradient(90deg, #ffe0f0, #e0f7fa);
-        font-family: "Segoe UI", sans-serif;
-        font-size: 14px;
-        color: #444;
-        border-top: 1px solid #ddd;
-        text-align: center;
-        border-radius: 10px;
-      }
-      .footer a {
-        color: #ff4081;
-        text-decoration: none;
-        font-weight: bold;
-      }
-      .footer a:hover {
-        text-decoration: underline;
-      }
-      .footer .label {
-        color: #888;
-        font-weight: normal;
-      }
-      .footer i {
-        margin-right: 5px;
-        color: #ff4081;
-      }
-      .footer div {
-        margin: 5px 0;
-      }
-      .note-container {
-        width: 300px;
-        padding: 15px;
-        background-color: #fffacd;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        transform: rotate(-2deg);
-        position: relative;
-        align-self: flex-start;
-      }
+
+      /* Ghi chú công việc */
       .note-container::before {
         content: "";
         position: absolute;
@@ -246,11 +235,9 @@
         border-bottom-right-radius: 5px;
       }
       .note-container h3 {
-        text-align: center;
-        color: #c2185b;
-        margin-top: 10px;
-        margin-bottom: 15px;
         font-family: "Comic Sans MS", cursive, sans-serif;
+        color: var(--primary-color);
+        margin-top: 10px;
       }
       .note-list {
         list-style: none;
@@ -265,58 +252,24 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        border-left: 5px solid #ff80ab;
+        border-left: 5px solid var(--secondary-color);
       }
       .note-list li.completed {
         text-decoration: line-through;
         color: #888;
       }
-      .note-list li input[type="checkbox"] {
-        margin-right: 10px;
-      }
       .note-list li button {
         background: none;
-        border: none;
-        color: #ff4081;
-        cursor: pointer;
-        padding: 0;
+        color: var(--primary-color);
         font-size: 1.1em;
+        border: none;
       }
-      .note-container input[type="text"] {
-        width: calc(100% - 70px);
-        display: inline-block;
-        vertical-align: middle;
-      }
-      .note-container .note-button {
-        width: 60px;
-        display: inline-block;
-        vertical-align: middle;
-        margin-left: 5px;
-      }
-      .blackboard-container {
-        width: 300px;
-        background-color: #2c3e50;
-        border: 10px solid #a0522d;
-        border-radius: 12px;
-        padding: 15px;
-        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5),
-          0 5px 15px rgba(0, 0, 0, 0.3);
-        align-self: flex-start;
-      }
+
+      /* Lưu ý quan trọng (bảng đen) */
       .blackboard-container h3 {
         color: #ecf0f1;
-        text-align: center;
         font-family: "Comic Sans MS", cursive, sans-serif;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        margin-top: 0;
-      }
-      .blackboard-container .important-notes {
-        color: #ffffa0;
-        font-family: "Chalkduster", "Marker Felt", "Comic Sans MS", cursive,
-          sans-serif;
-        font-size: 1.1em;
-        line-height: 1.6;
-        white-space: pre-wrap;
       }
       .blackboard-container textarea {
         background: rgba(255, 255, 255, 0.1);
@@ -324,87 +277,45 @@
         color: #ffffa0;
         resize: none;
         height: 150px;
-        font-family: "Chalkduster", "Marker Felt", "Comic Sans MS", cursive,
-          sans-serif;
+        font-family: "Chalkduster", "Marker Felt", "Comic Sans MS", cursive, sans-serif;
         font-size: 1.1em;
       }
       .blackboard-container button {
-        background: linear-gradient(to right, #ffb74d, #ff80ab);
-        color: #fff;
+        background: linear-gradient(to right, #ffb74d, var(--secondary-color));
       }
+
+      /* Đồng hồ thời gian thực */
+      .clock-container {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      #realtime-clock {
+        display: inline-block;
+        background: linear-gradient(to right, #f48fb1, #ce93d8);
+        padding: 10px 20px;
+        border-radius: var(--border-radius-large);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        font-family: "Courier New", monospace;
+        font-size: 1.5em;
+        color: white;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        font-weight: bold;
+      }
+
+      /* Icon cá voi và cỏ ba lá */
       #clover-reload-icon {
         position: fixed;
         font-size: 2em;
         cursor: grab;
         z-index: 1001;
-        user-select: none;
-        transition: transform 0.2s ease-in-out;
         bottom: 20px;
         right: 20px;
+        user-select: none;
+        transition: transform 0.2s ease-in-out;
       }
       #clover-reload-icon:active {
         cursor: grabbing;
       }
-
-      /* Style for the embedded guide */
-      .guide-header {
-        cursor: pointer;
-        padding: 10px;
-        border-radius: 8px;
-        background-color: #ff80ab;
-        color: white;
-        text-align: center;
-        font-weight: bold;
-        transition: background-color 0.3s;
-        margin-bottom: 10px; /* Thêm khoảng cách với phần còn lại của footer */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        text-decoration: none; /* Bỏ gạch chân cho link */
-      }
-      .guide-header:hover {
-        background-color: #d81b60;
-      }
-
-      /* CSS cho hiệu ứng */
-      @keyframes zoomInOut {
-        0% {
-          transform: scale(1);
-        }
-        50% {
-          transform: scale(1.05);
-        }
-        100% {
-          transform: scale(1);
-        }
-      }
-
-      @keyframes whaleFly {
-        0% {
-          transform: translate(0, 0) scale(0);
-          opacity: 1;
-        }
-        100% {
-          transform: translate(
-              calc(var(--randX) * 1px),
-              calc(var(--randY) * 1px)
-            )
-            scale(1);
-          opacity: 0;
-        }
-      }
-
-      .animate-whale {
-        position: fixed;
-        font-size: 3em;
-        color: #40c4ff;
-        animation: whaleFly 2s ease-out forwards;
-        pointer-events: none;
-        z-index: 9999;
-      }
-
-      /* CSS thêm mới cho icon cá voi bơi */
       #whale-icon {
         position: fixed;
         font-size: 3em;
@@ -415,51 +326,92 @@
         right: 50px;
         animation: whaleSwim 10s infinite alternate;
       }
-
       @keyframes whaleSwim {
-        0% {
-          transform: translate(0, 0) rotate(0deg);
-        }
-        25% {
-          transform: translate(-100px, -50px) rotate(-10deg);
-        }
-        50% {
-          transform: translate(-200px, 0) rotate(0deg);
-        }
-        75% {
-          transform: translate(-100px, 50px) rotate(10deg);
-        }
-        100% {
-          transform: translate(0, 0) rotate(0deg);
-        }
+        0% { transform: translate(0, 0) rotate(0deg); }
+        25% { transform: translate(-100px, -50px) rotate(-10deg); }
+        50% { transform: translate(-200px, 0) rotate(0deg); }
+        75% { transform: translate(-100px, 50px) rotate(10deg); }
+        100% { transform: translate(0, 0) rotate(0deg); }
+      }
+      .animate-whale {
+        position: fixed;
+        font-size: 3em;
+        color: #40c4ff;
+        animation: whaleFly 2s ease-out forwards;
+        pointer-events: none;
+        z-index: 9999;
+      }
+      @keyframes whaleFly {
+        0% { transform: scale(0); opacity: 1; }
+        100% { transform: scale(1.5) translate(var(--randX), var(--randY)); opacity: 0; }
       }
 
-      /* CSS cho đồng hồ thời gian thực */
-      .clock-container {
+      /* Footer */
+      .footer {
+        margin-top: 40px;
+        padding: 20px;
+        background: linear-gradient(90deg, #ffe0f0, #e0f7fa);
+        font-size: 14px;
+        color: #444;
+        border-top: 1px solid #ddd;
         text-align: center;
-        margin-bottom: 20px;
+        border-radius: var(--border-radius-large);
       }
-
-      #realtime-clock {
-        display: inline-block;
-        background: linear-gradient(to right, #f48fb1, #ce93d8);
-        padding: 10px 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        font-family: "Courier New", monospace;
-        font-size: 1.5em;
-        color: white;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+      .footer a {
+        color: var(--primary-color);
+        text-decoration: none;
         font-weight: bold;
       }
+      .footer a:hover {
+        text-decoration: underline;
+      }
+      .footer .label {
+        color: #888;
+        font-weight: normal;
+      }
+      .footer i {
+        margin-right: 5px;
+        color: var(--primary-color);
+      }
 
-      /* CSS cho pop-up hướng dẫn cài đặt ứng dụng (đã được làm nhỏ hơn) */
+      /* Đường dẫn Hướng dẫn sử dụng */
+      .guide-header {
+        cursor: pointer;
+        padding: 12px 20px;
+        border-radius: 25px;
+        background: linear-gradient(135deg, #ff80ab, #f48fb1);
+        color: white;
+        text-align: center;
+        font-weight: bold;
+        font-size: 1.1em;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        text-decoration: none;
+        margin-bottom: 20px;
+      }
+      .guide-header:hover {
+        background: linear-gradient(135deg, var(--primary-color), #f06292);
+        transform: scale(1.05) translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+      }
+      .guide-header i {
+        font-size: 1.3em;
+        color: white;
+      }
+
+      /* Pop-up cài đặt ứng dụng */
       .install-app-popup {
         position: fixed;
         bottom: 20px;
         left: 20px;
-        background: rgba(255, 255, 255, 0.7); /* Nền mờ */
-        padding: 10px; /* Giảm padding */
+        background: rgba(255, 255, 255, 0.7);
+        padding: 10px;
         border-radius: 10px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         z-index: 1003;
@@ -467,7 +419,7 @@
         align-items: center;
         cursor: pointer;
         transition: transform 0.3s ease;
-        max-width: 200px; /* Giảm chiều rộng */
+        max-width: 200px;
       }
       .install-app-popup:hover {
         transform: scale(1.05);
@@ -475,22 +427,22 @@
       .install-app-popup a {
         display: flex;
         align-items: center;
-        gap: 8px; /* Giảm khoảng cách giữa icon và chữ */
+        gap: 8px;
         text-decoration: none;
-        color: #c2185b;
+        color: var(--primary-color);
       }
       .install-app-popup .icon {
-        font-size: 1.5em; /* Giảm kích thước icon */
-        color: #ff4081;
+        font-size: 1.5em;
+        color: var(--secondary-color);
       }
       .install-app-popup .text h3 {
         margin: 0;
-        font-size: 0.9em; /* Giảm kích thước tiêu đề */
-        color: #ff4081;
+        font-size: 0.9em;
+        color: var(--primary-color);
       }
       .install-app-popup .text p {
         margin: 0;
-        font-size: 0.7em; /* Giảm kích thước mô tả */
+        font-size: 0.7em;
         color: #666;
       }
     </style>
@@ -566,7 +518,11 @@
 
         <label><input type="checkbox" id="completed" /> Hoàn thành</label>
         <br />
-        <input type="text" id="filterDate" placeholder="Lọc theo ngày..." />
+        <input
+          type="text"
+          id="filterDate"
+          placeholder="Lọc theo ngày YYYY-MM-DD..."
+        />
         <br />
         <button onclick="addStatus()">
           <i class="fas fa-plus-circle"></i> Đăng
@@ -603,8 +559,7 @@
         >
       </div>
       <div>
-        <i class="fas fa-phone"></i><span class="label">Phone:</span>
-        0905640544
+        <i class="fas fa-phone"></i><span class="label">Phone:</span> 0905640544
       </div>
       <div>
         <i class="fas fa-code-branch"></i><span class="label">Version:</span>
@@ -612,7 +567,6 @@
       </div>
     </div>
 
-    <!-- Pop-up hướng dẫn cài đặt ứng dụng -->
     <div
       class="install-app-popup"
       onclick="window.location.href='huong_dan_cai_dat_ung_dung.html'"
@@ -630,7 +584,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
-      // Thêm script mới để xử lý icon cá voi và âm thanh
+      // Script cho các chức năng tương tác và lưu trữ dữ liệu
+      
+      // Xử lý icon cá voi và âm thanh
       const whaleIcon = document.getElementById("whale-icon");
       const audio = document.getElementById("bangkhieng-audio");
       let isPlaying = false;
@@ -646,7 +602,6 @@
           isPlaying = true;
         }
       });
-      // Kết thúc script mới
 
       // Script cho đồng hồ thời gian thực
       function updateClock() {
@@ -654,13 +609,10 @@
         const hours = String(now.getHours()).padStart(2, "0");
         const minutes = String(now.getMinutes()).padStart(2, "0");
         const seconds = String(now.getSeconds()).padStart(2, "0");
-        document.getElementById(
-          "realtime-clock"
-        ).textContent = `${hours}:${minutes}:${seconds}`;
+        document.getElementById("realtime-clock").textContent = `${hours}:${minutes}:${seconds}`;
       }
-
-      updateClock(); // Cập nhật ngay khi tải trang
-      setInterval(updateClock, 1000); // Cập nhật mỗi giây
+      updateClock();
+      setInterval(updateClock, 1000);
 
       // IndexedDB Helper Functions
       const DB_NAME = "LocketHuyDB";
@@ -670,8 +622,7 @@
       function openDB() {
         return new Promise((resolve, reject) => {
           const request = indexedDB.open(DB_NAME, DB_VERSION);
-          request.onerror = (event) =>
-            reject("IndexedDB error: " + event.target.errorCode);
+          request.onerror = (event) => reject("IndexedDB error: " + event.target.errorCode);
           request.onsuccess = (event) => {
             db = event.target.result;
             resolve(db);
@@ -679,22 +630,13 @@
           request.onupgradeneeded = (event) => {
             const db = event.target.result;
             if (!db.objectStoreNames.contains("statuses")) {
-              db.createObjectStore("statuses", {
-                keyPath: "id",
-                autoIncrement: true,
-              });
+              db.createObjectStore("statuses", { keyPath: "id", autoIncrement: true });
             }
             if (!db.objectStoreNames.contains("noteItems")) {
-              db.createObjectStore("noteItems", {
-                keyPath: "id",
-                autoIncrement: true,
-              });
+              db.createObjectStore("noteItems", { keyPath: "id", autoIncrement: true });
             }
             if (!db.objectStoreNames.contains("importantNotes")) {
-              db.createObjectStore("importantNotes", {
-                keyPath: "id",
-                autoIncrement: true,
-              });
+              db.createObjectStore("importantNotes", { keyPath: "id", autoIncrement: true });
             }
           };
         });
@@ -745,13 +687,7 @@
       }
 
       const statusList = document.getElementById("statusList");
-
-      flatpickr("#filterDate", {
-        dateFormat: "Y-m-d",
-        onChange: function (selectedDates, dateStr, instance) {
-          renderStatuses();
-        },
-      });
+      flatpickr("#filterDate", { dateFormat: "Y-m-d" });
 
       function formatTimeAgo(date) {
         const seconds = Math.floor((new Date() - date) / 1000);
@@ -770,32 +706,20 @@
         const completed = document.getElementById("completed").checked;
         const imageFile = document.getElementById("imageUpload").files[0];
         const timestamp = new Date();
-
         if (title === "" && content === "" && !imageFile) return;
 
-        const status = {
-          title,
-          content,
-          completed,
-          timestamp,
-          image: null,
-          notes: [],
-          history: [],
-        };
+        const status = { title, content, completed, timestamp, image: null, notes: [], history: [] };
 
         const reader = new FileReader();
         reader.onload = async function () {
           status.image = imageFile ? reader.result : null;
           await saveToDB("statuses", status);
           renderStatuses();
-
-          // Kích hoạt hiệu ứng sau khi đăng bài
-          const container = document.querySelector(".container");
-          container.style.animation = "zoomInOut 0.5s ease";
-          setTimeout(() => {
-            container.style.animation = "";
-          }, 500);
-
+          document.getElementById("title").value = "";
+          document.getElementById("content").value = "";
+          document.getElementById("completed").checked = false;
+          document.getElementById("imageUpload").value = "";
+          document.getElementById("imagePreview").innerHTML = "";
           for (let i = 0; i < 6; i++) {
             createWhaleEffect();
           }
@@ -806,24 +730,10 @@
         } else {
           await saveToDB("statuses", status);
           renderStatuses();
-
-          // Kích hoạt hiệu ứng sau khi đăng bài
-          const container = document.querySelector(".container");
-          container.style.animation = "zoomInOut 0.5s ease";
-          setTimeout(() => {
-            container.style.animation = "";
-          }, 500);
-
           for (let i = 0; i < 6; i++) {
             createWhaleEffect();
           }
         }
-
-        document.getElementById("title").value = "";
-        document.getElementById("content").value = "";
-        document.getElementById("completed").checked = false;
-        document.getElementById("imageUpload").value = "";
-        document.getElementById("imagePreview").innerHTML = "";
       }
 
       async function renderStatuses() {
@@ -833,74 +743,24 @@
         const filterDate = document.getElementById("filterDate").value;
 
         statuses.forEach((status) => {
-          const dateMatch =
-            !filterDate ||
-            new Date(status.timestamp).toISOString().slice(0, 10) ===
-              filterDate;
+          const dateMatch = !filterDate || new Date(status.timestamp).toISOString().slice(0, 10) === filterDate;
           if (!dateMatch) return;
           const div = document.createElement("div");
           div.className = "status";
           div.innerHTML = `
           <div class="status-title">${status.title}</div>
           <div>
-            ${status.content
-              .split("\n")
-              .map(
-                (line) => `
-              <div><label><input type="checkbox" ${
-                status.completed ? "checked" : ""
-              }/> ${line}</label></div>
-            `
-              )
-              .join("")}
+            ${status.content.split("\n").map((line) => `<div><label><input type="checkbox" ${status.completed ? "checked" : ""}/> ${line}</label></div>`).join("")}
           </div>
-          ${
-            status.image
-              ? `<img src="${status.image}" style="max-width:100%;margin-top:10px;border-radius:8px;" />`
-              : ""
-          }
-          <div>
-            <label><input type="checkbox" onchange="toggleCompleted(${
-              status.id
-            })" ${
-            status.completed ? "checked" : ""
-          } /> <span>Hoàn thành tất cả</span></label>
-          </div>
-          <div class="status-time">
-            ${formatTimeAgo(new Date(status.timestamp))} -
-            ${new Date(status.timestamp).toLocaleDateString("vi-VN", {
-              day: "2-digit",
-              month: "2-digit",
-              year: "numeric",
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
-          </div>
-          <button onclick="editStatus(${
-            status.id
-          })"><i class="fas fa-edit"></i> Sửa</button>
-          <button onclick="deleteStatus(${
-            status.id
-          })"><i class="fas fa-trash-alt"></i> Xóa</button>
-          <button onclick="viewHistory(${
-            status.id
-          })"><i class="fas fa-history"></i> Nhật ký chỉnh sửa</button>
-          <div>
-            <input type="text" id="noteInput-${
-              status.id
-            }" placeholder="Thêm ghi chú..." />
-            <button onclick="addNote(${
-              status.id
-            })"><i class="fas fa-paper-plane"></i> Gửi</button>
-          </div>
-          <div class="status-notes">
-            ${status.notes
-              .map((note) => `<div class="note">${note}</div>`)
-              .join("")}
-          </div>
-          <div id="history-${
-            status.id
-          }" style="display:none; font-size: 0.85em; margin-top: 8px;"></div>
+          ${status.image ? `<img src="${status.image}" style="max-width:100%;margin-top:10px;border-radius:8px;" />` : ""}
+          <div><label><input type="checkbox" onchange="toggleCompleted(${status.id})" ${status.completed ? "checked" : ""} /> <span>Hoàn thành tất cả</span></label></div>
+          <div class="status-time">${formatTimeAgo(new Date(status.timestamp))} - ${new Date(status.timestamp).toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" })}</div>
+          <button onclick="editStatus(${status.id})"><i class="fas fa-edit"></i> Sửa</button>
+          <button onclick="deleteStatus(${status.id})"><i class="fas fa-trash-alt"></i> Xóa</button>
+          <button onclick="viewHistory(${status.id})"><i class="fas fa-history"></i> Nhật ký chỉnh sửa</button>
+          <div><input type="text" id="noteInput-${status.id}" placeholder="Thêm ghi chú..." /><button onclick="addNote(${status.id})"><i class="fas fa-paper-plane"></i> Gửi</button></div>
+          <div class="status-notes">${status.notes.map((note) => `<div class="note">${note}</div>`).join("")}</div>
+          <div id="history-${status.id}" style="display:none; font-size: 0.85em; margin-top: 8px;"></div>
         `;
           statusList.appendChild(div);
         });
@@ -932,22 +792,16 @@
         if (!status || !status.history || status.history.length === 0) {
           container.innerHTML = "<i>Không có chỉnh sửa nào.</i>";
         } else {
-          container.innerHTML = status.history
-            .map(
-              (h) => `
+          container.innerHTML = status.history.map((h) => `
           <div style="margin-bottom:6px;">
             <strong>${new Date(h.editedAt).toLocaleString()}</strong><br/>
             <div>Tiêu đề cũ: ${h.oldTitle}</div>
             <div>Tiêu đề mới: ${h.newTitle}</div>
             <div>Nội dung cũ: ${h.oldContent.replace(/\n/g, "<br/>")}</div>
             <div>Nội dung mới: ${h.newContent.replace(/\n/g, "<br/>")}</div>
-          </div>
-        `
-            )
-            .join("");
+          </div>`).join("");
         }
-        container.style.display =
-          container.style.display === "none" ? "block" : "none";
+        container.style.display = container.style.display === "none" ? "block" : "none";
       }
 
       async function addNote(id) {
@@ -972,16 +826,8 @@
           const li = document.createElement("li");
           li.className = item.completed ? "completed" : "";
           li.innerHTML = `
-            <div>
-              <input type="checkbox" onchange="toggleNoteCompleted(${
-                item.id
-              })" ${item.completed ? "checked" : ""} />
-              <span>${item.text}</span>
-            </div>
-            <button onclick="deleteNoteItem(${
-              item.id
-            })"><i class="fas fa-times-circle"></i></button>
-          `;
+            <div><input type="checkbox" onchange="toggleNoteCompleted(${item.id})" ${item.completed ? "checked" : ""} /><span>${item.text}</span></div>
+            <button onclick="deleteNoteItem(${item.id})"><i class="fas fa-times-circle"></i></button>`;
           noteList.appendChild(li);
         });
       }
@@ -1030,53 +876,39 @@
         await deleteFromDB("importantNotes", 1);
       }
 
-      document
-        .getElementById("imageUpload")
-        .addEventListener("change", function () {
-          const preview = document.getElementById("imagePreview");
-          preview.innerHTML = "";
-          const file = this.files[0];
-          if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-              const img = document.createElement("img");
-              img.src = e.target.result;
-              preview.appendChild(img);
-            };
-            reader.readAsDataURL(file);
-          }
-        });
+      document.getElementById("imageUpload").addEventListener("change", function () {
+        const preview = document.getElementById("imagePreview");
+        preview.innerHTML = "";
+        const file = this.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const img = document.createElement("img");
+            img.src = e.target.result;
+            preview.appendChild(img);
+          };
+          reader.readAsDataURL(file);
+        }
+      });
 
       function scrollToTop() {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
       function createWhaleEffect() {
         const whale = document.createElement("div");
         whale.className = "animate-whale";
         whale.innerHTML = "🐳";
-
-        // Vị trí xuất phát ngẫu nhiên
         const startX = Math.random() * window.innerWidth;
         const startY = Math.random() * window.innerHeight;
         whale.style.left = `${startX}px`;
         whale.style.top = `${startY}px`;
-
-        // Hướng di chuyển ngẫu nhiên
         const randX = (Math.random() - 0.5) * 500;
         const randY = (Math.random() - 0.5) * 500;
         whale.style.setProperty("--randX", randX);
         whale.style.setProperty("--randY", randY);
-
         document.body.appendChild(whale);
-
-        // Xóa icon sau khi hoạt ảnh kết thúc
-        setTimeout(() => {
-          whale.remove();
-        }, 2000);
+        setTimeout(() => { whale.remove(); }, 2000);
       }
 
       window.addEventListener("DOMContentLoaded", async () => {
@@ -1086,34 +918,30 @@
         renderNoteItems();
         loadImportantNotes();
       });
-    </script>
-    <script>
+
+      // Script cho cỏ ba lá
       const cloverIcon = document.getElementById("clover-reload-icon");
       let isDragging = false;
       let offsetX, offsetY;
-
       cloverIcon.addEventListener("mousedown", (e) => {
         isDragging = true;
         cloverIcon.style.cursor = "grabbing";
         offsetX = e.clientX - cloverIcon.getBoundingClientRect().left;
         offsetY = e.clientY - cloverIcon.getBoundingClientRect().top;
       });
-
       document.addEventListener("mousemove", (e) => {
         if (!isDragging) return;
         cloverIcon.style.left = e.clientX - offsetX + "px";
         cloverIcon.style.top = e.clientY - offsetY + "px";
       });
-
       document.addEventListener("mouseup", () => {
         if (!isDragging) return;
         isDragging = false;
         cloverIcon.style.cursor = "grab";
       });
-
       cloverIcon.addEventListener("click", (e) => {
         if (!isDragging) {
-          window.location.href = "index.html";
+          window.location.reload();
         }
       });
     </script>
