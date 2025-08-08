@@ -10,12 +10,12 @@
     />
     <style>
       body {
-        font-family: "Segoe UI", sans-serif;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         background: linear-gradient(135deg, #e0f7fa, #fce4ec);
         margin: 0;
         padding: 0;
         line-height: 1.6;
-        color: #444;
+        color: #333;
       }
       .top-buttons-container {
         position: sticky;
@@ -29,16 +29,10 @@
         border-radius: 10px;
         box-shadow: none;
       }
-      .home-button,
-      .drive-button,
-      .calendar-button {
+      .top-buttons-container a {
         display: flex;
         align-items: center;
-        background: linear-gradient(
-          to right,
-          #ff80ab,
-          #f48fb1
-        );
+        background: linear-gradient(to right, #ff80ab, #f48fb1);
         color: white;
         border: none;
         padding: 10px 15px;
@@ -46,48 +40,98 @@
         cursor: pointer;
         font-weight: bold;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        transition: transform 0.2s;
+        transition: transform 0.2s, box-shadow 0.2s;
         text-decoration: none;
       }
-      .home-button:hover,
-      .drive-button:hover,
-      .calendar-button:hover {
+      .top-buttons-container a:hover {
         transform: scale(1.05);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
       }
       .container {
-        max-width: 800px;
-        margin: 80px auto 20px;
-        padding: 20px;
+        max-width: 900px;
+        margin: 80px auto 40px;
+        padding: 30px;
         background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
       }
       h1 {
         text-align: center;
-        color: #ff4081;
-        margin-bottom: 20px;
+        color: #d81b60;
+        font-size: 2.5em;
+        margin-bottom: 15px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+      }
+      .slogan {
+        text-align: center;
+        color: #888;
+        font-style: italic;
+        margin-bottom: 30px;
+        font-size: 1.1em;
       }
       h2 {
         color: #c2185b;
-        border-bottom: 2px solid #fce4ec;
-        padding-bottom: 5px;
-        margin-top: 30px;
+        border-bottom: 2px solid #f8bbd0;
+        padding-bottom: 8px;
+        margin-top: 40px;
+        font-size: 1.8em;
       }
-      ul {
-        list-style-type: disc;
-        padding-left: 20px;
+      h2 i {
+        margin-right: 10px;
       }
-      li {
-        margin-bottom: 10px;
+      .section-description {
+        margin-bottom: 20px;
+        color: #555;
       }
-      strong {
-        color: #c2185b;
+      .feature-list {
+        list-style-type: none;
+        padding: 0;
+      }
+      .feature-list li {
+        background-color: #fce4ec;
+        border-left: 5px solid #ff4081;
+        padding: 15px;
+        margin-bottom: 12px;
+        border-radius: 8px;
+        transition: background-color 0.3s;
+        display: flex;
+        align-items: flex-start;
+      }
+      .feature-list li:hover {
+        background-color: #f8bbd0;
+      }
+      .feature-list li .icon {
+        font-size: 1.5em;
+        color: #ff4081;
+        margin-right: 15px;
+        min-width: 25px;
+        text-align: center;
+      }
+      .feature-list li strong {
+        color: #d81b60;
+        font-size: 1.1em;
+        display: block;
+        margin-bottom: 5px;
+      }
+      .feature-list li p {
+        margin: 0;
+        color: #444;
       }
       code {
-        background-color: #fce4ec;
-        padding: 2px 5px;
-        border-radius: 3px;
-        font-family: monospace;
+        background-color: #ffebee;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: "Courier New", Courier, monospace;
+        color: #d81b60;
+        font-weight: bold;
+      }
+      .footer {
+        text-align: center;
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+        color: #888;
+        font-size: 0.9em;
       }
     </style>
   </head>
@@ -106,110 +150,136 @@
       <a class="calendar-button" href="calendar.html">
         <i class="fas fa-calendar-alt"></i> Lịch
       </a>
+      <a class="contact-button" href="contact.html">
+        <i class="fas fa-envelope"></i> Liên hệ
+      </a>
     </div>
 
     <div class="container">
-      <h1>Hướng Dẫn Sử Dụng Giao Diện Web</h1>
-      <p>
-        Giao diện web này được thiết kế để bạn quản lý công việc và nhật ký học
-        tập một cách dễ dàng. Dưới đây là các phần chính và cách sử dụng chúng:
+      <h1>Cẩm Nang Sử Dụng</h1>
+      <p class="slogan">
+        Chào mừng bạn đến với công cụ quản lý thời gian học tập do BangKhuang187
+        phát triển. Cẩm nang này được thiết kế để giúp bạn nhanh chóng làm quen
+        và tận dụng tối đa các tính năng của website.
       </p>
 
-      <h2>1. Thanh điều hướng</h2>
-      <p>Thanh điều hướng ở góc trên bên trái màn hình bao gồm ba nút chính:</p>
-      <ul>
-        <li>
-          <strong>Home:</strong> Quay lại trang chính (<code>giaodien.html</code>).
-        </li>
-        <li>
-          <strong>Lưu trữ:</strong> Mở Google Drive để lưu trữ tài liệu.
-        </li>
-        <li>
-          <strong>Lịch:</strong> Chuyển đến trang lịch (<code>calendar.html</code>)
-          để theo dõi sự kiện.
-        </li>
-      </ul>
-
-      <h2>2. Nhật ký học tập</h2>
-      <p>
-        Khu vực trung tâm để bạn đăng các bài viết nhật ký hoặc công việc cần
-        làm.
+      <h2><i class="fas fa-compass"></i> Thanh Điều Hướng Cơ Bản</h2>
+      <p class="section-description">
+        Thanh điều hướng ở góc trên bên trái giúp bạn di chuyển giữa các trang
+        chức năng một cách nhanh chóng.
       </p>
-      <ul>
+      <ul class="feature-list">
         <li>
-          <strong>Tiêu đề bài viết:</strong> Nhập tiêu đề cho bài viết của bạn.
+          <span class="icon"><i class="fas fa-home"></i></span>
+          <div>
+            <strong>Trang chủ:</strong> Nhấn để trở về trang chính
+            (<code>giaodien.html</code>) với các công cụ chính.
+          </div>
         </li>
         <li>
-          <strong>Nội dung bài viết:</strong> Viết nội dung chi tiết.
+          <span class="icon"><i class="fas fa-folder"></i></span>
+          <div>
+            <strong>Lưu trữ:</strong> Mở Google Drive để truy cập và quản lý tài
+            liệu liên quan.
+          </div>
         </li>
         <li>
-          <strong>Tải ảnh lên:</strong> Tải lên hình ảnh liên quan.
+          <span class="icon"><i class="fas fa-calendar-alt"></i></span>
+          <div>
+            <strong>Lịch:</strong> Chuyển đến trang lịch
+            (<code>calendar.html</code>) để lên kế hoạch và theo dõi các sự kiện
+            quan trọng.
+          </div>
         </li>
         <li>
-          <strong>Hoàn thành:</strong> Đánh dấu công việc đã hoàn thành.
+          <span class="icon"><i class="fas fa-envelope"></i></span>
+          <div>
+            <strong>Liên hệ:</strong> Mở trang liên hệ
+            (<code>contact.html</code>) để gửi phản hồi hoặc yêu cầu hỗ trợ.
+          </div>
         </li>
-        <li>
-          <strong>Lọc theo ngày:</strong> Nhập ngày (<code>YYYY-MM-DD</code>) để
-          xem các bài viết cụ thể.
-        </li>
-        <li><strong>Đăng:</strong> Đăng bài viết mới.</li>
       </ul>
 
-      <h2>3. Danh sách trạng thái</h2>
-      <p>Mỗi bài viết sau khi đăng sẽ có các tùy chọn:</p>
-      <ul>
-        <li>
-          <strong>Hoàn thành tất cả:</strong> Đánh dấu tất cả công việc trong
-          bài viết là đã hoàn thành.
-        </li>
-        <li><strong>Sửa:</strong> Chỉnh sửa nội dung bài viết.</li>
-        <li><strong>Xóa:</strong> Xóa bài viết.</li>
-        <li>
-          <strong>Nhật ký chỉnh sửa:</strong> Xem lịch sử các lần chỉnh sửa.
-        </li>
-        <li><strong>Thêm ghi chú:</strong> Thêm ghi chú vào bài viết.</li>
-      </ul>
-
-      <h2>4. Ghi chú công việc</h2>
-      <p>
-        Phần này giúp bạn tạo và quản lý danh sách công việc đơn giản ở bên
-        phải màn hình.
+      <h2><i class="fas fa-book-open"></i> Quản Lý Nhật Ký & Công Việc</h2>
+      <p class="section-description">
+        Đây là trái tim của ứng dụng, nơi bạn có thể ghi lại nhật ký, theo dõi
+        công việc và lưu trữ thông tin.
       </p>
-      <ul>
+      <ul class="feature-list">
         <li>
-          <strong>Thêm công việc mới:</strong> Nhập tên và nhấn "Thêm".
+          <span class="icon"><i class="fas fa-pen-nib"></i></span>
+          <div>
+            <strong>Đăng bài viết:</strong> Điền vào các trường "Tiêu đề" và
+            "Nội dung", sau đó nhấn "Đăng". Bạn có thể đính kèm hình ảnh và đánh
+            dấu hoàn thành ngay khi đăng.
+          </div>
         </li>
         <li>
-          <strong>Tích vào ô vuông:</strong> Đánh dấu công việc đã hoàn thành.
+          <span class="icon"><i class="fas fa-search"></i></span>
+          <div>
+            <strong>Lọc theo ngày:</strong> Sử dụng trường "Lọc theo ngày..." để
+            tìm kiếm các bài viết theo định dạng <code>YYYY-MM-DD</code>.
+          </div>
         </li>
-        <li><strong>Xóa:</strong> Xóa một công việc.</li>
+        <li>
+          <span class="icon"><i class="fas fa-edit"></i></span>
+          <div>
+            <strong>Thao tác:</strong> Mỗi bài viết có các nút chức năng để
+            "Sửa", "Xóa", xem "Nhật ký chỉnh sửa" và thêm "Ghi chú".
+          </div>
+        </li>
       </ul>
 
-      <h2>5. Lưu ý quan trọng</h2>
-      <p>
-        Bảng đen ảo ở góc trên bên trái để bạn ghi lại những điều quan trọng.
+      <h2><i class="fas fa-tasks"></i> Công Cụ Hỗ Trợ Nhanh</h2>
+      <p class="section-description">
+        Các công cụ nhỏ gọn này giúp bạn quản lý các tác vụ ngắn hạn và ghi nhớ
+        tức thì.
       </p>
-      <ul>
+      <ul class="feature-list">
         <li>
-          <strong>Nhập lưu ý:</strong> Viết lưu ý vào ô văn bản.
+          <span class="icon"><i class="fas fa-sticky-note"></i></span>
+          <div>
+            <strong>Ghi chú công việc:</strong> Tạo danh sách các công việc đơn
+            giản, tích vào ô vuông khi hoàn thành và xóa đi khi không cần nữa.
+          </div>
         </li>
         <li>
-          <strong>Lưu:</strong> Lưu nội dung (sẽ được giữ lại khi tải lại
-          trang).
-        </li>
-        <li>
-          <strong>Xóa:</strong> Xóa toàn bộ nội dung đã lưu.
+          <span class="icon"><i class="fas fa-exclamation-triangle"></i></span>
+          <div>
+            <strong>Lưu ý quan trọng:</strong> Sử dụng bảng đen để ghi lại các
+            lưu ý cần thiết. Nội dung sẽ được lưu tự động khi bạn nhấn "Lưu".
+          </div>
         </li>
       </ul>
 
-      <h2>6. Biểu tượng Cỏ ba lá (🍀)</h2>
-      <p>Biểu tượng ở góc dưới bên phải màn hình:</p>
-      <ul>
+      <h2><i class="fas fa-tools"></i> Các Tính Năng Bổ Sung</h2>
+      <p class="section-description">
+        Một số biểu tượng ẩn chứa những tính năng thú vị, giúp trải nghiệm của
+        bạn trở nên độc đáo hơn.
+      </p>
+      <ul class="feature-list">
         <li>
-          <strong>Kéo:</strong> Di chuyển biểu tượng đến vị trí bất kỳ.
+          <div>
+            <strong>Cỏ ba lá (🍀):</strong> Di chuyển biểu tượng này bằng cách
+            kéo. Nhấn vào nó để tải lại trang về trạng thái ban đầu.
+          </div>
         </li>
-        <li><strong>Nhấn:</strong> Tải lại trang về mặc định.</li>
+        <li>
+          <div>
+            <strong>Cá voi (🐋):</strong> Biểu tượng này có thể phát nhạc. Nhấn
+            để bật/tắt và tận hưởng âm nhạc nhẹ nhàng.
+          </div>
+        </li>
       </ul>
+
+      <div class="footer">
+        Dự án này bắt đầu được nghiên cứu từ ngày 17/7/2025 và chính thức hoàn
+        thành vào ngày 17/8/2025. Website được thiết kế như một công cụ đắc lực
+        để hỗ trợ bạn trong việc quản lý thời gian học tập, cập nhật tiến độ và
+        theo dõi các mục tiêu đã đề ra. BangKhuang187 xin chân thành cảm ơn sự
+        giúp sức của Gemini 2.5 và ChatGPT đã đồng hành trong quá trình thực
+        hiện.
+      </div>
     </div>
   </body>
 </html>
