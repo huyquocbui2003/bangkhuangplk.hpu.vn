@@ -29,10 +29,11 @@
       }
       .home-button,
       .drive-button,
-      .calendar-button {
+      .calendar-button,
+      .contact-button {
         display: flex;
         align-items: center;
-        background: linear-gradient(to right, #ff4081, #ff80ab);
+        background: linear-gradient(to right, #ff80ab, #f48fb1);
         color: white;
         border: none;
         padding: 10px 15px;
@@ -45,7 +46,8 @@
       }
       .home-button:hover,
       .drive-button:hover,
-      .calendar-button:hover {
+      .calendar-button:hover,
+      .contact-button:hover {
         transform: scale(1.05);
       }
       .calendar-container {
@@ -183,6 +185,25 @@
       .footer div {
         margin: 5px 0;
       }
+      .guide-header {
+        cursor: pointer;
+        padding: 10px;
+        border-radius: 8px;
+        background-color: #ff80ab;
+        color: white;
+        text-align: center;
+        font-weight: bold;
+        transition: background-color 0.3s;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        text-decoration: none;
+      }
+      .guide-header:hover {
+        background-color: #d81b60;
+      }
 
       /* Modal */
       .modal {
@@ -278,10 +299,13 @@
         href="https://drive.google.com/drive/folders/1cR4KwCDcmGDenk9qNfdYm23x5a2c-t3n?usp=sharing"
         target="_blank"
       >
-        <i class="fas fa-folder"></i> Drive
+        <i class="fas fa-folder"></i> Lưu trữ
       </a>
       <a class="calendar-button" href="calendar.html">
         <i class="fas fa-calendar-alt"></i> Lịch
+      </a>
+      <a class="contact-button" href="contact.html">
+        <i class="fas fa-envelope"></i> Liên hệ
       </a>
     </div>
 
@@ -324,6 +348,31 @@
         <span class="close-button" onclick="closeViewModal()">&times;</span>
         <h3 id="viewEventsTitle">Sự kiện ngày ...</h3>
         <div id="eventsList"></div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <a href="huong_dan_su_dung.html" class="guide-header">
+        <i class="fas fa-info-circle"></i> Hướng dẫn sử dụng
+      </a>
+
+      <hr style="border-color: #f48fb1; margin: 20px 0" />
+      <div>
+        <i class="fas fa-user"></i><span class="label">Designed and developed by:</span>Bùi Quốc Huy
+      </div>
+      <div>
+        <i class="fab fa-facebook"></i><span class="label">Facebook:</span>
+        <a href="https://www.facebook.com/bangkhuang187" target="_blank"
+          >facebook.com/bangkhuang187</a
+        >
+      </div>
+      <div>
+        <i class="fas fa-phone"></i><span class="label">Phone:</span>
+        0905640544
+      </div>
+      <div>
+        <i class="fas fa-code-branch"></i><span class="label">Version:</span>
+        0.1.1
       </div>
     </div>
 
@@ -580,22 +629,5 @@
         time_24hr: true,
       });
     </script>
-    <div class="footer">
-      <div>
-        <i class="fas fa-user"></i><span class="label">Website created by:</span> Bùi Quốc Huy
-      </div>
-      <div>
-        <i class="fab fa-facebook"></i><span class="label">Facebook:</span>
-        <a href="https://www.facebook.com/bangkhuang187" target="_blank"
-          >facebook.com/bangkhuang187</a
-        >
-      </div>
-      <div>
-        <i class="fas fa-phone"></i><span class="label">Phone:</span> 0905640544
-      </div>
-      <div>
-        <i class="fas fa-code-branch"></i><span class="label">Version:</span> 0.0.2 (Cập nhật)
-      </div>
-    </div>
   </body>
 </html>
