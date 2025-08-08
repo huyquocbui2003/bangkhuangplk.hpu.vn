@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thành Công</title>
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary-color: #d81b60;
+        --secondary-color: #ff80ab;
+        --background-light: #e0f7fa;
+        --background-dark: #fce4ec;
+        --text-color: #333;
+        --card-bg: #fff;
+        --border-radius-large: 10px;
+        --box-shadow-main: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(
+          135deg,
+          var(--background-light),
+          var(--background-dark)
+        );
+        margin: 0;
+        padding: 0;
+        color: var(--text-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+      .success-card {
+        max-width: 500px;
+        width: 100%;
+        background-color: var(--card-bg);
+        padding: 40px;
+        text-align: center;
+        border-radius: var(--border-radius-large);
+        box-shadow: var(--box-shadow-main);
+      }
+      .success-card h1 {
+        color: #4caf50;
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
+      .success-card p {
+        font-size: 1.1em;
+        color: #555;
+      }
+      .back-button,
+      .home-button {
+        display: inline-block;
+        margin: 10px 10px 0;
+        padding: 10px 20px;
+        background-color: var(--primary-color);
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        font-weight: bold;
+      }
+      .back-button:hover,
+      .home-button:hover {
+        background-color: #c2185b;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="success-card">
+      <i class="fas fa-check-circle" style="color: #4caf50; font-size: 4em;"></i>
+      <h1>Lưu thông tin thành công!</h1>
+      <p>Thông tin cá nhân của bạn đã được lưu lại.</p>
+      <a href="trangcanhan.html" class="back-button"><i class="fas fa-arrow-left"></i> Quay lại trang cá nhân</a>
+      <a href="giaodien.html" class="home-button"><i class="fas fa-home"></i> Trang chủ</a>
+    </div>
+  </body>
+</html>

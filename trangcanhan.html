@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trang Cá Nhân</title>
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <style>
+      :root {
+        --primary-color: #d81b60;
+        --secondary-color: #ff80ab;
+        --background-light: #e0f7fa;
+        --background-dark: #fce4ec;
+        --text-color: #333;
+        --card-bg: #fff;
+        --border-radius-large: 10px;
+        --border-radius-small: 6px;
+        --box-shadow-main: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(
+          135deg,
+          var(--background-light),
+          var(--background-dark)
+        );
+        margin: 0;
+        padding: 0;
+        color: var(--text-color);
+      }
+
+      .main-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        flex-wrap: wrap;
+        min-height: 100vh;
+      }
+
+      .profile-card {
+        max-width: 600px;
+        width: 100%;
+        background-color: var(--card-bg);
+        padding: 40px;
+        border-radius: var(--border-radius-large);
+        box-shadow: var(--box-shadow-main);
+      }
+
+      .main-title {
+        text-align: center;
+        color: var(--primary-color);
+        margin-bottom: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .main-title i {
+        margin: 0 10px;
+        color: var(--secondary-color);
+        font-size: 1.2em;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+        color: var(--primary-color);
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="tel"],
+      select,
+      textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: var(--border-radius-small);
+        font-size: 1em;
+        box-sizing: border-box;
+      }
+
+      .flatpickr-input {
+        width: 100%;
+      }
+
+      textarea {
+        resize: vertical;
+      }
+
+      .avatar-container {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .avatar {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid var(--primary-color);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 10px;
+      }
+
+      .avatar-upload-label {
+        font-weight: bold;
+        color: var(--primary-color);
+        cursor: pointer;
+        display: block;
+        text-align: center;
+      }
+
+      .footer {
+        margin-top: 40px;
+        padding: 20px;
+        background: linear-gradient(90deg, #ffe0f0, #e0f7fa);
+        font-size: 14px;
+        color: #444;
+        border-top: 1px solid #ddd;
+        text-align: center;
+        border-radius: var(--border-radius-large);
+      }
+
+      .footer a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .footer a:hover {
+        text-decoration: underline;
+      }
+
+      .footer .label {
+        color: #888;
+        font-weight: normal;
+      }
+
+      .footer i {
+        margin-right: 5px;
+        color: var(--primary-color);
+      }
+
+      .submit-button {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: var(--border-radius-small);
+        font-size: 1.1em;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .submit-button:hover {
+        background-color: #c2185b;
+      }
+      
+      .back-to-home {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .back-to-home a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .back-to-home a:hover {
+        text-decoration: underline;
+      }
+      
+      #profileDisplay {
+          display: none;
+      }
+
+      .profile-info {
+          display: grid;
+          grid-template-columns: 1fr 2fr;
+          gap: 15px;
+          margin-bottom: 20px;
+      }
+
+      .profile-info-label {
+          font-weight: bold;
+          color: var(--primary-color);
+          text-align: right;
+      }
+
+      .profile-info-value {
+          color: var(--text-color);
+      }
+
+      .profile-edit-button {
+          width: 100%;
+          padding: 12px;
+          background-color: #007bff;
+          color: white;
+          border: none;
+          border-radius: var(--border-radius-small);
+          font-size: 1.1em;
+          font-weight: bold;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+      }
+
+      .profile-edit-button:hover {
+          background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main-content">
+      <div class="profile-card">
+        <div class="back-to-home">
+          <a href="giaodien.html"><i class="fas fa-arrow-left"></i> Quay lại trang chủ</a>
+        </div>
+        <h2 class="main-title">
+          <i class="fas fa-user-circle"></i>TRANG CÁ NHÂN<i
+            class="fas fa-user-circle"
+          ></i>
+        </h2>
+
+        <div id="profileDisplay">
+            <div class="avatar-container">
+                <img id="display-avatar" class="avatar" src="https://via.placeholder.com/150" alt="Avatar" />
+            </div>
+            <div class="profile-info">
+                <div class="profile-info-label">Họ và Tên:</div>
+                <div id="display-fullName" class="profile-info-value"></div>
+                
+                <div class="profile-info-label">Ngày sinh:</div>
+                <div id="display-dob" class="profile-info-value"></div>
+                
+                <div class="profile-info-label">Địa chỉ:</div>
+                <div id="display-address" class="profile-info-value"></div>
+                
+                <div class="profile-info-label">Email:</div>
+                <div id="display-email" class="profile-info-value"></div>
+                
+                <div class="profile-info-label">Số điện thoại:</div>
+                <div id="display-phone" class="profile-info-value"></div>
+                
+                <div class="profile-info-label">Sở thích:</div>
+                <div id="display-hobbies" class="profile-info-value"></div>
+                
+                <div class="profile-info-label">Nghề nghiệp:</div>
+                <div id="display-occupation" class="profile-info-value"></div>
+
+                <div class="profile-info-label">Con vật yêu thích:</div>
+                <div id="display-favoriteAnimal" class="profile-info-value"></div>
+
+                <div class="profile-info-label">Ca sĩ yêu thích:</div>
+                <div id="display-favoriteSinger" class="profile-info-value"></div>
+                
+                <div class="profile-info-label">Nơi muốn đến:</div>
+                <div id="display-dreamPlace" class="profile-info-value"></div>
+            </div>
+            <button id="editProfileButton" class="profile-edit-button">
+                <i class="fas fa-edit"></i> Chỉnh sửa
+            </button>
+        </div>
+
+        <form id="profileForm">
+          <div class="avatar-container">
+            <img id="avatar-preview" class="avatar" src="https://via.placeholder.com/150" alt="Avatar" />
+            <label for="avatar-upload" class="avatar-upload-label">
+                <i class="fas fa-camera"></i> Tải lên ảnh đại diện
+            </label>
+            <input type="file" id="avatar-upload" name="avatar" accept="image/*" style="display: none;" />
+          </div>
+          <div class="form-group">
+            <label for="fullName"><i class="fas fa-signature"></i> Họ và Tên</label>
+            <input type="text" id="fullName" name="fullName" required />
+          </div>
+
+          <div class="form-group">
+            <label for="dob"><i class="fas fa-calendar-alt"></i> Ngày Tháng Năm Sinh</label>
+            <input type="text" id="dob" name="dob" placeholder="YYYY-MM-DD" />
+          </div>
+
+          <div class="form-group">
+            <label for="address"><i class="fas fa-map-marker-alt"></i> Địa chỉ (Tỉnh/Thành phố)</label>
+            <select id="address" name="address">
+                <option value="">Chọn Tỉnh/Thành phố</option>
+                <option value="Hà Nội">Hà Nội</option>
+                <option value="Hồ Chí Minh">Hồ Chí Minh</option>
+                <option value="Hải Phòng">Hải Phòng</option>
+                <option value="Đà Nẵng">Đà Nẵng</option>
+                <option value="Cần Thơ">Cần Thơ</option>
+                <option value="An Giang">An Giang</option>
+                <option value="Bà Rịa – Vũng Tàu">Bà Rịa – Vũng Tàu</option>
+                <option value="Bắc Giang">Bắc Giang</option>
+                <option value="Bắc Kạn">Bắc Kạn</option>
+                <option value="Bạc Liêu">Bạc Liêu</option>
+                <option value="Bắc Ninh">Bắc Ninh</option>
+                <option value="Bến Tre">Bến Tre</option>
+                <option value="Bình Định">Bình Định</option>
+                <option value="Bình Dương">Bình Dương</option>
+                <option value="Bình Phước">Bình Phước</option>
+                <option value="Bình Thuận">Bình Thuận</option>
+                <option value="Cà Mau">Cà Mau</option>
+                <option value="Cao Bằng">Cao Bằng</option>
+                <option value="Đắk Lắk">Đắk Lắk</option>
+                <option value="Đắk Nông">Đắk Nông</option>
+                <option value="Điện Biên">Điện Biên</option>
+                <option value="Đồng Nai">Đồng Nai</option>
+                <option value="Đồng Tháp">Đồng Tháp</option>
+                <option value="Gia Lai">Gia Lai</option>
+                <option value="Hà Giang">Hà Giang</option>
+                <option value="Hà Nam">Hà Nam</option>
+                <option value="Hà Tĩnh">Hà Tĩnh</option>
+                <option value="Hải Dương">Hải Dương</option>
+                <option value="Hậu Giang">Hậu Giang</option>
+                <option value="Hòa Bình">Hòa Bình</option>
+                <option value="Hưng Yên">Hưng Yên</option>
+                <option value="Khánh Hòa">Khánh Hòa</option>
+                <option value="Kiên Giang">Kiên Giang</option>
+                <option value="Kon Tum">Kon Tum</option>
+                <option value="Lai Châu">Lai Châu</option>
+                <option value="Lâm Đồng">Lâm Đồng</option>
+                <option value="Lạng Sơn">Lạng Sơn</option>
+                <option value="Lào Cai">Lào Cai</option>
+                <option value="Long An">Long An</option>
+                <option value="Nam Định">Nam Định</option>
+                <option value="Nghệ An">Nghệ An</option>
+                <option value="Ninh Bình">Ninh Bình</option>
+                <option value="Ninh Thuận">Ninh Thuận</option>
+                <option value="Phú Thọ">Phú Thọ</option>
+                <option value="Phú Yên">Phú Yên</option>
+                <option value="Quảng Bình">Quảng Bình</option>
+                <option value="Quảng Nam">Quảng Nam</option>
+                <option value="Quảng Ngãi">Quảng Ngãi</option>
+                <option value="Quảng Ninh">Quảng Ninh</option>
+                <option value="Quảng Trị">Quảng Trị</option>
+                <option value="Sóc Trăng">Sóc Trăng</option>
+                <option value="Sơn La">Sơn La</option>
+                <option value="Tây Ninh">Tây Ninh</option>
+                <option value="Thái Bình">Thái Bình</option>
+                <option value="Thái Nguyên">Thái Nguyên</option>
+                <option value="Thanh Hóa">Thanh Hóa</option>
+                <option value="Thừa Thiên Huế">Thừa Thiên Huế</option>
+                <option value="Tiền Giang">Tiền Giang</option>
+                <option value="Trà Vinh">Trà Vinh</option>
+                <option value="Tuyên Quang">Tuyên Quang</option>
+                <option value="Vĩnh Long">Vĩnh Long</option>
+                <option value="Vĩnh Phúc">Vĩnh Phúc</option>
+                <option value="Yên Bái">Yên Bái</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="email"><i class="fas fa-envelope"></i> Email</label>
+            <input type="email" id="email" name="email" required />
+          </div>
+
+          <div class="form-group">
+            <label for="phone"><i class="fas fa-phone"></i> Số điện thoại</label>
+            <input type="tel" id="phone" name="phone" />
+          </div>
+
+          <div class="form-group">
+            <label for="hobbies"><i class="fas fa-heart"></i> Sở thích</label>
+            <input type="text" id="hobbies" name="hobbies" />
+          </div>
+
+          <div class="form-group">
+            <label for="occupation"><i class="fas fa-briefcase"></i> Nghề nghiệp</label>
+            <input type="text" id="occupation" name="occupation" />
+          </div>
+
+          <div class="form-group">
+            <label for="favoriteAnimal"><i class="fas fa-paw"></i> Con vật yêu thích</label>
+            <input type="text" id="favoriteAnimal" name="favoriteAnimal" />
+          </div>
+
+          <div class="form-group">
+            <label for="favoriteSinger"><i class="fas fa-microphone"></i> Ca sĩ yêu thích</label>
+            <input type="text" id="favoriteSinger" name="favoriteSinger" />
+          </div>
+
+          <div class="form-group">
+            <label for="dreamPlace"><i class="fas fa-map-marked-alt"></i> Nơi muốn đến</label>
+            <input type="text" id="dreamPlace" name="dreamPlace" />
+          </div>
+
+          <button type="submit" class="submit-button">Lưu Thông Tin</button>
+        </form>
+      </div>
+    </div>
+    <div class="footer">
+      <div>
+        <i class="fas fa-code-branch"></i><span class="label">Version:</span> 1.0.4
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+      flatpickr("#dob", {
+        dateFormat: "Y-m-d",
+      });
+
+      const profileForm = document.getElementById('profileForm');
+      const profileDisplay = document.getElementById('profileDisplay');
+      const editProfileButton = document.getElementById('editProfileButton');
+
+      function displayProfile(data) {
+          document.getElementById('display-avatar').src = data.avatar || 'https://via.placeholder.com/150';
+          document.getElementById('display-fullName').textContent = data.fullName;
+          document.getElementById('display-dob').textContent = data.dob;
+          document.getElementById('display-address').textContent = data.address;
+          document.getElementById('display-email').textContent = data.email;
+          document.getElementById('display-phone').textContent = data.phone;
+          document.getElementById('display-hobbies').textContent = data.hobbies;
+          document.getElementById('display-occupation').textContent = data.occupation;
+          document.getElementById('display-favoriteAnimal').textContent = data.favoriteAnimal;
+          document.getElementById('display-favoriteSinger').textContent = data.favoriteSinger;
+          document.getElementById('display-dreamPlace').textContent = data.dreamPlace;
+
+          profileForm.style.display = 'none';
+          profileDisplay.style.display = 'block';
+      }
+
+      function showForm(data = {}) {
+          document.getElementById('avatar-preview').src = data.avatar || 'https://via.placeholder.com/150';
+          document.getElementById('fullName').value = data.fullName || '';
+          document.getElementById('dob').value = data.dob || '';
+          document.getElementById('address').value = data.address || '';
+          document.getElementById('email').value = data.email || '';
+          document.getElementById('phone').value = data.phone || '';
+          document.getElementById('hobbies').value = data.hobbies || '';
+          document.getElementById('occupation').value = data.occupation || '';
+          document.getElementById('favoriteAnimal').value = data.favoriteAnimal || '';
+          document.getElementById('favoriteSinger').value = data.favoriteSinger || '';
+          document.getElementById('dreamPlace').value = data.dreamPlace || '';
+
+          profileDisplay.style.display = 'none';
+          profileForm.style.display = 'block';
+      }
+
+      // Kiểm tra dữ liệu khi trang tải
+      document.addEventListener('DOMContentLoaded', () => {
+          const savedData = localStorage.getItem('userProfile');
+          if (savedData) {
+              const data = JSON.parse(savedData);
+              displayProfile(data);
+          } else {
+              showForm();
+          }
+      });
+
+      // Tải lên ảnh đại diện
+      document.getElementById('avatar-upload').addEventListener('change', function(event) {
+          const file = event.target.files[0];
+          if (file) {
+              const reader = new FileReader();
+              reader.onload = function(e) {
+                  document.getElementById('avatar-preview').src = e.target.result;
+              }
+              reader.readAsDataURL(file);
+          }
+      });
+      
+      // Xử lý sự kiện lưu form
+      profileForm.addEventListener('submit', function(event) {
+          event.preventDefault();
+
+          const profileData = {
+              avatar: document.getElementById('avatar-preview').src,
+              fullName: document.getElementById('fullName').value,
+              dob: document.getElementById('dob').value,
+              address: document.getElementById('address').value,
+              email: document.getElementById('email').value,
+              phone: document.getElementById('phone').value,
+              hobbies: document.getElementById('hobbies').value,
+              occupation: document.getElementById('occupation').value,
+              favoriteAnimal: document.getElementById('favoriteAnimal').value,
+              favoriteSinger: document.getElementById('favoriteSinger').value,
+              dreamPlace: document.getElementById('dreamPlace').value,
+          };
+
+          localStorage.setItem('userProfile', JSON.stringify(profileData));
+          window.location.href = 'thanhcong.html';
+      });
+
+      // Xử lý nút "Chỉnh sửa"
+      editProfileButton.addEventListener('click', () => {
+          const savedData = JSON.parse(localStorage.getItem('userProfile'));
+          showForm(savedData);
+      });
+    </script>
+  </body>
+</html>
