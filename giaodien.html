@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BÂNG KHUÂNG - PHIÊU LƯU KÝ</title>
+    <link rel="icon" type="image/png" href="favicon.png" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -13,6 +14,16 @@
       href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
     />
     <style>
+      .main-title {
+        text-align: center;
+        color: #ff4081;
+        cursor: pointer;
+      }
+
+      .main-title i {
+        margin: 0 5px; /* Thêm khoảng cách hai bên cho icon */
+        color: #ff4081; /* Đảm bảo icon có màu hồng */
+      }
       body {
         font-family: "Segoe UI", sans-serif;
         background: linear-gradient(135deg, #e0f7fa, #fce4ec);
@@ -36,11 +47,7 @@
       .calendar-button {
         display: flex;
         align-items: center;
-        background: linear-gradient(
-          to right,
-          #ff80ab,
-          #f48fb1
-        );
+        background: linear-gradient(to right, #ff80ab, #f48fb1);
         color: white;
         border: none;
         padding: 10px 15px;
@@ -356,6 +363,43 @@
       .guide-header:hover {
         background-color: #d81b60;
       }
+
+      /* CSS cho hiệu ứng */
+      @keyframes zoomInOut {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes whaleFly {
+        0% {
+          transform: translate(0, 0) scale(0);
+          opacity: 1;
+        }
+        100% {
+          transform: translate(
+              calc(var(--randX) * 1px),
+              calc(var(--randY) * 1px)
+            )
+            scale(1);
+          opacity: 0;
+        }
+      }
+
+      .animate-whale {
+        position: fixed;
+        font-size: 3em;
+        color: #40c4ff;
+        animation: whaleFly 2s ease-out forwards;
+        pointer-events: none;
+        z-index: 9999;
+      }
     </style>
   </head>
   <body>
@@ -393,8 +437,9 @@
       </div>
 
       <div class="container">
-        <h2 onclick="scrollToTop()">
-          <i class="fas fa-book-open"></i> BÂNG KHUÂNG PHIÊU LƯU KÝ
+        <h2 class="main-title" onclick="scrollToTop()">
+          <i class="fas fa-heart"></i> BÂNG KHUÂNG PHIÊU LƯU KÝ
+          <i class="fas fa-heart"></i>
         </h2>
         <input type="text" id="title" placeholder="Tiêu đề bài viết" />
         <textarea
@@ -436,10 +481,11 @@
       <a href="huong_dan_su_dung.html" class="guide-header">
         <i class="fas fa-info-circle"></i> Hướng dẫn sử dụng
       </a>
-      
-      <hr style="border-color:#f48fb1; margin: 20px 0;">
+
+      <hr style="border-color: #f48fb1; margin: 20px 0" />
       <div>
-        <i class="fas fa-user"></i><span class="label">Website created by:</span> Bùi Quốc Huy
+        <i class="fas fa-user"></i
+        ><span class="label">Website created by:</span>Bùi Quốc Huy
       </div>
       <div>
         <i class="fab fa-facebook"></i><span class="label">Facebook:</span>
@@ -448,38 +494,50 @@
         >
       </div>
       <div>
-        <i class="fas fa-phone"></i><span class="label">Phone:</span> 0905640544
+        <i class="fas fa-phone"></i><span class="label">Phone:</span>
+        0905640544
       </div>
       <div>
-        <i class="fas fa-code-branch"></i><span class="label">Version:</span> 0.0.2 (Cập nhật)
+        <i class="fas fa-code-branch"></i><span class="label">Version:</span>
+        0.0.2 (Cập nhật)
       </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
       // IndexedDB Helper Functions
-      const DB_NAME = 'LocketHuyDB';
+      const DB_NAME = "LocketHuyDB";
       const DB_VERSION = 1;
       let db;
 
       function openDB() {
         return new Promise((resolve, reject) => {
           const request = indexedDB.open(DB_NAME, DB_VERSION);
-          request.onerror = (event) => reject('IndexedDB error: ' + event.target.errorCode);
+          request.onerror = (event) =>
+            reject("IndexedDB error: " + event.target.errorCode);
           request.onsuccess = (event) => {
             db = event.target.result;
             resolve(db);
           };
           request.onupgradeneeded = (event) => {
             const db = event.target.result;
-            if (!db.objectStoreNames.contains('statuses')) {
-              db.createObjectStore('statuses', { keyPath: 'id', autoIncrement: true });
+            if (!db.objectStoreNames.contains("statuses")) {
+              db.createObjectStore("statuses", {
+                keyPath: "id",
+                autoIncrement: true,
+              });
             }
-            if (!db.objectStoreNames.contains('noteItems')) {
-              db.createObjectStore('noteItems', { keyPath: 'id', autoIncrement: true });
+            if (!db.objectStoreNames.contains("noteItems")) {
+              db.createObjectStore("noteItems", {
+                keyPath: "id",
+                autoIncrement: true,
+              });
             }
-            if (!db.objectStoreNames.contains('importantNotes')) {
-              db.createObjectStore('importantNotes', { keyPath: 'id', autoIncrement: true });
+            if (!db.objectStoreNames.contains("importantNotes")) {
+              db.createObjectStore("importantNotes", {
+                keyPath: "id",
+                autoIncrement: true,
+              });
             }
           };
         });
@@ -487,7 +545,7 @@
 
       async function saveToDB(storeName, data) {
         if (!db) await openDB();
-        const transaction = db.transaction([storeName], 'readwrite');
+        const transaction = db.transaction([storeName], "readwrite");
         const store = transaction.objectStore(storeName);
         store.put(data);
         return new Promise((resolve, reject) => {
@@ -498,7 +556,7 @@
 
       async function getAllFromDB(storeName) {
         if (!db) await openDB();
-        const transaction = db.transaction([storeName], 'readonly');
+        const transaction = db.transaction([storeName], "readonly");
         const store = transaction.objectStore(storeName);
         const request = store.getAll();
         return new Promise((resolve, reject) => {
@@ -506,21 +564,21 @@
           request.onerror = (event) => reject(event.target.error);
         });
       }
-      
+
       async function getByIdFromDB(storeName, id) {
-          if (!db) await openDB();
-          return new Promise((resolve, reject) => {
-              const transaction = db.transaction([storeName], 'readonly');
-              const store = transaction.objectStore(storeName);
-              const request = store.get(id);
-              request.onsuccess = (event) => resolve(event.target.result);
-              request.onerror = (event) => reject(event.target.error);
-          });
+        if (!db) await openDB();
+        return new Promise((resolve, reject) => {
+          const transaction = db.transaction([storeName], "readonly");
+          const store = transaction.objectStore(storeName);
+          const request = store.get(id);
+          request.onsuccess = (event) => resolve(event.target.result);
+          request.onerror = (event) => reject(event.target.error);
+        });
       }
 
       async function deleteFromDB(storeName, id) {
         if (!db) await openDB();
-        const transaction = db.transaction([storeName], 'readwrite');
+        const transaction = db.transaction([storeName], "readwrite");
         const store = transaction.objectStore(storeName);
         store.delete(id);
         return new Promise((resolve, reject) => {
@@ -530,7 +588,7 @@
       }
 
       const statusList = document.getElementById("statusList");
-      
+
       flatpickr("#filterDate", {
         dateFormat: "Y-m-d",
         onChange: function (selectedDates, dateStr, instance) {
@@ -571,15 +629,37 @@
         const reader = new FileReader();
         reader.onload = async function () {
           status.image = imageFile ? reader.result : null;
-          await saveToDB('statuses', status);
+          await saveToDB("statuses", status);
           renderStatuses();
+
+          // Kích hoạt hiệu ứng sau khi đăng bài
+          const container = document.querySelector(".container");
+          container.style.animation = "zoomInOut 0.5s ease";
+          setTimeout(() => {
+            container.style.animation = "";
+          }, 500);
+
+          for (let i = 0; i < 6; i++) {
+            createWhaleEffect();
+          }
         };
 
         if (imageFile) {
           reader.readAsDataURL(imageFile);
         } else {
-          await saveToDB('statuses', status);
+          await saveToDB("statuses", status);
           renderStatuses();
+
+          // Kích hoạt hiệu ứng sau khi đăng bài
+          const container = document.querySelector(".container");
+          container.style.animation = "zoomInOut 0.5s ease";
+          setTimeout(() => {
+            container.style.animation = "";
+          }, 500);
+
+          for (let i = 0; i < 6; i++) {
+            createWhaleEffect();
+          }
         }
 
         document.getElementById("title").value = "";
@@ -591,7 +671,7 @@
 
       async function renderStatuses() {
         statusList.innerHTML = "";
-        const statuses = await getAllFromDB('statuses');
+        const statuses = await getAllFromDB("statuses");
         statuses.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
         const filterDate = document.getElementById("filterDate").value;
 
@@ -623,7 +703,9 @@
               : ""
           }
           <div>
-            <label><input type="checkbox" onchange="toggleCompleted(${status.id})" ${
+            <label><input type="checkbox" onchange="toggleCompleted(${
+              status.id
+            })" ${
             status.completed ? "checked" : ""
           } /> <span>Hoàn thành tất cả</span></label>
           </div>
@@ -637,36 +719,48 @@
               minute: "2-digit",
             })}
           </div>
-          <button onclick="editStatus(${status.id})"><i class="fas fa-edit"></i> Sửa</button>
-          <button onclick="deleteStatus(${status.id})"><i class="fas fa-trash-alt"></i> Xóa</button>
-          <button onclick="viewHistory(${status.id})"><i class="fas fa-history"></i> Nhật ký chỉnh sửa</button>
+          <button onclick="editStatus(${
+            status.id
+          })"><i class="fas fa-edit"></i> Sửa</button>
+          <button onclick="deleteStatus(${
+            status.id
+          })"><i class="fas fa-trash-alt"></i> Xóa</button>
+          <button onclick="viewHistory(${
+            status.id
+          })"><i class="fas fa-history"></i> Nhật ký chỉnh sửa</button>
           <div>
-            <input type="text" id="noteInput-${status.id}" placeholder="Thêm ghi chú..." />
-            <button onclick="addNote(${status.id})"><i class="fas fa-paper-plane"></i> Gửi</button>
+            <input type="text" id="noteInput-${
+              status.id
+            }" placeholder="Thêm ghi chú..." />
+            <button onclick="addNote(${
+              status.id
+            })"><i class="fas fa-paper-plane"></i> Gửi</button>
           </div>
           <div class="status-notes">
             ${status.notes
               .map((note) => `<div class="note">${note}</div>`)
               .join("")}
           </div>
-          <div id="history-${status.id}" style="display:none; font-size: 0.85em; margin-top: 8px;"></div>
+          <div id="history-${
+            status.id
+          }" style="display:none; font-size: 0.85em; margin-top: 8px;"></div>
         `;
           statusList.appendChild(div);
         });
       }
 
       async function toggleCompleted(id) {
-        const status = await getByIdFromDB('statuses', id);
+        const status = await getByIdFromDB("statuses", id);
         if (status) {
           status.completed = !status.completed;
-          await saveToDB('statuses', status);
+          await saveToDB("statuses", status);
           renderStatuses();
         }
       }
 
       async function deleteStatus(id) {
         if (confirm("Bạn chắc chắn muốn xóa bài viết này?")) {
-          await deleteFromDB('statuses', id);
+          await deleteFromDB("statuses", id);
           renderStatuses();
         }
       }
@@ -676,7 +770,7 @@
       }
 
       async function viewHistory(id) {
-        const status = await getByIdFromDB('statuses', id);
+        const status = await getByIdFromDB("statuses", id);
         const container = document.getElementById(`history-${id}`);
         if (!status || !status.history || status.history.length === 0) {
           container.innerHTML = "<i>Không có chỉnh sửa nào.</i>";
@@ -703,10 +797,10 @@
         const input = document.getElementById(`noteInput-${id}`);
         const note = input.value.trim();
         if (note) {
-          const status = await getByIdFromDB('statuses', id);
+          const status = await getByIdFromDB("statuses", id);
           if (status) {
             status.notes.push(note);
-            await saveToDB('statuses', status);
+            await saveToDB("statuses", status);
             input.value = "";
             renderStatuses();
           }
@@ -716,18 +810,20 @@
       async function renderNoteItems() {
         const noteList = document.getElementById("noteList");
         noteList.innerHTML = "";
-        const noteItems = await getAllFromDB('noteItems');
+        const noteItems = await getAllFromDB("noteItems");
         noteItems.forEach((item) => {
           const li = document.createElement("li");
           li.className = item.completed ? "completed" : "";
           li.innerHTML = `
             <div>
-              <input type="checkbox" onchange="toggleNoteCompleted(${item.id})" ${
-            item.completed ? "checked" : ""
-          } />
+              <input type="checkbox" onchange="toggleNoteCompleted(${
+                item.id
+              })" ${item.completed ? "checked" : ""} />
               <span>${item.text}</span>
             </div>
-            <button onclick="deleteNoteItem(${item.id})"><i class="fas fa-times-circle"></i></button>
+            <button onclick="deleteNoteItem(${
+              item.id
+            })"><i class="fas fa-times-circle"></i></button>
           `;
           noteList.appendChild(li);
         });
@@ -738,35 +834,35 @@
         const text = input.value.trim();
         if (text) {
           const noteItem = { text, completed: false };
-          await saveToDB('noteItems', noteItem);
+          await saveToDB("noteItems", noteItem);
           input.value = "";
           renderNoteItems();
         }
       }
 
       async function toggleNoteCompleted(id) {
-        const item = await getByIdFromDB('noteItems', id);
+        const item = await getByIdFromDB("noteItems", id);
         if (item) {
           item.completed = !item.completed;
-          await saveToDB('noteItems', item);
+          await saveToDB("noteItems", item);
           renderNoteItems();
         }
       }
 
       async function deleteNoteItem(id) {
-        await deleteFromDB('noteItems', id);
+        await deleteFromDB("noteItems", id);
         renderNoteItems();
       }
 
       async function saveImportantNotes() {
         const notes = document.getElementById("importantNotes").value;
         const noteData = { id: 1, notes: notes };
-        await saveToDB('importantNotes', noteData);
+        await saveToDB("importantNotes", noteData);
         alert("Đã lưu lưu ý quan trọng!");
       }
 
       async function loadImportantNotes() {
-        const noteData = await getByIdFromDB('importantNotes', 1);
+        const noteData = await getByIdFromDB("importantNotes", 1);
         if (noteData && noteData.notes) {
           document.getElementById("importantNotes").value = noteData.notes;
         }
@@ -774,7 +870,7 @@
 
       async function clearImportantNotes() {
         document.getElementById("importantNotes").value = "";
-        await deleteFromDB('importantNotes', 1);
+        await deleteFromDB("importantNotes", 1);
       }
 
       document
@@ -799,6 +895,31 @@
           top: 0,
           behavior: "smooth",
         });
+      }
+
+      function createWhaleEffect() {
+        const whale = document.createElement("div");
+        whale.className = "animate-whale";
+        whale.innerHTML = "🐳";
+
+        // Vị trí xuất phát ngẫu nhiên
+        const startX = Math.random() * window.innerWidth;
+        const startY = Math.random() * window.innerHeight;
+        whale.style.left = `${startX}px`;
+        whale.style.top = `${startY}px`;
+
+        // Hướng di chuyển ngẫu nhiên
+        const randX = (Math.random() - 0.5) * 500;
+        const randY = (Math.random() - 0.5) * 500;
+        whale.style.setProperty("--randX", randX);
+        whale.style.setProperty("--randY", randY);
+
+        document.body.appendChild(whale);
+
+        // Xóa icon sau khi hoạt ảnh kết thúc
+        setTimeout(() => {
+          whale.remove();
+        }, 2000);
       }
 
       window.addEventListener("DOMContentLoaded", async () => {
@@ -840,5 +961,4 @@
       });
     </script>
   </body>
-
 </html>
