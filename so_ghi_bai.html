@@ -218,7 +218,7 @@
         margin: 0 5px;
         color: var(--secondary-color);
       }
-      
+
       .note-list-container {
         display: flex;
         flex-direction: column;
@@ -290,6 +290,7 @@
         display: flex;
         justify-content: flex-end;
         align-items: center;
+        flex-wrap: wrap;
         gap: 10px;
         margin-top: 10px;
       }
@@ -313,11 +314,34 @@
         transform: translateY(-2px);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       }
+      button:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
       .button-danger {
         background: #f44336;
       }
       .button-danger:hover {
         background: #d32f2f;
+      }
+      .button-loading {
+        position: relative;
+      }
+      .button-loading .spinner {
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        border-top: 2px solid white;
+        border-radius: 50%;
+        width: 14px;
+        height: 14px;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
       }
 
       /* ========================================================================================================= */
@@ -394,7 +418,7 @@
         opacity: 1;
         visibility: visible;
       }
-      
+
       /* ========================================================================================================= */
       /* FOOTER */
       /* ========================================================================================================= */
@@ -470,7 +494,7 @@
         <button id="confirmNo">Không</button>
       </div>
     </div>
-    
+
     <!-- Modal chỉnh sửa tên môn học -->
     <div id="editSubjectModal" class="modal">
       <div class="modal-content">
@@ -482,6 +506,16 @@
         <button id="cancelEditSubjectButton">
           <i class="fas fa-times"></i> Hủy
         </button>
+      </div>
+    </div>
+
+    <!-- Modal để hiển thị nội dung tạo/tóm tắt bởi AI -->
+    <div id="aiModal" class="modal">
+      <div class="modal-content">
+        <h3 id="aiModalTitle"></h3>
+        <p id="aiModalContent"></p>
+        <button id="aiModalConfirm">Chèn vào ghi chú</button>
+        <button id="aiModalCancel">Hủy</button>
       </div>
     </div>
 
@@ -517,56 +551,74 @@
     <!--                                 BỐ CỤC CHÍNH (SIDEBAR + NỘI DUNG)                                        -->
     <!-- ========================================================================================================= -->
     <div class="main-layout">
-        <!-- Thanh sidebar cho môn học -->
-        <div class="sidebar">
-            <h3><i class="fas fa-book-reader"></i> Môn học</h3>
-            <button class="nav-button add-subject-button" onclick="addSubject()">
-                <i class="fas fa-plus"></i> Thêm môn học
+      <!-- Thanh sidebar cho môn học -->
+      <div class="sidebar">
+        <h3><i class="fas fa-book-reader"></i> Môn học</h3>
+        <button class="nav-button add-subject-button" onclick="addSubject()">
+          <i class="fas fa-plus"></i> Thêm môn học
+        </button>
+        <ul id="subjectList" class="subject-list">
+          <!-- Danh sách môn học sẽ được thêm vào đây bằng JS -->
+        </ul>
+      </div>
+
+      <!-- Khu vực nội dung chính -->
+      <div class="main-content-area">
+        <div class="container">
+          <h2 id="mainTitle" class="main-title">
+            <i class="fas fa-book-open"></i> Vui lòng chọn một môn học
+          </h2>
+
+          <!-- Khu vực hiển thị danh sách ghi chú (hiện khi có môn học được chọn) -->
+          <div id="note-list-view" style="display: none">
+            <button
+              class="nav-button add-note-button"
+              onclick="createNewNote()"
+            >
+              <i class="fas fa-plus"></i> Thêm ghi chú mới
             </button>
-            <ul id="subjectList" class="subject-list">
-                <!-- Danh sách môn học sẽ được thêm vào đây bằng JS -->
-            </ul>
-        </div>
-
-        <!-- Khu vực nội dung chính -->
-        <div class="main-content-area">
-            <div class="container">
-                <h2 id="mainTitle" class="main-title">
-                    <i class="fas fa-book-open"></i> Vui lòng chọn một môn học
-                </h2>
-
-                <!-- Khu vực hiển thị danh sách ghi chú (hiện khi có môn học được chọn) -->
-                <div id="note-list-view" style="display: none;">
-                    <button class="nav-button add-note-button" onclick="createNewNote()">
-                        <i class="fas fa-plus"></i> Thêm ghi chú mới
-                    </button>
-                    <div id="noteList" class="note-list-container">
-                        <!-- Danh sách ghi chú sẽ được thêm vào đây bằng JS -->
-                    </div>
-                </div>
-
-                <!-- Khu vực chỉnh sửa ghi chú (hiện khi một ghi chú được chọn/tạo mới) -->
-                <div id="note-editor-view" style="display: none;">
-                    <button class="nav-button" onclick="loadNotesForCurrentSubject()">
-                        <i class="fas fa-arrow-left"></i> Quay lại
-                    </button>
-                    <input type="text" id="noteTitle" placeholder="Tiêu đề bài học..." />
-                    <textarea
-                        id="noteContent"
-                        placeholder="Nội dung ghi chú..."
-                        rows="15"
-                    ></textarea>
-                    <div class="control-buttons-container">
-                        <button onclick="saveNote()">
-                            <i class="fas fa-save"></i> Lưu
-                        </button>
-                        <button onclick="deleteNote()" class="button-danger">
-                            <i class="fas fa-trash"></i> Xóa
-                        </button>
-                    </div>
-                </div>
+            <div id="noteList" class="note-list-container">
+              <!-- Danh sách ghi chú sẽ được thêm vào đây bằng JS -->
             </div>
+          </div>
+
+          <!-- Khu vực chỉnh sửa ghi chú (hiện khi một ghi chú được chọn/tạo mới) -->
+          <div id="note-editor-view" style="display: none">
+            <button class="nav-button" onclick="loadNotesForCurrentSubject()">
+              <i class="fas fa-arrow-left"></i> Quay lại
+            </button>
+            <input
+              type="text"
+              id="noteTitle"
+              placeholder="Tiêu đề bài học..."
+            />
+            <textarea
+              id="noteContent"
+              placeholder="Nội dung ghi chú..."
+              rows="15"
+            ></textarea>
+            <div class="control-buttons-container">
+              <!-- New Gemini API Buttons -->
+              <button
+                id="generateContentBtn"
+                onclick="generateContentFromTitle()"
+              >
+                <i class="fas fa-wand-magic"></i> Tạo nội dung ✨
+              </button>
+              <button id="summarizeNoteBtn" onclick="summarizeNote()">
+                <i class="fas fa-star-of-life"></i> Tóm tắt ghi chú ✨
+              </button>
+
+              <button onclick="saveNote()">
+                <i class="fas fa-save"></i> Lưu
+              </button>
+              <button onclick="deleteNote()" class="button-danger">
+                <i class="fas fa-trash"></i> Xóa
+              </button>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
 
     <!-- ========================================================================================================= -->
@@ -609,49 +661,66 @@
       let allSubjects = [];
       let currentSubjectId = null;
       let currentNoteId = null;
-      
+
       let draggedNoteId = null;
 
       // Hàm hiển thị thông báo tùy chỉnh
       function showMessage(message) {
-        const messageBox = document.getElementById('messageBox');
+        const messageBox = document.getElementById("messageBox");
         messageBox.textContent = message;
-        messageBox.classList.add('visible');
+        messageBox.classList.add("visible");
         setTimeout(() => {
-          messageBox.classList.remove('visible');
+          messageBox.classList.remove("visible");
         }, 3000);
       }
 
       // Hàm hiển thị modal xác nhận tùy chỉnh
       function showConfirm(message, onConfirm) {
-        const modal = document.getElementById('confirmModal');
-        const confirmMessage = document.getElementById('confirmMessage');
-        const confirmYes = document.getElementById('confirmYes');
-        const confirmNo = document.getElementById('confirmNo');
+        const modal = document.getElementById("confirmModal");
+        const confirmMessage = document.getElementById("confirmMessage");
+        const confirmYes = document.getElementById("confirmYes");
+        const confirmNo = document.getElementById("confirmNo");
         confirmMessage.textContent = message;
-        modal.classList.add('visible');
+        modal.classList.add("visible");
         confirmYes.onclick = () => {
-          modal.classList.remove('visible');
+          modal.classList.remove("visible");
           onConfirm(true);
         };
         confirmNo.onclick = () => {
-          modal.classList.remove('visible');
+          modal.classList.remove("visible");
           onConfirm(false);
         };
+      }
+
+      // Hàm hiển thị modal AI
+      function showAIModal(title, content, onConfirm) {
+        const modal = document.getElementById("aiModal");
+        document.getElementById("aiModalTitle").textContent = title;
+        document.getElementById("aiModalContent").textContent = content;
+        document.getElementById("aiModalConfirm").onclick = () => {
+          modal.classList.remove("visible");
+          onConfirm(true);
+        };
+        document.getElementById("aiModalCancel").onclick = () => {
+          modal.classList.remove("visible");
+          onConfirm(false);
+        };
+        modal.classList.add("visible");
       }
 
       // Hàm mở và kết nối với IndexedDB
       function openDB() {
         return new Promise((resolve, reject) => {
           const request = indexedDB.open(DB_NAME, DB_VERSION);
-          request.onerror = (event) => reject("IndexedDB error: " + event.target.errorCode);
+          request.onerror = (event) =>
+            reject("IndexedDB error: " + event.target.errorCode);
           request.onsuccess = (event) => {
             db = event.target.result;
             resolve(db);
           };
           request.onupgradeneeded = (event) => {
             const db = event.target.result;
-            
+
             // Tạo object store cho môn học nếu chưa tồn tại
             if (!db.objectStoreNames.contains("subjects")) {
               db.createObjectStore("subjects", {
@@ -667,7 +736,9 @@
                 autoIncrement: true,
               });
               // Tạo index để truy vấn ghi chú theo subjectId
-              notesStore.createIndex("subjectId", "subjectId", { unique: false });
+              notesStore.createIndex("subjectId", "subjectId", {
+                unique: false,
+              });
             }
           };
         });
@@ -677,179 +748,199 @@
       function getObjectStore(storeName, mode) {
         return db.transaction(storeName, mode).objectStore(storeName);
       }
-      
+
       // Hàm chuyển đổi ngày tháng thành chuỗi định dạng đẹp
       function formatDate(dateString) {
         const date = new Date(dateString);
-        const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-        return date.toLocaleDateString('vi-VN', options);
+        const options = {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        };
+        return date.toLocaleDateString("vi-VN", options);
       }
 
       // =========================================================================================================
       // LOGIC QUẢN LÝ MÔN HỌC (SIDEBAR)
       // =========================================================================================================
-      
+
       // Tải và hiển thị danh sách môn học
       async function loadSubjects() {
         const subjectList = document.getElementById("subjectList");
         subjectList.innerHTML = "";
         try {
-            const store = getObjectStore("subjects", "readonly");
-            const request = store.getAll();
-            request.onsuccess = (event) => {
-                allSubjects = event.target.result;
-                if (allSubjects.length === 0) {
-                    subjectList.innerHTML = `<li style="text-align: center; font-style: italic; color: #888;">Chưa có môn học nào.</li>`;
-                    currentSubjectId = null;
-                    document.getElementById('mainTitle').textContent = "Vui lòng chọn một môn học";
-                    document.getElementById('note-list-view').style.display = 'none';
-                    document.getElementById('note-editor-view').style.display = 'none';
-                    return;
-                }
-                
-                allSubjects.forEach(subject => {
-                    const subjectItem = createSubjectListItem(subject);
-                    subjectList.appendChild(subjectItem);
-                });
+          const store = getObjectStore("subjects", "readonly");
+          const request = store.getAll();
+          request.onsuccess = (event) => {
+            allSubjects = event.target.result;
+            if (allSubjects.length === 0) {
+              subjectList.innerHTML = `<li style="text-align: center; font-style: italic; color: #888;">Chưa có môn học nào.</li>`;
+              currentSubjectId = null;
+              document.getElementById("mainTitle").textContent =
+                "Vui lòng chọn một môn học";
+              document.getElementById("note-list-view").style.display = "none";
+              document.getElementById("note-editor-view").style.display =
+                "none";
+              return;
+            }
 
-                // Chọn môn học đầu tiên nếu chưa có môn nào được chọn
-                if (currentSubjectId) {
-                    selectSubject(currentSubjectId);
-                } else if (allSubjects.length > 0) {
-                    selectSubject(allSubjects[0].id);
-                }
-            };
+            allSubjects.forEach((subject) => {
+              const subjectItem = createSubjectListItem(subject);
+              subjectList.appendChild(subjectItem);
+            });
+
+            // Chọn môn học đầu tiên nếu chưa có môn nào được chọn
+            if (currentSubjectId) {
+              selectSubject(currentSubjectId);
+            } else if (allSubjects.length > 0) {
+              selectSubject(allSubjects[0].id);
+            }
+          };
         } catch (e) {
-            showMessage("Lỗi khi tải danh sách môn học.");
+          showMessage("Lỗi khi tải danh sách môn học.");
         }
       }
 
       // Tạo một item môn học trong sidebar
       function createSubjectListItem(subject) {
-          const li = document.createElement("li");
-          li.className = "subject-item";
-          li.dataset.id = subject.id;
-          li.innerHTML = `<span class="subject-name">${subject.name}</span><div class="subject-actions"></div>`;
+        const li = document.createElement("li");
+        li.className = "subject-item";
+        li.dataset.id = subject.id;
+        li.innerHTML = `<span class="subject-name">${subject.name}</span><div class="subject-actions"></div>`;
 
-          const actionsDiv = li.querySelector(".subject-actions");
+        const actionsDiv = li.querySelector(".subject-actions");
 
-          const editButton = document.createElement("button");
-          editButton.innerHTML = `<i class="fas fa-edit"></i>`;
-          editButton.onclick = (e) => {
-              e.stopPropagation(); // Ngăn sự kiện click lan truyền lên li
-              editSubject(subject.id, subject.name);
-          };
-          actionsDiv.appendChild(editButton);
+        const editButton = document.createElement("button");
+        editButton.innerHTML = `<i class="fas fa-edit"></i>`;
+        editButton.onclick = (e) => {
+          e.stopPropagation(); // Ngăn sự kiện click lan truyền lên li
+          editSubject(subject.id, subject.name);
+        };
+        actionsDiv.appendChild(editButton);
 
-          const deleteButton = document.createElement("button");
-          deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i>`;
-          deleteButton.onclick = (e) => {
-              e.stopPropagation(); // Ngăn sự kiện click lan truyền lên li
-              deleteSubject(subject.id, subject.name);
-          };
-          actionsDiv.appendChild(deleteButton);
+        const deleteButton = document.createElement("button");
+        deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i>`;
+        deleteButton.onclick = (e) => {
+          e.stopPropagation(); // Ngăn sự kiện click lan truyền lên li
+          deleteSubject(subject.id, subject.name);
+        };
+        actionsDiv.appendChild(deleteButton);
 
-          li.onclick = () => selectSubject(subject.id);
-          return li;
+        li.onclick = () => selectSubject(subject.id);
+        return li;
       }
-      
+
       // Thêm một môn học mới
       async function addSubject() {
-          const subjectName = "Môn học mới";
-          try {
-              const store = getObjectStore("subjects", "readwrite");
-              const request = store.add({ name: subjectName });
-              request.onsuccess = (event) => {
-                  showMessage("Đã thêm môn học mới!");
-                  loadSubjects();
-              };
-              request.onerror = () => showMessage("Lỗi khi thêm môn học.");
-          } catch (e) {
-              showMessage("Lỗi khi thêm môn học.");
-          }
+        const subjectName = "Môn học mới";
+        try {
+          const store = getObjectStore("subjects", "readwrite");
+          const request = store.add({ name: subjectName });
+          request.onsuccess = (event) => {
+            showMessage("Đã thêm môn học mới!");
+            loadSubjects();
+          };
+          request.onerror = () => showMessage("Lỗi khi thêm môn học.");
+        } catch (e) {
+          showMessage("Lỗi khi thêm môn học.");
+        }
       }
 
       // Chỉnh sửa tên môn học
       let subjectToEdit = null;
       function editSubject(id, name) {
-          subjectToEdit = { id, name };
-          const modal = document.getElementById('editSubjectModal');
-          const input = document.getElementById('editSubjectTitle');
-          input.value = name;
-          modal.classList.add('visible');
-          input.focus();
+        subjectToEdit = { id, name };
+        const modal = document.getElementById("editSubjectModal");
+        const input = document.getElementById("editSubjectTitle");
+        input.value = name;
+        modal.classList.add("visible");
+        input.focus();
       }
 
       // Lưu tên môn học đã chỉnh sửa
       async function updateSubject() {
-          if (!subjectToEdit) return;
-          const newName = document.getElementById('editSubjectTitle').value.trim();
-          if (newName) {
-              try {
-                  const store = getObjectStore("subjects", "readwrite");
-                  const updatedSubject = { ...subjectToEdit, name: newName };
-                  const request = store.put(updatedSubject);
-                  request.onsuccess = () => {
-                      document.getElementById('editSubjectModal').classList.remove('visible');
-                      subjectToEdit = null;
-                      showMessage("Đã cập nhật tên môn học.");
-                      loadSubjects();
-                  };
-                  request.onerror = () => showMessage("Lỗi khi cập nhật tên môn học.");
-              } catch (e) {
-                  showMessage("Lỗi khi cập nhật tên môn học.");
-              }
-          } else {
-              showMessage("Tên môn học không được để trống.");
+        if (!subjectToEdit) return;
+        const newName = document
+          .getElementById("editSubjectTitle")
+          .value.trim();
+        if (newName) {
+          try {
+            const store = getObjectStore("subjects", "readwrite");
+            const updatedSubject = { ...subjectToEdit, name: newName };
+            const request = store.put(updatedSubject);
+            request.onsuccess = () => {
+              document
+                .getElementById("editSubjectModal")
+                .classList.remove("visible");
+              subjectToEdit = null;
+              showMessage("Đã cập nhật tên môn học.");
+              loadSubjects();
+            };
+            request.onerror = () =>
+              showMessage("Lỗi khi cập nhật tên môn học.");
+          } catch (e) {
+            showMessage("Lỗi khi cập nhật tên môn học.");
           }
+        } else {
+          showMessage("Tên môn học không được để trống.");
+        }
       }
 
       // Xóa một môn học và tất cả ghi chú liên quan
       async function deleteSubject(id, name) {
-          showConfirm(`Bạn có chắc chắn muốn xóa môn học "${name}" và tất cả ghi chú của nó không?`, async (isConfirmed) => {
-              if (isConfirmed) {
-                  try {
-                      // Xóa tất cả ghi chú của môn học này
-                      const notesStore = getObjectStore("notes", "readwrite");
-                      const notesIndex = notesStore.index("subjectId");
-                      const notesRequest = notesIndex.openCursor(IDBKeyRange.only(id));
-                      notesRequest.onsuccess = (event) => {
-                          const cursor = event.target.result;
-                          if (cursor) {
-                              notesStore.delete(cursor.value.id);
-                              cursor.continue();
-                          }
-                      };
-
-                      // Xóa môn học
-                      const subjectsStore = getObjectStore("subjects", "readwrite");
-                      const subjectRequest = subjectsStore.delete(id);
-                      subjectRequest.onsuccess = () => {
-                          showMessage(`Đã xóa môn học "${name}".`);
-                          loadSubjects();
-                      };
-                  } catch (e) {
-                      showMessage("Lỗi khi xóa môn học.");
+        showConfirm(
+          `Bạn có chắc chắn muốn xóa môn học "${name}" và tất cả ghi chú của nó không?`,
+          async (isConfirmed) => {
+            if (isConfirmed) {
+              try {
+                // Xóa tất cả ghi chú của môn học này
+                const notesStore = getObjectStore("notes", "readwrite");
+                const notesIndex = notesStore.index("subjectId");
+                const notesRequest = notesIndex.openCursor(
+                  IDBKeyRange.only(id)
+                );
+                notesRequest.onsuccess = (event) => {
+                  const cursor = event.target.result;
+                  if (cursor) {
+                    notesStore.delete(cursor.value.id);
+                    cursor.continue();
                   }
+                };
+
+                // Xóa môn học
+                const subjectsStore = getObjectStore("subjects", "readwrite");
+                const subjectRequest = subjectsStore.delete(id);
+                subjectRequest.onsuccess = () => {
+                  showMessage(`Đã xóa môn học "${name}".`);
+                  loadSubjects();
+                };
+              } catch (e) {
+                showMessage("Lỗi khi xóa môn học.");
               }
-          });
+            }
+          }
+        );
       }
 
       // Chọn một môn học từ sidebar
       async function selectSubject(id) {
-          currentSubjectId = id;
-          currentNoteId = null; // Reset note ID
-          
-          // Cập nhật trạng thái active trong sidebar
-          document.querySelectorAll('.subject-item').forEach(item => {
-              item.classList.remove('active');
-          });
-          const activeSubjectItem = document.querySelector(`.subject-item[data-id='${id}']`);
-          if (activeSubjectItem) {
-              activeSubjectItem.classList.add('active');
-          }
+        currentSubjectId = id;
+        currentNoteId = null; // Reset note ID
 
-          loadNotesForCurrentSubject();
+        // Cập nhật trạng thái active trong sidebar
+        document.querySelectorAll(".subject-item").forEach((item) => {
+          item.classList.remove("active");
+        });
+        const activeSubjectItem = document.querySelector(
+          `.subject-item[data-id='${id}']`
+        );
+        if (activeSubjectItem) {
+          activeSubjectItem.classList.add("active");
+        }
+
+        loadNotesForCurrentSubject();
       }
 
       // =========================================================================================================
@@ -858,205 +949,341 @@
 
       // Tải và hiển thị danh sách ghi chú cho môn học hiện tại
       async function loadNotesForCurrentSubject() {
-          if (!currentSubjectId) return;
-          
-          const selectedSubject = allSubjects.find(s => s.id === currentSubjectId);
-          document.getElementById('mainTitle').textContent = `Ghi chú cho môn: ${selectedSubject.name}`;
-          document.getElementById('note-list-view').style.display = 'block';
-          document.getElementById('note-editor-view').style.display = 'none';
+        if (!currentSubjectId) return;
 
-          const noteListContainer = document.getElementById('noteList');
-          noteListContainer.innerHTML = "";
-          
-          try {
-            const store = getObjectStore("notes", "readonly");
-            const index = store.index("subjectId");
-            const request = index.getAll(IDBKeyRange.only(currentSubjectId));
-            
-            request.onsuccess = (event) => {
-              const notes = event.target.result;
-              if (notes.length === 0) {
-                  noteListContainer.innerHTML = `<p style="text-align: center; font-style: italic; color: #888;">Chưa có ghi chú nào. Hãy thêm một cái!</p>`;
-                  return;
-              }
-              // Sắp xếp các ghi chú theo trường 'position' (nếu có)
-              notes.sort((a, b) => (a.position || 0) - (b.position || 0));
-              notes.forEach(note => {
-                  const noteItem = createNoteListItem(note);
-                  noteListContainer.appendChild(noteItem);
-              });
-            };
-            request.onerror = () => showMessage("Lỗi khi tải danh sách ghi chú.");
-          } catch (e) {
-            showMessage("Lỗi khi tải danh sách ghi chú.");
-          }
+        const selectedSubject = allSubjects.find(
+          (s) => s.id === currentSubjectId
+        );
+        document.getElementById(
+          "mainTitle"
+        ).textContent = `Ghi chú cho môn: ${selectedSubject.name}`;
+        document.getElementById("note-list-view").style.display = "block";
+        document.getElementById("note-editor-view").style.display = "none";
+
+        const noteListContainer = document.getElementById("noteList");
+        noteListContainer.innerHTML = "";
+
+        try {
+          const store = getObjectStore("notes", "readonly");
+          const index = store.index("subjectId");
+          const request = index.getAll(IDBKeyRange.only(currentSubjectId));
+
+          request.onsuccess = (event) => {
+            const notes = event.target.result;
+            if (notes.length === 0) {
+              noteListContainer.innerHTML = `<p style="text-align: center; font-style: italic; color: #888;">Chưa có ghi chú nào. Hãy thêm một cái!</p>`;
+              return;
+            }
+            // Sắp xếp các ghi chú theo trường 'position' (nếu có)
+            notes.sort((a, b) => (a.position || 0) - (b.position || 0));
+            notes.forEach((note) => {
+              const noteItem = createNoteListItem(note);
+              noteListContainer.appendChild(noteItem);
+            });
+          };
+          request.onerror = () => showMessage("Lỗi khi tải danh sách ghi chú.");
+        } catch (e) {
+          showMessage("Lỗi khi tải danh sách ghi chú.");
+        }
       }
 
       // Tạo một item ghi chú trong danh sách
       function createNoteListItem(note) {
-          const div = document.createElement("div");
-          div.className = "note-list-item";
-          div.dataset.id = note.id;
-          div.setAttribute('draggable', true); // Thêm thuộc tính draggable
-          div.onclick = () => openNote(note.id);
-          div.innerHTML = `
+        const div = document.createElement("div");
+        div.className = "note-list-item";
+        div.dataset.id = note.id;
+        div.setAttribute("draggable", true); // Thêm thuộc tính draggable
+        div.onclick = () => openNote(note.id);
+        div.innerHTML = `
               <div>
                   <h4>${note.title || "Không có tiêu đề"}</h4>
-                  <p>${note.content.substring(0, 100) || "Không có nội dung"}</p>
+                  <p>${
+                    note.content.substring(0, 100) || "Không có nội dung"
+                  }</p>
               </div>
               <span class="date">${formatDate(note.timestamp)}</span>
           `;
-          return div;
+        return div;
       }
-      
+
       // Mở trình chỉnh sửa để tạo ghi chú mới
       function createNewNote() {
-          if (!currentSubjectId) {
-              showMessage("Vui lòng chọn một môn học trước.");
-              return;
-          }
-          currentNoteId = null;
-          document.getElementById('noteTitle').value = "";
-          document.getElementById('noteContent').value = "";
-          document.getElementById('mainTitle').textContent = "Tạo ghi chú mới";
-          document.getElementById('note-list-view').style.display = 'none';
-          document.getElementById('note-editor-view').style.display = 'block';
-          document.getElementById('noteTitle').focus();
+        if (!currentSubjectId) {
+          showMessage("Vui lòng chọn một môn học trước.");
+          return;
+        }
+        currentNoteId = null;
+        document.getElementById("noteTitle").value = "";
+        document.getElementById("noteContent").value = "";
+        document.getElementById("mainTitle").textContent = "Tạo ghi chú mới";
+        document.getElementById("note-list-view").style.display = "none";
+        document.getElementById("note-editor-view").style.display = "block";
+        document.getElementById("noteTitle").focus();
       }
 
       // Mở trình chỉnh sửa để xem/sửa ghi chú đã có
       async function openNote(noteId) {
-          if (!currentSubjectId) return;
-          
-          try {
-            const store = getObjectStore("notes", "readonly");
-            const request = store.get(noteId);
-            
-            request.onsuccess = (event) => {
-              const note = event.target.result;
-              if (note) {
-                  currentNoteId = note.id;
-                  document.getElementById('noteTitle').value = note.title;
-                  document.getElementById('noteContent').value = note.content;
-                  document.getElementById('mainTitle').textContent = `Chỉnh sửa: ${note.title || "Ghi chú không tiêu đề"}`;
-                  document.getElementById('note-list-view').style.display = 'none';
-                  document.getElementById('note-editor-view').style.display = 'block';
-              }
-            };
-            request.onerror = () => showMessage("Không thể mở ghi chú.");
-          } catch (e) {
-            showMessage("Lỗi khi mở ghi chú.");
-          }
+        if (!currentSubjectId) return;
+
+        try {
+          const store = getObjectStore("notes", "readonly");
+          const request = store.get(noteId);
+
+          request.onsuccess = (event) => {
+            const note = event.target.result;
+            if (note) {
+              currentNoteId = note.id;
+              document.getElementById("noteTitle").value = note.title;
+              document.getElementById("noteContent").value = note.content;
+              document.getElementById("mainTitle").textContent = `Chỉnh sửa: ${
+                note.title || "Ghi chú không tiêu đề"
+              }`;
+              document.getElementById("note-list-view").style.display = "none";
+              document.getElementById("note-editor-view").style.display =
+                "block";
+            }
+          };
+          request.onerror = () => showMessage("Không thể mở ghi chú.");
+        } catch (e) {
+          showMessage("Lỗi khi mở ghi chú.");
+        }
       }
 
       // Lưu ghi chú (mới hoặc đã có)
       async function saveNote() {
-          if (!currentSubjectId) {
-              showMessage("Vui lòng chọn một môn học trước.");
-              return;
-          }
-          const title = document.getElementById('noteTitle').value.trim();
-          const content = document.getElementById('noteContent').value.trim();
-          
-          if (!title && !content) {
-              showMessage("Không có nội dung để lưu.");
-              return;
-          }
+        if (!currentSubjectId) {
+          showMessage("Vui lòng chọn một môn học trước.");
+          return;
+        }
+        const title = document.getElementById("noteTitle").value.trim();
+        const content = document.getElementById("noteContent").value.trim();
 
-          try {
-              const store = getObjectStore("notes", "readwrite");
-              
-              if (currentNoteId) {
-                  // Cập nhật ghi chú đã có
-                  const getRequest = store.get(currentNoteId);
-                  getRequest.onsuccess = (event) => {
-                      const existingNote = event.target.result;
-                      if (existingNote) {
-                          existingNote.title = title;
-                          existingNote.content = content;
-                          existingNote.timestamp = new Date().toISOString();
-                          const putRequest = store.put(existingNote);
-                          putRequest.onsuccess = () => {
-                              showMessage("Đã cập nhật ghi chú!");
-                              loadNotesForCurrentSubject();
-                          };
-                      }
-                  };
-              } else {
-                  // Tạo ghi chú mới
-                  const allNotesForSubject = await new Promise((resolve, reject) => {
-                      const req = store.index("subjectId").getAll(IDBKeyRange.only(currentSubjectId));
-                      req.onsuccess = () => resolve(req.result);
-                      req.onerror = () => reject(req.error);
-                  });
-                  const newPosition = allNotesForSubject.length > 0 ? Math.max(...allNotesForSubject.map(n => n.position || 0)) + 1 : 1;
-                  
-                  const noteToSave = {
-                      subjectId: currentSubjectId,
-                      title: title,
-                      content: content,
-                      timestamp: new Date().toISOString(),
-                      position: newPosition, // Thêm trường position cho việc sắp xếp
-                  };
-                  const addRequest = store.add(noteToSave);
-                  addRequest.onsuccess = () => {
-                      showMessage("Đã lưu ghi chú mới!");
-                      loadNotesForCurrentSubject();
-                  };
+        if (!title && !content) {
+          showMessage("Không có nội dung để lưu.");
+          return;
+        }
+
+        try {
+          const store = getObjectStore("notes", "readwrite");
+
+          if (currentNoteId) {
+            // Cập nhật ghi chú đã có
+            const getRequest = store.get(currentNoteId);
+            getRequest.onsuccess = (event) => {
+              const existingNote = event.target.result;
+              if (existingNote) {
+                existingNote.title = title;
+                existingNote.content = content;
+                existingNote.timestamp = new Date().toISOString();
+                const putRequest = store.put(existingNote);
+                putRequest.onsuccess = () => {
+                  showMessage("Đã cập nhật ghi chú!");
+                  loadNotesForCurrentSubject();
+                };
               }
-          } catch (e) {
-              showMessage("Lỗi khi lưu ghi chú.");
+            };
+          } else {
+            // Tạo ghi chú mới
+            const allNotesForSubject = await new Promise((resolve, reject) => {
+              const req = store
+                .index("subjectId")
+                .getAll(IDBKeyRange.only(currentSubjectId));
+              req.onsuccess = () => resolve(req.result);
+              req.onerror = () => reject(req.error);
+            });
+            const newPosition =
+              allNotesForSubject.length > 0
+                ? Math.max(...allNotesForSubject.map((n) => n.position || 0)) +
+                  1
+                : 1;
+
+            const noteToSave = {
+              subjectId: currentSubjectId,
+              title: title,
+              content: content,
+              timestamp: new Date().toISOString(),
+              position: newPosition, // Thêm trường position cho việc sắp xếp
+            };
+            const addRequest = store.add(noteToSave);
+            addRequest.onsuccess = () => {
+              showMessage("Đã lưu ghi chú mới!");
+              loadNotesForCurrentSubject();
+            };
           }
+        } catch (e) {
+          showMessage("Lỗi khi lưu ghi chú.");
+        }
       }
 
       // Xóa ghi chú hiện tại
       async function deleteNote() {
-          if (!currentNoteId) {
-              showMessage("Không có ghi chú nào để xóa.");
-              return;
-          }
-          
-          showConfirm("Bạn có chắc chắn muốn xóa ghi chú này không?", async (isConfirmed) => {
-              if (isConfirmed) {
-                  try {
-                      const store = getObjectStore("notes", "readwrite");
-                      const request = store.delete(currentNoteId);
-                      request.onsuccess = () => {
-                          showMessage("Đã xóa ghi chú!");
-                          currentNoteId = null;
-                          loadNotesForCurrentSubject();
-                      };
-                      request.onerror = () => showMessage("Lỗi khi xóa ghi chú.");
-                  } catch (e) {
-                      showMessage("Lỗi khi xóa ghi chú.");
-                  }
+        if (!currentNoteId) {
+          showMessage("Không có ghi chú nào để xóa.");
+          return;
+        }
+
+        showConfirm(
+          "Bạn có chắc chắn muốn xóa ghi chú này không?",
+          async (isConfirmed) => {
+            if (isConfirmed) {
+              try {
+                const store = getObjectStore("notes", "readwrite");
+                const request = store.delete(currentNoteId);
+                request.onsuccess = () => {
+                  showMessage("Đã xóa ghi chú!");
+                  currentNoteId = null;
+                  loadNotesForCurrentSubject();
+                };
+                request.onerror = () => showMessage("Lỗi khi xóa ghi chú.");
+              } catch (e) {
+                showMessage("Lỗi khi xóa ghi chú.");
               }
-          });
+            }
+          }
+        );
       }
 
       // Cập nhật thứ tự các ghi chú sau khi kéo thả
       async function updateNotePositions(notesToUpdate) {
         try {
-            const transaction = db.transaction("notes", "readwrite");
-            const store = transaction.objectStore("notes");
-            
-            for (const note of notesToUpdate) {
-                const getRequest = store.get(note.id);
-                getRequest.onsuccess = (event) => {
-                    const existingNote = event.target.result;
-                    if (existingNote) {
-                        existingNote.position = note.position;
-                        store.put(existingNote);
-                    }
-                };
-            }
+          const transaction = db.transaction("notes", "readwrite");
+          const store = transaction.objectStore("notes");
 
-            transaction.oncomplete = () => {
-                showMessage("Đã cập nhật thứ tự ghi chú.");
+          for (const note of notesToUpdate) {
+            const getRequest = store.get(note.id);
+            getRequest.onsuccess = (event) => {
+              const existingNote = event.target.result;
+              if (existingNote) {
+                existingNote.position = note.position;
+                store.put(existingNote);
+              }
             };
-            transaction.onerror = () => showMessage("Lỗi khi cập nhật thứ tự.");
+          }
+
+          transaction.oncomplete = () => {
+            showMessage("Đã cập nhật thứ tự ghi chú.");
+          };
+          transaction.onerror = () => showMessage("Lỗi khi cập nhật thứ tự.");
         } catch (e) {
-            showMessage("Lỗi khi cập nhật thứ tự.");
+          showMessage("Lỗi khi cập nhật thứ tự.");
+        }
+      }
+
+      // =========================================================================================================
+      // GEMINI API INTEGRATIONS
+      // =========================================================================================================
+
+      // Function to make the API call to Gemini
+      async function callGeminiAPI(prompt) {
+        const apiKey = "";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+        let chatHistory = [];
+        chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+        const payload = { contents: chatHistory };
+
+        try {
+          const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            console.error("API Error:", errorData);
+            throw new Error(
+              `API returned an error: ${response.status} ${response.statusText}`
+            );
+          }
+
+          const result = await response.json();
+
+          if (
+            result.candidates &&
+            result.candidates.length > 0 &&
+            result.candidates[0].content &&
+            result.candidates[0].content.parts &&
+            result.candidates[0].content.parts.length > 0
+          ) {
+            return result.candidates[0].content.parts[0].text;
+          } else {
+            return "Không thể tạo nội dung. Vui lòng thử lại.";
+          }
+        } catch (error) {
+          console.error("Fetch Error:", error);
+          return "Có lỗi xảy ra khi gọi API. Vui lòng thử lại sau.";
+        }
+      }
+
+      // Summarize the current note content
+      async function summarizeNote() {
+        const noteContentElement = document.getElementById("noteContent");
+        const content = noteContentElement.value.trim();
+        if (!content) {
+          showMessage("Không có nội dung để tóm tắt.");
+          return;
+        }
+
+        const summarizeBtn = document.getElementById("summarizeNoteBtn");
+        summarizeBtn.disabled = true;
+        summarizeBtn.classList.add("button-loading");
+        summarizeBtn.innerHTML = `<span class="spinner"></span> Đang tóm tắt...`;
+
+        try {
+          const prompt = `Tóm tắt văn bản sau thành một đoạn ngắn gọn, súc tích và giữ nguyên ngôn ngữ gốc (tiếng Việt): \n\n${content}`;
+          const summary = await callGeminiAPI(prompt);
+
+          showAIModal("Tóm tắt nội dung", summary, (isConfirmed) => {
+            if (isConfirmed) {
+              noteContentElement.value = summary;
+              showMessage("Đã chèn bản tóm tắt vào ghi chú.");
+            }
+          });
+        } catch (e) {
+          showMessage("Lỗi khi tóm tắt ghi chú.");
+        } finally {
+          summarizeBtn.disabled = false;
+          summarizeBtn.classList.remove("button-loading");
+          summarizeBtn.innerHTML = `<i class="fas fa-star-of-life"></i> Tóm tắt ghi chú ✨`;
+        }
+      }
+
+      // Generate content based on the note title
+      async function generateContentFromTitle() {
+        const noteTitleElement = document.getElementById("noteTitle");
+        const noteContentElement = document.getElementById("noteContent");
+        const title = noteTitleElement.value.trim();
+
+        if (!title) {
+          showMessage("Vui lòng nhập tiêu đề trước khi tạo nội dung.");
+          return;
+        }
+
+        const generateBtn = document.getElementById("generateContentBtn");
+        generateBtn.disabled = true;
+        generateBtn.classList.add("button-loading");
+        generateBtn.innerHTML = `<span class="spinner"></span> Đang tạo...`;
+
+        try {
+          const prompt = `Viết một đoạn mở đầu ngắn gọn (khoảng 3-4 câu) cho một ghi chú bài học có tiêu đề là "${title}". Viết bằng tiếng Việt.`;
+          const generatedText = await callGeminiAPI(prompt);
+
+          showAIModal("Nội dung được tạo", generatedText, (isConfirmed) => {
+            if (isConfirmed) {
+              if (noteContentElement.value.trim() !== "") {
+                noteContentElement.value += `\n\n${generatedText}`;
+              } else {
+                noteContentElement.value = generatedText;
+              }
+              showMessage("Đã chèn nội dung vào ghi chú.");
+            }
+          });
+        } catch (e) {
+          showMessage("Lỗi khi tạo nội dung.");
+        } finally {
+          generateBtn.disabled = false;
+          generateBtn.classList.remove("button-loading");
+          generateBtn.innerHTML = `<i class="fas fa-wand-magic"></i> Tạo nội dung ✨`;
         }
       }
 
@@ -1089,79 +1316,87 @@
       });
 
       // Lắng nghe các sự kiện kéo thả trên danh sách ghi chú
-      const noteList = document.getElementById('noteList');
-      noteList.addEventListener('dragstart', (e) => {
-          if (e.target.classList.contains('note-list-item')) {
-              draggedNoteId = e.target.dataset.id;
-              e.target.classList.add('dragging');
-              e.dataTransfer.effectAllowed = 'move';
-              e.dataTransfer.setData('text/plain', draggedNoteId);
-          }
+      const noteList = document.getElementById("noteList");
+      noteList.addEventListener("dragstart", (e) => {
+        if (e.target.classList.contains("note-list-item")) {
+          draggedNoteId = e.target.dataset.id;
+          e.target.classList.add("dragging");
+          e.dataTransfer.effectAllowed = "move";
+          e.dataTransfer.setData("text/plain", draggedNoteId);
+        }
       });
-      noteList.addEventListener('dragend', (e) => {
-          e.target.classList.remove('dragging');
-          // Xóa tất cả các lớp drag-over
-          document.querySelectorAll('.note-list-item').forEach(item => {
-              item.classList.remove('drag-over', 'drag-over-bottom');
+      noteList.addEventListener("dragend", (e) => {
+        e.target.classList.remove("dragging");
+        // Xóa tất cả các lớp drag-over
+        document.querySelectorAll(".note-list-item").forEach((item) => {
+          item.classList.remove("drag-over", "drag-over-bottom");
+        });
+      });
+      noteList.addEventListener("dragover", (e) => {
+        e.preventDefault(); // Cho phép thả
+        const draggedItem = document.querySelector(".note-list-item.dragging");
+        const dropTarget = e.target.closest(".note-list-item");
+        if (draggedItem && dropTarget && draggedItem !== dropTarget) {
+          const rect = dropTarget.getBoundingClientRect();
+          const centerY = rect.top + rect.height / 2;
+
+          // Xóa các lớp drag-over cũ để chỉ có một đối tượng được highlight
+          document.querySelectorAll(".note-list-item").forEach((item) => {
+            item.classList.remove("drag-over", "drag-over-bottom");
           });
-      });
-      noteList.addEventListener('dragover', (e) => {
-          e.preventDefault(); // Cho phép thả
-          const draggedItem = document.querySelector('.note-list-item.dragging');
-          const dropTarget = e.target.closest('.note-list-item');
-          if (draggedItem && dropTarget && draggedItem !== dropTarget) {
-              const rect = dropTarget.getBoundingClientRect();
-              const centerY = rect.top + rect.height / 2;
-              
-              // Xóa các lớp drag-over cũ để chỉ có một đối tượng được highlight
-              document.querySelectorAll('.note-list-item').forEach(item => {
-                  item.classList.remove('drag-over', 'drag-over-bottom');
-              });
 
-              if (e.clientY < centerY) {
-                  dropTarget.classList.add('drag-over');
-              } else {
-                  dropTarget.classList.add('drag-over-bottom');
-              }
+          if (e.clientY < centerY) {
+            dropTarget.classList.add("drag-over");
+          } else {
+            dropTarget.classList.add("drag-over-bottom");
           }
+        }
       });
-      noteList.addEventListener('drop', (e) => {
-          e.preventDefault();
-          const draggedItem = document.querySelector('.note-list-item.dragging');
-          const dropTarget = e.target.closest('.note-list-item');
+      noteList.addEventListener("drop", (e) => {
+        e.preventDefault();
+        const draggedItem = document.querySelector(".note-list-item.dragging");
+        const dropTarget = e.target.closest(".note-list-item");
 
-          if (draggedItem && dropTarget && draggedItem !== dropTarget) {
-              const rect = dropTarget.getBoundingClientRect();
-              const centerY = rect.top + rect.height / 2;
-              
-              const isDropBefore = e.clientY < centerY;
+        if (draggedItem && dropTarget && draggedItem !== dropTarget) {
+          const rect = dropTarget.getBoundingClientRect();
+          const centerY = rect.top + rect.height / 2;
 
-              if (isDropBefore) {
-                  noteList.insertBefore(draggedItem, dropTarget);
-              } else {
-                  noteList.insertBefore(draggedItem, dropTarget.nextSibling);
-              }
-              
-              // Cập nhật vị trí trong IndexedDB
-              const updatedNotes = Array.from(noteList.children).map((item, index) => ({
-                  id: parseInt(item.dataset.id),
-                  position: index + 1,
-              }));
-              updateNotePositions(updatedNotes);
+          const isDropBefore = e.clientY < centerY;
+
+          if (isDropBefore) {
+            noteList.insertBefore(draggedItem, dropTarget);
+          } else {
+            noteList.insertBefore(draggedItem, dropTarget.nextSibling);
           }
 
-          // Xóa tất cả các lớp drag-over sau khi thả
-          document.querySelectorAll('.note-list-item').forEach(item => {
-              item.classList.remove('drag-over', 'drag-over-bottom');
-          });
+          // Cập nhật vị trí trong IndexedDB
+          const updatedNotes = Array.from(noteList.children).map(
+            (item, index) => ({
+              id: parseInt(item.dataset.id),
+              position: index + 1,
+            })
+          );
+          updateNotePositions(updatedNotes);
+        }
+
+        // Xóa tất cả các lớp drag-over sau khi thả
+        document.querySelectorAll(".note-list-item").forEach((item) => {
+          item.classList.remove("drag-over", "drag-over-bottom");
+        });
       });
-      
+
       // Gắn sự kiện cho các nút trong modal chỉnh sửa tên môn học
-      document.getElementById('saveEditSubjectButton').addEventListener('click', updateSubject);
-      document.getElementById('cancelEditSubjectButton').addEventListener('click', () => {
-          document.getElementById('editSubjectModal').classList.remove('visible');
+      document
+        .getElementById("saveEditSubjectButton")
+        .addEventListener("click", updateSubject);
+      document
+        .getElementById("cancelEditSubjectButton")
+        .addEventListener("click", () => {
+          document
+            .getElementById("editSubjectModal")
+            .classList.remove("visible");
           subjectToEdit = null;
-      });
+        });
 
       // Khởi tạo ứng dụng khi DOM đã tải xong
       window.addEventListener("DOMContentLoaded", async () => {
