@@ -38,7 +38,7 @@
         color: var(--text-color);
       }
 
-      /* Top navigation buttons */
+      /* Nút điều hướng đầu trang */
       .top-buttons-container {
         position: sticky;
         top: 20px;
@@ -50,24 +50,14 @@
         background-color: transparent;
         box-shadow: none;
         align-items: center;
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-
-      @media (min-width: 768px) {
-        .top-buttons-container {
-          justify-content: flex-start;
-          top: 20px;
-          left: 20px;
-        }
       }
 
       .home-button,
-      .notes-button, /* Thêm class mới cho nút "Sổ Ghi Bài" */
       .drive-button,
       .calendar-button,
       .contact-button,
-      .profile-button {
+      .profile-button,
+      .notebook-button {
         display: flex;
         align-items: center;
         background: linear-gradient(to right, var(--secondary-color), #f48fb1);
@@ -82,32 +72,26 @@
         text-decoration: none;
       }
       .home-button:hover,
-      .notes-button:hover, /* Thêm class mới vào hiệu ứng hover */
       .drive-button:hover,
       .calendar-button:hover,
       .contact-button:hover,
-      .profile-button:hover {
+      .profile-button:hover,
+      .notebook-button:hover {
         transform: scale(1.05);
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
       }
 
-      /* Main content wrapper */
+      /* Khung nội dung chính */
       .main-content {
         display: flex;
         justify-content: center;
         gap: 20px;
         padding: 20px;
         flex-wrap: wrap;
-        margin-top: 20px;
+        margin-top: 60px;
       }
 
-      @media (min-width: 1024px) {
-        .main-content {
-          flex-wrap: nowrap;
-        }
-      }
-
-      /* Main container (posts) */
+      /* Khung giữa (Bài viết) */
       .container {
         max-width: 600px;
         flex-grow: 1;
@@ -117,25 +101,15 @@
         box-shadow: var(--box-shadow-main);
       }
 
-      /* Left (blackboard) and right (notes) containers */
+      /* Khung bên trái (Bảng đen) và bên phải (Ghi chú) */
       .blackboard-container,
       .note-container {
-        width: 100%;
-        max-width: 300px;
+        width: 300px;
         padding: 15px;
         border-radius: var(--border-radius-large);
         box-shadow: var(--box-shadow-main);
         align-self: flex-start;
-        margin-bottom: 20px;
       }
-
-      @media (min-width: 1024px) {
-        .blackboard-container,
-        .note-container {
-          width: 300px;
-        }
-      }
-
       .blackboard-container {
         background-color: #2c3e50;
         border: 10px solid #a0522d;
@@ -148,7 +122,7 @@
         position: relative;
       }
 
-      /* Titles */
+      /* Tiêu đề */
       .main-title,
       h2,
       h3 {
@@ -164,7 +138,7 @@
         color: var(--secondary-color);
       }
 
-      /* Input fields */
+      /* Các trường nhập liệu */
       textarea,
       input[type="text"] {
         width: 100%;
@@ -179,7 +153,7 @@
         width: calc(100% - 22px);
       }
 
-      /* Buttons */
+      /* Nút bấm */
       button,
       .button {
         padding: 8px 14px;
@@ -202,7 +176,7 @@
         margin-right: 5px;
       }
 
-      /* File upload */
+      /* Tải ảnh */
       .file-upload-container {
         display: block;
         width: 150px;
@@ -237,7 +211,7 @@
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       }
 
-      /* Status posts */
+      /* Hiển thị trạng thái */
       .status {
         background: var(--background-dark);
         border: 1px solid #f8bbd0;
@@ -271,7 +245,7 @@
         margin: 5px 0;
       }
 
-      /* Todo notes */
+      /* Ghi chú công việc */
       .note-container::before {
         content: "";
         position: absolute;
@@ -315,7 +289,7 @@
         border: none;
       }
 
-      /* Important notes (blackboard) */
+      /* Lưu ý quan trọng (bảng đen) */
       .blackboard-container h3 {
         color: #ecf0f1;
         font-family: "Comic Sans MS", cursive, sans-serif;
@@ -335,7 +309,7 @@
         background: linear-gradient(to right, #ffb74d, var(--secondary-color));
       }
 
-      /* Real-time clock */
+      /* Đồng hồ thời gian thực */
       .clock-container {
         text-align: center;
         margin-bottom: 20px;
@@ -353,7 +327,7 @@
         font-weight: bold;
       }
 
-      /* Whale and clover icons */
+      /* Icon cá voi và cỏ ba lá */
       #clover-reload-icon {
         position: fixed;
         font-size: 2em;
@@ -441,7 +415,7 @@
         color: var(--primary-color);
       }
 
-      /* User guide link */
+      /* Đường dẫn Hướng dẫn sử dụng */
       .guide-header {
         cursor: pointer;
         padding: 12px 20px;
@@ -472,7 +446,7 @@
         color: white;
       }
 
-      /* App install popup */
+      /* Pop-up cài đặt ứng dụng */
       .install-app-popup {
         position: fixed;
         bottom: 20px;
@@ -512,8 +486,7 @@
         font-size: 0.7em;
         color: #666;
       }
-
-      /* Profile link card */
+      
       .profile-link-card {
         width: 100%;
         max-width: 600px;
@@ -538,64 +511,11 @@
       .profile-link-card a:hover {
         background-color: #c2185b;
       }
-
-      /* Custom modal and message box styling */
-      .modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 2000;
-        visibility: hidden;
-        opacity: 0;
-        transition: visibility 0s, opacity 0.3s;
-      }
-      .modal.visible {
-        visibility: visible;
-        opacity: 1;
-      }
-      .modal-content {
-        background-color: white;
-        padding: 20px;
-        border-radius: var(--border-radius-large);
-        box-shadow: var(--box-shadow-main);
-        text-align: center;
-        max-width: 300px;
-      }
-      .modal-content p {
-        margin: 0 0 15px;
-      }
-      .modal-content button {
-        margin: 5px;
-      }
-
-      #messageBox {
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: rgba(0, 0, 0, 0.75);
-        color: white;
-        padding: 10px 20px;
-        border-radius: var(--border-radius-large);
-        z-index: 2001;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s, visibility 0.3s;
-      }
-      #messageBox.visible {
-        opacity: 1;
-        visibility: visible;
-      }
     </style>
   </head>
   <body>
     <div id="clover-reload-icon">🍀</div>
+
     <div id="whale-icon">
       🐋
       <audio
@@ -605,25 +525,9 @@
       ></audio>
     </div>
 
-    <!-- Custom alert/message box -->
-    <div id="messageBox"></div>
-
-    <!-- Custom confirmation modal -->
-    <div id="confirmModal" class="modal">
-      <div class="modal-content">
-        <p id="confirmMessage"></p>
-        <button id="confirmYes">Có</button>
-        <button id="confirmNo">Không</button>
-      </div>
-    </div>
-
     <div class="top-buttons-container">
       <a class="home-button" href="giaodien.html">
         <i class="fas fa-home"></i> Home
-      </a>
-      <!-- Liên kết mới được thêm vào -->
-      <a class="notes-button" href="so_ghi_bai.html">
-        <i class="fas fa-book"></i> Sổ Ghi Bài
       </a>
       <a
         class="drive-button"
@@ -640,6 +544,9 @@
       </a>
       <a class="profile-button" href="trangcanhan.html">
         <i class="fas fa-user-circle"></i> Trang cá nhân
+      </a>
+      <a class="notebook-button" href="so_ghi_bai.html">
+        <i class="fas fa-book"></i> Sổ ghi bài
       </a>
     </div>
 
@@ -662,6 +569,7 @@
         <div class="clock-container">
           <div id="realtime-clock"></div>
         </div>
+
         <h2 class="main-title" onclick="scrollToTop()">
           <i class="fas fa-heart"></i> BÂNG KHUÂNG PHIÊU LƯU KÝ
           <i class="fas fa-heart"></i>
@@ -678,9 +586,7 @@
         </label>
         <input type="file" id="imageUpload" accept="image/*" />
         <div id="imagePreview" class="image-preview"></div>
-        <label
-          ><input type="checkbox" id="completed" /> Đã hoàn thành tất cả</label
-        >
+        <label><input type="checkbox" id="completed" /> Hoàn thành</label>
         <br />
         <input
           type="text"
@@ -747,40 +653,43 @@
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
-      // Global variables for IndexedDB
+      // Script cho các chức năng tương tác và lưu trữ dữ liệu
+
+      // Xử lý icon cá voi và âm thanh
+      const whaleIcon = document.getElementById("whale-icon");
+      const audio = document.getElementById("bangkhieng-audio");
+      let isPlaying = false;
+
+      whaleIcon.addEventListener("click", () => {
+        if (isPlaying) {
+          audio.pause();
+          whaleIcon.style.animationPlayState = "paused";
+          isPlaying = false;
+        } else {
+          audio.play();
+          whaleIcon.style.animationPlayState = "running";
+          isPlaying = true;
+        }
+      });
+
+      // Script cho đồng hồ thời gian thực
+      function updateClock() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, "0");
+        const minutes = String(now.getMinutes()).padStart(2, "0");
+        const seconds = String(now.getSeconds()).padStart(2, "0");
+        document.getElementById(
+          "realtime-clock"
+        ).textContent = `${hours}:${minutes}:${seconds}`;
+      }
+      updateClock();
+      setInterval(updateClock, 1000);
+
+      // IndexedDB Helper Functions
       const DB_NAME = "LocketHuyDB";
       const DB_VERSION = 1;
       let db;
 
-      // Function to show a custom message box
-      function showMessage(message) {
-        const messageBox = document.getElementById("messageBox");
-        messageBox.textContent = message;
-        messageBox.classList.add("visible");
-        setTimeout(() => {
-          messageBox.classList.remove("visible");
-        }, 3000);
-      }
-
-      // Function to show a custom confirmation modal
-      function showConfirm(message, onConfirm) {
-        const modal = document.getElementById("confirmModal");
-        const confirmMessage = document.getElementById("confirmMessage");
-        const confirmYes = document.getElementById("confirmYes");
-        const confirmNo = document.getElementById("confirmNo");
-        confirmMessage.textContent = message;
-        modal.classList.add("visible");
-        confirmYes.onclick = () => {
-          modal.classList.remove("visible");
-          onConfirm(true);
-        };
-        confirmNo.onclick = () => {
-          modal.classList.remove("visible");
-          onConfirm(false);
-        };
-      }
-
-      // IndexedDB helper functions
       function openDB() {
         return new Promise((resolve, reject) => {
           const request = indexedDB.open(DB_NAME, DB_VERSION);
@@ -805,389 +714,380 @@
               });
             }
             if (!db.objectStoreNames.contains("importantNotes")) {
-              db.createObjectStore("importantNotes", { keyPath: "id" });
+              db.createObjectStore("importantNotes", {
+                keyPath: "id",
+                autoIncrement: true,
+              });
             }
           };
         });
       }
 
-      function getObjectStore(storeName, mode) {
-        return db.transaction(storeName, mode).objectStore(storeName);
+      async function saveToDB(storeName, data) {
+        if (!db) await openDB();
+        const transaction = db.transaction([storeName], "readwrite");
+        const store = transaction.objectStore(storeName);
+        store.put(data);
+        return new Promise((resolve, reject) => {
+          transaction.oncomplete = () => resolve();
+          transaction.onerror = (event) => reject(event.target.error);
+        });
       }
 
-      // Important notes logic
-      async function saveImportantNotes() {
-        const notes = document.getElementById("importantNotes").value;
-        const tx = db.transaction("importantNotes", "readwrite");
-        const store = tx.objectStore("importantNotes");
-        await store.put({ id: "main-notes", content: notes });
-        showMessage("Đã lưu các ghi chú quan trọng!");
+      async function getAllFromDB(storeName) {
+        if (!db) await openDB();
+        const transaction = db.transaction([storeName], "readonly");
+        const store = transaction.objectStore(storeName);
+        const request = store.getAll();
+        return new Promise((resolve, reject) => {
+          request.onsuccess = (event) => resolve(event.target.result);
+          request.onerror = (event) => reject(event.target.error);
+        });
       }
 
-      async function loadImportantNotes() {
-        const store = getObjectStore("importantNotes", "readonly");
-        const request = store.get("main-notes");
-        request.onsuccess = (event) => {
-          const result = event.target.result;
-          if (result) {
-            document.getElementById("importantNotes").value = result.content;
-          }
-        };
+      async function getByIdFromDB(storeName, id) {
+        if (!db) await openDB();
+        return new Promise((resolve, reject) => {
+          const transaction = db.transaction([storeName], "readonly");
+          const store = transaction.objectStore(storeName);
+          const request = store.get(id);
+          request.onsuccess = (event) => resolve(event.target.result);
+          request.onerror = (event) => reject(event.target.error);
+        });
       }
 
-      function clearImportantNotes() {
-        showConfirm(
-          "Bạn có chắc chắn muốn xóa ghi chú quan trọng không?",
-          async (isConfirmed) => {
-            if (isConfirmed) {
-              const tx = db.transaction("importantNotes", "readwrite");
-              const store = tx.objectStore("importantNotes");
-              await store.delete("main-notes");
-              document.getElementById("importantNotes").value = "";
-              showMessage("Đã xóa ghi chú quan trọng!");
-            }
-          }
-        );
+      async function deleteFromDB(storeName, id) {
+        if (!db) await openDB();
+        const transaction = db.transaction([storeName], "readwrite");
+        const store = transaction.objectStore(storeName);
+        store.delete(id);
+        return new Promise((resolve, reject) => {
+          transaction.oncomplete = () => resolve();
+          transaction.onerror = (event) => reject(event.target.error);
+        });
       }
 
-      // Note items (todo list) logic
-      async function addNoteItem() {
-        const newNoteInput = document.getElementById("newNoteInput");
-        const text = newNoteInput.value.trim();
-        if (text) {
-          const store = getObjectStore("noteItems", "readwrite");
-          await store.add({ text: text, completed: false });
-          newNoteInput.value = "";
-          loadNoteItems();
-        }
+      const statusList = document.getElementById("statusList");
+      flatpickr("#filterDate", { dateFormat: "Y-m-d" });
+
+      function formatTimeAgo(date) {
+        const seconds = Math.floor((new Date() - date) / 1000);
+        if (seconds < 60) return `${seconds} giây trước`;
+        const minutes = Math.floor(seconds / 60);
+        if (minutes < 60) return `${minutes} phút trước`;
+        const hours = Math.floor(minutes / 60);
+        if (hours < 24) return `${hours} giờ trước`;
+        const days = Math.floor(hours / 24);
+        return `${days} ngày trước`;
       }
 
-      async function loadNoteItems() {
-        const noteList = document.getElementById("noteList");
-        noteList.innerHTML = "";
-        const store = getObjectStore("noteItems", "readonly");
-        const request = store.openCursor();
-        request.onsuccess = (event) => {
-          const cursor = event.target.result;
-          if (cursor) {
-            const li = document.createElement("li");
-            li.textContent = cursor.value.text;
-            if (cursor.value.completed) {
-              li.classList.add("completed");
-            }
-
-            const completeButton = document.createElement("button");
-            completeButton.textContent = "✔";
-            completeButton.onclick = async () => {
-              const updatedItem = {
-                ...cursor.value,
-                completed: !cursor.value.completed,
-              };
-              const updateStore = getObjectStore("noteItems", "readwrite");
-              await updateStore.put(updatedItem);
-              loadNoteItems();
-            };
-
-            const deleteButton = document.createElement("button");
-            deleteButton.textContent = "❌";
-            deleteButton.onclick = async () => {
-              showConfirm(
-                "Bạn có chắc chắn muốn xóa công việc này không?",
-                async (isConfirmed) => {
-                  if (isConfirmed) {
-                    const deleteStore = getObjectStore(
-                      "noteItems",
-                      "readwrite"
-                    );
-                    await deleteStore.delete(cursor.key);
-                    loadNoteItems();
-                  }
-                }
-              );
-            };
-
-            li.appendChild(completeButton);
-            li.appendChild(deleteButton);
-            noteList.appendChild(li);
-
-            cursor.continue();
-          }
-        };
-      }
-
-      // Status posts logic
       async function addStatus() {
-        const title = document.getElementById("title").value;
-        const content = document.getElementById("content").value;
-        const imageFile = document.getElementById("imageUpload").files[0];
+        const title = document.getElementById("title").value.trim();
+        const content = document.getElementById("content").value.trim();
         const completed = document.getElementById("completed").checked;
-        const now = new Date();
-        const date = now.toISOString().split("T")[0];
-        const time = now.toLocaleTimeString("vi-VN", {
-          hour: "2-digit",
-          minute: "2-digit",
-        });
+        const imageFile = document.getElementById("imageUpload").files[0];
+        const timestamp = new Date();
+        if (title === "" && content === "" && !imageFile) return;
 
-        let imageUrl = null;
-        if (imageFile) {
-          const reader = new FileReader();
-          reader.onloadend = async () => {
-            imageUrl = reader.result;
-            const status = { title, content, date, time, completed, imageUrl };
-            const store = getObjectStore("statuses", "readwrite");
-            await store.add(status);
-            document.getElementById("title").value = "";
-            document.getElementById("content").value = "";
-            document.getElementById("imageUpload").value = "";
-            document.getElementById("imagePreview").innerHTML = "";
-            document.getElementById("completed").checked = false;
-            loadStatuses();
-            showMessage("Đã đăng trạng thái thành công!");
-          };
-          reader.readAsDataURL(imageFile);
-        } else {
-          const status = { title, content, date, time, completed, imageUrl };
-          const store = getObjectStore("statuses", "readwrite");
-          await store.add(status);
+        const status = {
+          title,
+          content,
+          completed,
+          timestamp,
+          image: null,
+          notes: [],
+          history: [],
+        };
+
+        const reader = new FileReader();
+        reader.onload = async function () {
+          status.image = imageFile ? reader.result : null;
+          await saveToDB("statuses", status);
+          renderStatuses();
           document.getElementById("title").value = "";
           document.getElementById("content").value = "";
           document.getElementById("completed").checked = false;
-          loadStatuses();
-          showMessage("Đã đăng trạng thái thành công!");
+          document.getElementById("imageUpload").value = "";
+          document.getElementById("imagePreview").innerHTML = "";
+          for (let i = 0; i < 6; i++) {
+            createWhaleEffect();
+          }
+        };
+
+        if (imageFile) {
+          reader.readAsDataURL(imageFile);
+        } else {
+          await saveToDB("statuses", status);
+          renderStatuses();
+          for (let i = 0; i < 6; i++) {
+            createWhaleEffect();
+          }
         }
       }
 
-      async function loadStatuses() {
-        const filterDate = document.getElementById("filterDate").value;
-        const statusList = document.getElementById("statusList");
+      async function renderStatuses() {
         statusList.innerHTML = "";
+        const statuses = await getAllFromDB("statuses");
+        statuses.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        const filterDate = document.getElementById("filterDate").value;
 
-        const store = getObjectStore("statuses", "readonly");
-        const request = store.openCursor(null, "prev");
-
-        request.onsuccess = (event) => {
-          const cursor = event.target.result;
-          if (cursor) {
-            const status = cursor.value;
-            if (!filterDate || status.date === filterDate) {
-              const statusDiv = document.createElement("div");
-              statusDiv.className = "status";
-
-              const title = document.createElement("div");
-              title.className = "status-title";
-              title.textContent = status.title;
-              statusDiv.appendChild(title);
-
-              const time = document.createElement("div");
-              time.className = "status-time";
-              time.textContent = `${status.time} - ${status.date}`;
-              statusDiv.appendChild(time);
-
-              // Handle content with checkboxes
-              const contentContainer = document.createElement("div");
-              contentContainer.innerHTML = status.content
-                .split("\n")
-                .map((line) => {
-                  if (line.startsWith("- [ ]")) {
-                    return `<label><input type="checkbox" disabled> ${line.substring(
-                      5
-                    )}</label><br/>`;
-                  } else if (line.startsWith("- [x]")) {
-                    return `<label><input type="checkbox" disabled checked> ${line.substring(
-                      5
-                    )}</label><br/>`;
-                  } else {
-                    return `${line}<br/>`;
-                  }
-                })
-                .join("");
-              statusDiv.appendChild(contentContainer);
-
-              if (status.imageUrl) {
-                const img = document.createElement("img");
-                img.src = status.imageUrl;
-                img.style.maxWidth = "100%";
-                img.style.borderRadius = "var(--border-radius-small)";
-                img.style.marginTop = "10px";
-                statusDiv.appendChild(img);
-              }
-
-              const deleteButton = document.createElement("button");
-              deleteButton.textContent = "Xóa";
-              deleteButton.style.marginTop = "10px";
-              deleteButton.onclick = () => {
-                showConfirm(
-                  "Bạn có chắc chắn muốn xóa trạng thái này không?",
-                  async (isConfirmed) => {
-                    if (isConfirmed) {
-                      const deleteStore = getObjectStore(
-                        "statuses",
-                        "readwrite"
-                      );
-                      await deleteStore.delete(cursor.key);
-                      loadStatuses();
-                    }
-                  }
-                );
-              };
-              statusDiv.appendChild(deleteButton);
-
-              statusList.appendChild(statusDiv);
-            }
-            cursor.continue();
+        statuses.forEach((status) => {
+          const dateMatch =
+            !filterDate ||
+            new Date(status.timestamp).toISOString().slice(0, 10) ===
+              filterDate;
+          if (!dateMatch) return;
+          const div = document.createElement("div");
+          div.className = "status";
+          div.innerHTML = `
+          <div class="status-title">${status.title}</div>
+          <div>
+            ${status.content
+              .split("\n")
+              .map(
+                (line) =>
+                  `<div><label><input type="checkbox" ${
+                    status.completed ? "checked" : ""
+                  }/> ${line}</label></div>`
+              )
+              .join("")}
+          </div>
+          ${
+            status.image
+              ? `<img src="${status.image}" style="max-width:100%;margin-top:10px;border-radius:8px;" />`
+              : ""
           }
-        };
+          <div><label><input type="checkbox" onchange="toggleCompleted(${
+            status.id
+          })" ${
+            status.completed ? "checked" : ""
+          } /> <span>Hoàn thành tất cả</span></label></div>
+          <div class="status-time">${formatTimeAgo(
+            new Date(status.timestamp)
+          )} - ${new Date(status.timestamp).toLocaleDateString("vi-VN", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          })}</div>
+          <button onclick="editStatus(${
+            status.id
+          })"><i class="fas fa-edit"></i> Sửa</button>
+          <button onclick="deleteStatus(${
+            status.id
+          })"><i class="fas fa-trash-alt"></i> Xóa</button>
+          <button onclick="viewHistory(${
+            status.id
+          })"><i class="fas fa-history"></i> Nhật ký chỉnh sửa</button>
+          <div><input type="text" id="noteInput-${
+            status.id
+          }" placeholder="Thêm ghi chú..." /><button onclick="addNote(${
+            status.id
+          })"><i class="fas fa-paper-plane"></i> Gửi</button></div>
+          <div class="status-notes">${status.notes
+            .map((note) => `<div class="note">${note}</div>`)
+            .join("")}</div>
+          <div id="history-${
+            status.id
+          }" style="display:none; font-size: 0.85em; margin-top: 8px;"></div>
+        `;
+          statusList.appendChild(div);
+        });
+      }
+
+      async function toggleCompleted(id) {
+        const status = await getByIdFromDB("statuses", id);
+        if (status) {
+          status.completed = !status.completed;
+          await saveToDB("statuses", status);
+          renderStatuses();
+        }
       }
 
       async function deleteStatus(id) {
-        const store = getObjectStore("statuses", "readwrite");
-        await store.delete(id);
-        loadStatuses();
+        if (confirm("Bạn chắc chắn muốn xóa bài viết này?")) {
+          await deleteFromDB("statuses", id);
+          renderStatuses();
+        }
       }
 
-      // Event listeners and initial load
-      document
-        .getElementById("filterDate")
-        .addEventListener("change", loadStatuses);
+      function editStatus(id) {
+        window.location.href = `edit_status.html?id=${id}`;
+      }
+
+      async function viewHistory(id) {
+        const status = await getByIdFromDB("statuses", id);
+        const container = document.getElementById(`history-${id}`);
+        if (!status || !status.history || status.history.length === 0) {
+          container.innerHTML = "<i>Không có chỉnh sửa nào.</i>";
+        } else {
+          container.innerHTML = status.history
+            .map(
+              (h) => `
+          <div style="margin-bottom:6px;">
+            <strong>${new Date(h.editedAt).toLocaleString()}</strong><br/>
+            <div>Tiêu đề cũ: ${h.oldTitle}</div>
+            <div>Tiêu đề mới: ${h.newTitle}</div>
+            <div>Nội dung cũ: ${h.oldContent.replace(/\n/g, "<br/>")}</div>
+            <div>Nội dung mới: ${h.newContent.replace(/\n/g, "<br/>")}</div>
+          </div>`
+            )
+            .join("");
+        }
+        container.style.display =
+          container.style.display === "none" ? "block" : "none";
+      }
+
+      async function addNote(id) {
+        const input = document.getElementById(`noteInput-${id}`);
+        const note = input.value.trim();
+        if (note) {
+          const status = await getByIdFromDB("statuses", id);
+          if (status) {
+            status.notes.push(note);
+            await saveToDB("statuses", status);
+            input.value = "";
+            renderStatuses();
+          }
+        }
+      }
+
+      async function renderNoteItems() {
+        const noteList = document.getElementById("noteList");
+        noteList.innerHTML = "";
+        const noteItems = await getAllFromDB("noteItems");
+        noteItems.forEach((item) => {
+          const li = document.createElement("li");
+          li.className = item.completed ? "completed" : "";
+          li.innerHTML = `
+            <div><input type="checkbox" onchange="toggleNoteCompleted(${
+              item.id
+            })" ${item.completed ? "checked" : ""} /><span>${
+            item.text
+          }</span></div>
+            <button onclick="deleteNoteItem(${
+              item.id
+            })"><i class="fas fa-times-circle"></i></button>`;
+          noteList.appendChild(li);
+        });
+      }
+
+      async function addNoteItem() {
+        const input = document.getElementById("newNoteInput");
+        const text = input.value.trim();
+        if (text) {
+          const noteItem = { text, completed: false };
+          await saveToDB("noteItems", noteItem);
+          input.value = "";
+          renderNoteItems();
+        }
+      }
+
+      async function toggleNoteCompleted(id) {
+        const item = await getByIdFromDB("noteItems", id);
+        if (item) {
+          item.completed = !item.completed;
+          await saveToDB("noteItems", item);
+          renderNoteItems();
+        }
+      }
+
+      async function deleteNoteItem(id) {
+        await deleteFromDB("noteItems", id);
+        renderNoteItems();
+      }
+
+      async function saveImportantNotes() {
+        const notes = document.getElementById("importantNotes").value;
+        const noteData = { id: 1, notes: notes };
+        await saveToDB("importantNotes", noteData);
+        alert("Đã lưu lưu ý quan trọng!");
+      }
+
+      async function loadImportantNotes() {
+        const noteData = await getByIdFromDB("importantNotes", 1);
+        if (noteData && noteData.notes) {
+          document.getElementById("importantNotes").value = noteData.notes;
+        }
+      }
+
+      async function clearImportantNotes() {
+        document.getElementById("importantNotes").value = "";
+        await deleteFromDB("importantNotes", 1);
+      }
 
       document
         .getElementById("imageUpload")
-        .addEventListener("change", (event) => {
-          const imagePreview = document.getElementById("imagePreview");
-          imagePreview.innerHTML = "";
-          const file = event.target.files[0];
+        .addEventListener("change", function () {
+          const preview = document.getElementById("imagePreview");
+          preview.innerHTML = "";
+          const file = this.files[0];
           if (file) {
             const reader = new FileReader();
-            reader.onload = (e) => {
+            reader.onload = function (e) {
               const img = document.createElement("img");
               img.src = e.target.result;
-              imagePreview.appendChild(img);
+              preview.appendChild(img);
             };
             reader.readAsDataURL(file);
           }
         });
 
-      document.getElementById("content").addEventListener("keydown", (e) => {
-        if (e.key === "Enter" && !e.shiftKey) {
-          const textarea = e.target;
-          const start = textarea.selectionStart;
-          const end = textarea.selectionEnd;
-          const value = textarea.value;
-
-          const lines = value.substring(0, start).split("\n");
-          const lastLine = lines[lines.length - 1];
-
-          if (
-            !lastLine.trim().startsWith("- [ ]") &&
-            !lastLine.trim().startsWith("- [x]")
-          ) {
-            e.preventDefault();
-            const newText =
-              value.substring(0, start) + "\n- [ ] " + value.substring(end);
-            textarea.value = newText;
-            textarea.selectionStart = textarea.selectionEnd = start + 6;
-          }
-        }
-      });
-
-      // Realtime clock logic
-      function updateClock() {
-        const now = new Date();
-        const formattedTime = now.toLocaleTimeString("vi-VN", {
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-        });
-        const formattedDate = now.toLocaleDateString("vi-VN", {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        });
-        document.getElementById(
-          "realtime-clock"
-        ).textContent = `${formattedTime} - ${formattedDate}`;
-      }
-
-      // Function to scroll to the top of the main content
       function scrollToTop() {
-        const container = document.querySelector(".main-content");
-        if (container) {
-          container.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
-      // Whale icon logic
-      const whaleIcon = document.getElementById("whale-icon");
-      whaleIcon.addEventListener("click", () => {
-        const audio = document.getElementById("bangkhieng-audio");
-        if (audio.paused) {
-          audio.play();
-          whaleIcon.style.color = "#d81b60";
-        } else {
-          audio.pause();
-          whaleIcon.style.color = "#40c4ff";
-        }
-      });
-
-      document.body.addEventListener("click", (e) => {
-        const startX = e.clientX;
-        const startY = e.clientY;
-
+      function createWhaleEffect() {
         const whale = document.createElement("div");
-        whale.textContent = "🐳";
         whale.className = "animate-whale";
-
-        // Random destination within a certain range
-        const randX = Math.random() * 200 - 100 + "px"; // -100 to 100px
-        const randY = Math.random() * 200 - 100 + "px"; // -100 to 100px
-
+        whale.innerHTML = "🐳";
+        const startX = Math.random() * window.innerWidth;
+        const startY = Math.random() * window.innerHeight;
         whale.style.left = `${startX}px`;
         whale.style.top = `${startY}px`;
+        const randX = (Math.random() - 0.5) * 500;
+        const randY = (Math.random() - 0.5) * 500;
         whale.style.setProperty("--randX", randX);
         whale.style.setProperty("--randY", randY);
-
         document.body.appendChild(whale);
-
-        // Remove the icon after the animation finishes
         setTimeout(() => {
           whale.remove();
         }, 2000);
+      }
+
+      window.addEventListener("DOMContentLoaded", async () => {
+        await openDB();
+        document.getElementById("filterDate").value = "";
+        renderStatuses();
+        renderNoteItems();
+        loadImportantNotes();
       });
 
-      // Clover icon drag logic
+      // Script cho cỏ ba lá
       const cloverIcon = document.getElementById("clover-reload-icon");
       let isDragging = false;
       let offsetX, offsetY;
-
       cloverIcon.addEventListener("mousedown", (e) => {
         isDragging = true;
         cloverIcon.style.cursor = "grabbing";
         offsetX = e.clientX - cloverIcon.getBoundingClientRect().left;
         offsetY = e.clientY - cloverIcon.getBoundingClientRect().top;
       });
-
       document.addEventListener("mousemove", (e) => {
         if (!isDragging) return;
         cloverIcon.style.left = e.clientX - offsetX + "px";
         cloverIcon.style.top = e.clientY - offsetY + "px";
       });
-
       document.addEventListener("mouseup", () => {
         if (!isDragging) return;
         isDragging = false;
         cloverIcon.style.cursor = "grab";
       });
-
-      window.addEventListener("DOMContentLoaded", async () => {
-        await openDB();
-        document
-          .getElementById("filterDate")
-          .addEventListener("change", loadStatuses);
-        loadImportantNotes();
-        loadNoteItems();
-        loadStatuses();
-        setInterval(updateClock, 1000);
+      cloverIcon.addEventListener("click", (e) => {
+        if (!isDragging) {
+          window.location.href = 'index.html';
+        }
       });
     </script>
   </body>
