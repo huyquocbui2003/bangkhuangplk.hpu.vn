@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lời tâm sự từ nhà phát triển - Bâng Khuâng - Phiêu Lưu Ký</title>
+    <!-- Favicon và CSS Font Awesome để sử dụng icon -->
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      /* Khai báo các biến màu và kích thước */
+      :root {
+        --primary-color: #d81b60;
+        --secondary-color: #ff80ab;
+        --background-light: #e0f7fa;
+        --background-dark: #fce4ec;
+        --text-color: #333;
+        --card-bg: #fff;
+        --border-radius-large: 10px;
+        --border-radius-small: 6px;
+        --box-shadow-main: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Phong cách chung cho body */
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(135deg, var(--background-light), var(--background-dark));
+        margin: 0;
+        padding: 40px 20px;
+        color: var(--text-color);
+        line-height: 1.8;
+      }
+
+      /* Container chính của trang "Về chúng tôi" */
+      .about-container {
+        max-width: 800px;
+        margin: auto;
+        background-color: var(--card-bg);
+        padding: 40px;
+        border-radius: var(--border-radius-large);
+        box-shadow: var(--box-shadow-main);
+      }
+
+      /* Tiêu đề chính của trang */
+      .about-header {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .about-header h1 {
+        font-size: 2.5em;
+        color: var(--primary-color);
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .about-header p {
+        color: var(--secondary-color);
+        font-style: italic;
+        font-size: 1.1em;
+      }
+
+      /* Phần nội dung chi tiết */
+      .content-section h2 {
+        color: var(--primary-color);
+        border-bottom: 2px solid var(--secondary-color);
+        padding-bottom: 10px;
+        margin-top: 30px;
+        font-size: 1.5em;
+      }
+
+      .content-section p {
+        margin-bottom: 20px;
+        text-align: justify;
+      }
+
+      /* Nhấn mạnh các từ khóa quan trọng */
+      .highlight {
+        font-weight: bold;
+        color: var(--primary-color);
+      }
+
+      /* Thông tin hỗ trợ và đóng góp */
+      .support-info {
+        text-align: center;
+        margin-top: 40px;
+        padding: 20px;
+        background-color: var(--background-dark);
+        border-radius: var(--border-radius-large);
+        border: 1px solid #f8bbd0;
+      }
+
+      .support-info h3 {
+        color: var(--primary-color);
+        margin-bottom: 10px;
+      }
+
+      .support-info p {
+        font-size: 1.1em;
+        margin: 5px 0;
+      }
+
+      /* Chân trang */
+      .footer {
+        text-align: center;
+        margin-top: 40px;
+        font-size: 0.9em;
+        color: #888;
+      }
+
+      /* Nút quay lại trang chủ */
+      .button-back {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background: linear-gradient(to right, var(--secondary-color), #f48fb1);
+        color: white;
+        text-decoration: none;
+        border-radius: var(--border-radius-small);
+        font-weight: bold;
+        transition: all 0.3s ease;
+      }
+      .button-back:hover {
+        background: linear-gradient(to right, var(--primary-color), #f06292);
+        transform: translateY(-2px);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="about-container">
+      <div class="about-header">
+        <h1>Bâng Khuâng - Phiêu Lưu Ký</h1>
+        <p>Lời tâm sự từ nhà phát triển</p>
+      </div>
+
+      <div class="content-section">
+        <p>
+          Chào các bạn, tôi là <span class="highlight">Bùi Quốc Huy</span>, người đã phát triển trang web này. Tôi muốn chia sẻ một chút về hành trình đầy cảm hứng và cả những thách thức đã dẫn đến sự ra đời của <span class="highlight">"Bâng Khuâng - Phiêu Lưu Ký"</span>.
+        </p>
+
+        <h2>Hành trình từ con số không</h2>
+        <p>
+          Tôi khởi đầu không phải là một lập trình viên chuyên nghiệp. Thực tế, vào ngày <span class="highlight">17/8/2023</span>, tôi đã bắt đầu những bước đi chập chững đầu tiên trong thế giới code thông qua các bài hướng dẫn trên kênh YouTube <span class="highlight">"Gà Lại Lập Trình"</span>. Hành trình này đã mở ra một chân trời mới, nhưng cũng đầy rẫy những bâng khuâng và khó khăn.
+        </p>
+        <p>
+          Trong suốt quá trình học tập và làm việc, tôi luôn ấp ủ một ý tưởng: tạo ra một công cụ ghi chú và quản lý công việc mang đậm dấu ấn cá nhân, đủ linh hoạt để đáp ứng nhu cầu của riêng tôi. Tôi đã tìm kiếm nhiều phần mềm, nhưng vẫn chưa tìm thấy một giải pháp nào thực sự tối ưu và hiệu quả theo cách mà tôi mong muốn.
+        </p>
+
+        <h2>Sự ra đời của dự án</h2>
+        <p>
+          Chính vì vậy, vào ngày <span class="highlight">7/8/2024</span>, tôi đã quyết định "tự tay" phát triển một trang web để biến ý tưởng này thành hiện thực. <span class="highlight">"Bâng Khuâng - Phiêu Lưu Ký"</span> là sản phẩm đầu tay, được tôi xây dựng với tất cả sự kiên trì, đam mê và nhiệt huyết. Trong suốt quá trình này, tôi đã nhận được sự hỗ trợ vô cùng đắc lực từ các công cụ AI như Gemini và ChatGPT. Gemini, với khả năng cung cấp giải pháp và gợi ý code, đã đóng vai trò vô cùng quan trọng, giúp tôi vượt qua nhiều rào cản kỹ thuật và định hình nên sản phẩm như ngày hôm nay.
+        </p>
+
+        <h2>Mục tiêu và mong muốn</h2>
+        <p>
+          <span class="highlight">"Bâng Khuâng - Phiêu Lưu Ký"</span> không chỉ là một trang web. Nó là sự kết hợp giữa giao diện người dùng thân thiện, trải nghiệm mượt mà và các tính năng hữu ích được tạo ra từ một người làm web không chuyên. Tôi đã tập trung vào việc mang đến một không gian riêng tư, ổn định và đầy cảm hứng để mỗi người chúng ta có thể lưu giữ những suy nghĩ, những kế hoạch và những dấu ấn của cuộc đời mình.
+        </p>
+        <p>
+          Tôi rất mong nhận được những feedback từ các bạn – cả những lời khen và cả những góp ý mang tính xây dựng. Mọi đóng góp đều là nguồn động lực to lớn giúp tôi tiếp tục "debug" và "update" dự án này trong tương lai.
+        </p>
+      </div>
+
+      <div class="support-info">
+        <h3>Ủng hộ và đóng góp</h3>
+        <p>Nếu bạn cảm thấy dự án này hữu ích và muốn ủng hộ hành trình của tôi, bạn có thể đóng góp qua:</p>
+        <p class="highlight">Ngân hàng Techcombank: 4020406868</p>
+        <p class="highlight">Tên tài khoản: Bùi Quốc Huy</p>
+      </div>
+
+      <div class="footer">
+        <a href="giaodien.html" class="button-back"><i class="fas fa-arrow-left"></i> Quay lại trang chủ</a>
+      </div>
+    </div>
+  </body>
+</html>

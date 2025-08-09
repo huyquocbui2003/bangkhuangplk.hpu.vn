@@ -14,6 +14,24 @@
       href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
     />
     <style>
+      .about-button {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(to right, var(--secondary-color), #f48fb1);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: var(--border-radius-small);
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-decoration: none;
+}
+.about-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
       :root {
         --primary-color: #d81b60;
         --secondary-color: #ff80ab;
@@ -486,7 +504,7 @@
         font-size: 0.7em;
         color: #666;
       }
-      
+
       .profile-link-card {
         width: 100%;
         max-width: 600px;
@@ -547,6 +565,9 @@
       </a>
       <a class="notebook-button" href="so_ghi_bai.html">
         <i class="fas fa-book"></i> Sổ ghi bài
+      </a>
+      <a class="about-button" href="about.html">
+        <i class="fas fa-info-circle"></i> Về tôi
       </a>
     </div>
 
@@ -1086,7 +1107,7 @@
       });
       cloverIcon.addEventListener("click", (e) => {
         if (!isDragging) {
-          window.location.href = 'index.html';
+          window.location.href = "index.html";
         }
       });
     </script>
