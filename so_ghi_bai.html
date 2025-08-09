@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sổ Ghi Bài - BÂNG KHUÂNG</title>
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <style>
+      /* ========================================================================================================= */
+      /* CÀI ĐẶT BIẾN VÀ FONT CHUNG */
+      /* ========================================================================================================= */
+      :root {
+        --primary-color: #d81b60; /* Màu chính: Đỏ tím */
+        --secondary-color: #ff80ab; /* Màu phụ: Hồng nhạt */
+        --background-light: #e0f7fa; /* Nền sáng */
+        --background-dark: #fce4ec; /* Nền tối */
+        --text-color: #333; /* Màu chữ chính */
+        --card-bg: #fff; /* Nền của các thẻ */
+        --border-radius-large: 10px; /* Bo góc lớn */
+        --border-radius-small: 6px; /* Bo góc nhỏ */
+        --box-shadow-main: 0 4px 20px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng chính */
+        --sidebar-width: 250px;
+      }
+
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(
+          135deg,
+          var(--background-light),
+          var(--background-dark)
+        );
+        margin: 0;
+        padding: 0;
+        color: var(--text-color);
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      /* ========================================================================================================= */
+      /* THANH ĐIỀU HƯỚNG VÀ CÁC NÚT CHUNG */
+      /* ========================================================================================================= */
+      .top-buttons-container {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        display: flex;
+        gap: 10px;
+        padding: 10px;
+        background-color: var(--card-bg);
+        box-shadow: var(--box-shadow-main);
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      @media (min-width: 768px) {
+        .top-buttons-container {
+          justify-content: flex-start;
+        }
+      }
+
+      .nav-button {
+        display: flex;
+        align-items: center;
+        background: linear-gradient(to right, var(--secondary-color), #f48fb1);
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: var(--border-radius-small);
+        cursor: pointer;
+        font-weight: bold;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s, box-shadow 0.2s;
+        text-decoration: none;
+      }
+      .nav-button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      }
+      .nav-button.active {
+        background: linear-gradient(to right, var(--primary-color), #f06292);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      /* ========================================================================================================= */
+      /* BỐ CỤC CHÍNH (SIDEBAR + NỘI DUNG) */
+      /* ========================================================================================================= */
+      .main-layout {
+        display: flex;
+        flex: 1;
+        padding-top: 20px;
+      }
+
+      @media (max-width: 768px) {
+        .main-layout {
+          flex-direction: column;
+        }
+      }
+
+      /* ========================================================================================================= */
+      /* THANH SIDEBAR CHO MÔN HỌC */
+      /* ========================================================================================================= */
+      .sidebar {
+        width: var(--sidebar-width);
+        min-width: 200px;
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        position: sticky;
+        top: 60px;
+        height: calc(100vh - 80px);
+        overflow-y: auto;
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          position: static;
+          height: auto;
+          width: 100%;
+          min-width: unset;
+          margin-bottom: 20px;
+        }
+      }
+
+      .sidebar h3 {
+        margin-top: 0;
+        text-align: center;
+      }
+
+      .subject-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        flex-grow: 1;
+      }
+      .subject-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 15px;
+        border-radius: var(--border-radius-small);
+        cursor: pointer;
+        transition: background-color 0.2s;
+        margin-bottom: 5px;
+        background-color: var(--background-dark);
+      }
+      .subject-item:hover {
+        background-color: var(--background-light);
+      }
+      .subject-item.active {
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: bold;
+      }
+      .subject-item.active .subject-actions button {
+        color: white;
+      }
+      .subject-name {
+        flex-grow: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .subject-actions button {
+        background: none;
+        border: none;
+        color: var(--primary-color);
+        font-size: 1em;
+        margin-left: 5px;
+        cursor: pointer;
+        opacity: 0.7;
+      }
+      .subject-actions button:hover {
+        opacity: 1;
+      }
+      .add-subject-button {
+        width: 100%;
+      }
+
+      /* ========================================================================================================= */
+      /* KHU VỰC NỘI DUNG CHÍNH (GHI CHÚ) */
+      /* ========================================================================================================= */
+      .main-content-area {
+        flex: 1;
+        padding: 0 20px 20px;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: center;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 800px;
+        background-color: var(--card-bg);
+        padding: 20px;
+        border-radius: var(--border-radius-large);
+        box-shadow: var(--box-shadow-main);
+      }
+
+      .main-title {
+        text-align: center;
+        color: var(--primary-color);
+        margin-bottom: 20px;
+      }
+      .main-title i {
+        margin: 0 5px;
+        color: var(--secondary-color);
+      }
+      
+      .note-list-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .note-list-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px;
+        background-color: var(--background-dark);
+        border-radius: var(--border-radius-large);
+        cursor: grab; /* Thay đổi con trỏ để thể hiện có thể kéo */
+        transition: all 0.2s;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        user-select: none; /* Ngăn chặn chọn văn bản khi kéo */
+      }
+      .note-list-item:hover {
+        background-color: var(--background-light);
+        transform: translateY(-2px);
+      }
+      .note-list-item.dragging {
+        opacity: 0.5;
+        border: 2px dashed var(--primary-color);
+      }
+      .note-list-item.drag-over {
+        border-top: 2px solid var(--primary-color);
+      }
+      .note-list-item.drag-over-bottom {
+        border-bottom: 2px solid var(--primary-color);
+      }
+      .note-list-item h4 {
+        margin: 0;
+        font-size: 1.1em;
+      }
+      .note-list-item p {
+        margin: 5px 0 0;
+        color: #666;
+        font-size: 0.9em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .note-list-item .date {
+        font-size: 0.8em;
+        color: #999;
+      }
+
+      textarea,
+      input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0 10px;
+        border: 1px solid #ccc;
+        border-radius: var(--border-radius-small);
+        font-size: 14px;
+        box-sizing: border-box;
+      }
+      textarea {
+        min-height: 300px;
+        resize: vertical;
+      }
+
+      /* ========================================================================================================= */
+      /* CÁC NÚT ĐIỀU KHIỂN */
+      /* ========================================================================================================= */
+      .control-buttons-container {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      button {
+        padding: 10px 16px;
+        border: none;
+        border-radius: var(--border-radius-small);
+        background: linear-gradient(to right, var(--secondary-color), #f48fb1);
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+      }
+      button:hover {
+        background: linear-gradient(to right, var(--primary-color), #f06292);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      .button-danger {
+        background: #f44336;
+      }
+      .button-danger:hover {
+        background: #d32f2f;
+      }
+
+      /* ========================================================================================================= */
+      /* ICON VÀ HIỆU ỨNG KHÁC */
+      /* ========================================================================================================= */
+      #clover-reload-icon {
+        position: fixed;
+        font-size: 2em;
+        cursor: grab;
+        z-index: 1001;
+        bottom: 20px;
+        right: 20px;
+        user-select: none;
+        transition: transform 0.2s ease-in-out;
+      }
+      #clover-reload-icon:active {
+        cursor: grabbing;
+      }
+
+      /* Custom modal và message box */
+      .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0s, opacity 0.3s;
+      }
+      .modal.visible {
+        visibility: visible;
+        opacity: 1;
+      }
+      .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: var(--border-radius-large);
+        box-shadow: var(--box-shadow-main);
+        text-align: center;
+        max-width: 90%;
+        width: 400px;
+      }
+      .modal-content p {
+        margin: 0 0 15px;
+      }
+      .modal-content button {
+        margin: 5px;
+      }
+      #editSubjectTitle {
+        width: calc(100% - 20px);
+      }
+
+      #messageBox {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(0, 0, 0, 0.75);
+        color: white;
+        padding: 10px 20px;
+        border-radius: var(--border-radius-large);
+        z-index: 2001;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s, visibility 0.3s;
+      }
+      #messageBox.visible {
+        opacity: 1;
+        visibility: visible;
+      }
+      
+      /* ========================================================================================================= */
+      /* FOOTER */
+      /* ========================================================================================================= */
+      .footer {
+        margin-top: auto;
+        padding: 20px;
+        background: linear-gradient(90deg, #ffe0f0, #e0f7fa);
+        font-size: 14px;
+        color: #444;
+        border-top: 1px solid #ddd;
+        text-align: center;
+        border-radius: var(--border-radius-large);
+      }
+      .footer a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: bold;
+      }
+      .footer a:hover {
+        text-decoration: underline;
+      }
+      .footer .label {
+        color: #888;
+        font-weight: normal;
+      }
+      .footer i {
+        margin-right: 5px;
+        color: var(--primary-color);
+      }
+      .guide-header {
+        cursor: pointer;
+        padding: 12px 20px;
+        border-radius: 25px;
+        background: linear-gradient(135deg, #ff80ab, #f48fb1);
+        color: white;
+        text-align: center;
+        font-weight: bold;
+        font-size: 1.1em;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        text-decoration: none;
+        margin-bottom: 20px;
+      }
+      .guide-header:hover {
+        background: linear-gradient(135deg, var(--primary-color), #f06292);
+        transform: scale(1.05) translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+      }
+      .guide-header i {
+        font-size: 1.3em;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Icon cỏ ba lá có chức năng kéo -->
+    <div id="clover-reload-icon">🍀</div>
+
+    <!-- Custom message box để hiển thị thông báo -->
+    <div id="messageBox"></div>
+
+    <!-- Modal xác nhận tùy chỉnh (để thay thế alert) -->
+    <div id="confirmModal" class="modal">
+      <div class="modal-content">
+        <p id="confirmMessage"></p>
+        <button id="confirmYes">Có</button>
+        <button id="confirmNo">Không</button>
+      </div>
+    </div>
+    
+    <!-- Modal chỉnh sửa tên môn học -->
+    <div id="editSubjectModal" class="modal">
+      <div class="modal-content">
+        <h3>Chỉnh sửa tên môn học</h3>
+        <input type="text" id="editSubjectTitle" placeholder="Tên môn học" />
+        <button id="saveEditSubjectButton">
+          <i class="fas fa-save"></i> Lưu
+        </button>
+        <button id="cancelEditSubjectButton">
+          <i class="fas fa-times"></i> Hủy
+        </button>
+      </div>
+    </div>
+
+    <!-- ========================================================================================================= -->
+    <!--                                 PHẦN THANH ĐIỀU HƯỚNG CHÍNH                                              -->
+    <!-- ========================================================================================================= -->
+    <div class="top-buttons-container">
+      <a class="nav-button" href="giaodien.html">
+        <i class="fas fa-home"></i> Home
+      </a>
+      <a class="nav-button active" href="so_ghi_bai.html">
+        <i class="fas fa-book"></i> Sổ Ghi Bài
+      </a>
+      <a
+        class="nav-button"
+        href="https://drive.google.com/drive/folders/1cR4KwCDcmGDenk9qNfdYm23x5a2c-t3n?usp=sharing"
+        target="_blank"
+      >
+        <i class="fas fa-folder"></i> Lưu trữ
+      </a>
+      <a class="nav-button" href="calendar.html">
+        <i class="fas fa-calendar-alt"></i> Lịch
+      </a>
+      <a class="nav-button" href="contact.html">
+        <i class="fas fa-envelope"></i> Liên hệ
+      </a>
+      <a class="nav-button" href="trangcanhan.html">
+        <i class="fas fa-user-circle"></i> Trang cá nhân
+      </a>
+    </div>
+
+    <!-- ========================================================================================================= -->
+    <!--                                 BỐ CỤC CHÍNH (SIDEBAR + NỘI DUNG)                                        -->
+    <!-- ========================================================================================================= -->
+    <div class="main-layout">
+        <!-- Thanh sidebar cho môn học -->
+        <div class="sidebar">
+            <h3><i class="fas fa-book-reader"></i> Môn học</h3>
+            <button class="nav-button add-subject-button" onclick="addSubject()">
+                <i class="fas fa-plus"></i> Thêm môn học
+            </button>
+            <ul id="subjectList" class="subject-list">
+                <!-- Danh sách môn học sẽ được thêm vào đây bằng JS -->
+            </ul>
+        </div>
+
+        <!-- Khu vực nội dung chính -->
+        <div class="main-content-area">
+            <div class="container">
+                <h2 id="mainTitle" class="main-title">
+                    <i class="fas fa-book-open"></i> Vui lòng chọn một môn học
+                </h2>
+
+                <!-- Khu vực hiển thị danh sách ghi chú (hiện khi có môn học được chọn) -->
+                <div id="note-list-view" style="display: none;">
+                    <button class="nav-button add-note-button" onclick="createNewNote()">
+                        <i class="fas fa-plus"></i> Thêm ghi chú mới
+                    </button>
+                    <div id="noteList" class="note-list-container">
+                        <!-- Danh sách ghi chú sẽ được thêm vào đây bằng JS -->
+                    </div>
+                </div>
+
+                <!-- Khu vực chỉnh sửa ghi chú (hiện khi một ghi chú được chọn/tạo mới) -->
+                <div id="note-editor-view" style="display: none;">
+                    <button class="nav-button" onclick="loadNotesForCurrentSubject()">
+                        <i class="fas fa-arrow-left"></i> Quay lại
+                    </button>
+                    <input type="text" id="noteTitle" placeholder="Tiêu đề bài học..." />
+                    <textarea
+                        id="noteContent"
+                        placeholder="Nội dung ghi chú..."
+                        rows="15"
+                    ></textarea>
+                    <div class="control-buttons-container">
+                        <button onclick="saveNote()">
+                            <i class="fas fa-save"></i> Lưu
+                        </button>
+                        <button onclick="deleteNote()" class="button-danger">
+                            <i class="fas fa-trash"></i> Xóa
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================================================= -->
+    <!--                                               FOOTER                                                    -->
+    <!-- ========================================================================================================= -->
+    <div class="footer">
+      <a href="huong_dan_su_dung.html" class="guide-header">
+        <i class="fas fa-info-circle"></i> Hướng dẫn sử dụng
+      </a>
+      <hr style="border-color: #f48fb1; margin: 20px 0" />
+      <div>
+        <i class="fas fa-user"></i
+        ><span class="label">Designed and developed by:</span>Bùi Quốc Huy
+      </div>
+      <div>
+        <i class="fab fa-facebook"></i><span class="label">Facebook:</span>
+        <a href="https://www.facebook.com/bangkhuang187" target="_blank"
+          >facebook.com/bangkhuang187</a
+        >
+      </div>
+      <div>
+        <i class="fas fa-phone"></i><span class="label">Phone:</span> 0905640544
+      </div>
+      <div>
+        <i class="fas fa-code-branch"></i><span class="label">Version:</span>
+        0.1.7
+      </div>
+    </div>
+
+    <!-- ========================================================================================================= -->
+    <!--                                        JAVASCRIPT LOGIC                                                 -->
+    <!-- ========================================================================================================= -->
+    <script>
+      // =========================================================================================================
+      // ĐỊNH NGHĨA BIẾN TOÀN CỤC VÀ HÀM TRỢ GIÚP
+      // =========================================================================================================
+      const DB_NAME = "LocketHuyDB";
+      const DB_VERSION = 6; // Tăng phiên bản DB để thay đổi logic ghi chú
+      let db;
+      let allSubjects = [];
+      let currentSubjectId = null;
+      let currentNoteId = null;
+      
+      let draggedNoteId = null;
+
+      // Hàm hiển thị thông báo tùy chỉnh
+      function showMessage(message) {
+        const messageBox = document.getElementById('messageBox');
+        messageBox.textContent = message;
+        messageBox.classList.add('visible');
+        setTimeout(() => {
+          messageBox.classList.remove('visible');
+        }, 3000);
+      }
+
+      // Hàm hiển thị modal xác nhận tùy chỉnh
+      function showConfirm(message, onConfirm) {
+        const modal = document.getElementById('confirmModal');
+        const confirmMessage = document.getElementById('confirmMessage');
+        const confirmYes = document.getElementById('confirmYes');
+        const confirmNo = document.getElementById('confirmNo');
+        confirmMessage.textContent = message;
+        modal.classList.add('visible');
+        confirmYes.onclick = () => {
+          modal.classList.remove('visible');
+          onConfirm(true);
+        };
+        confirmNo.onclick = () => {
+          modal.classList.remove('visible');
+          onConfirm(false);
+        };
+      }
+
+      // Hàm mở và kết nối với IndexedDB
+      function openDB() {
+        return new Promise((resolve, reject) => {
+          const request = indexedDB.open(DB_NAME, DB_VERSION);
+          request.onerror = (event) => reject("IndexedDB error: " + event.target.errorCode);
+          request.onsuccess = (event) => {
+            db = event.target.result;
+            resolve(db);
+          };
+          request.onupgradeneeded = (event) => {
+            const db = event.target.result;
+            
+            // Tạo object store cho môn học nếu chưa tồn tại
+            if (!db.objectStoreNames.contains("subjects")) {
+              db.createObjectStore("subjects", {
+                keyPath: "id",
+                autoIncrement: true,
+              });
+            }
+
+            // Tạo object store cho ghi chú
+            if (!db.objectStoreNames.contains("notes")) {
+              const notesStore = db.createObjectStore("notes", {
+                keyPath: "id",
+                autoIncrement: true,
+              });
+              // Tạo index để truy vấn ghi chú theo subjectId
+              notesStore.createIndex("subjectId", "subjectId", { unique: false });
+            }
+          };
+        });
+      }
+
+      // Hàm lấy object store từ transaction
+      function getObjectStore(storeName, mode) {
+        return db.transaction(storeName, mode).objectStore(storeName);
+      }
+      
+      // Hàm chuyển đổi ngày tháng thành chuỗi định dạng đẹp
+      function formatDate(dateString) {
+        const date = new Date(dateString);
+        const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+        return date.toLocaleDateString('vi-VN', options);
+      }
+
+      // =========================================================================================================
+      // LOGIC QUẢN LÝ MÔN HỌC (SIDEBAR)
+      // =========================================================================================================
+      
+      // Tải và hiển thị danh sách môn học
+      async function loadSubjects() {
+        const subjectList = document.getElementById("subjectList");
+        subjectList.innerHTML = "";
+        try {
+            const store = getObjectStore("subjects", "readonly");
+            const request = store.getAll();
+            request.onsuccess = (event) => {
+                allSubjects = event.target.result;
+                if (allSubjects.length === 0) {
+                    subjectList.innerHTML = `<li style="text-align: center; font-style: italic; color: #888;">Chưa có môn học nào.</li>`;
+                    currentSubjectId = null;
+                    document.getElementById('mainTitle').textContent = "Vui lòng chọn một môn học";
+                    document.getElementById('note-list-view').style.display = 'none';
+                    document.getElementById('note-editor-view').style.display = 'none';
+                    return;
+                }
+                
+                allSubjects.forEach(subject => {
+                    const subjectItem = createSubjectListItem(subject);
+                    subjectList.appendChild(subjectItem);
+                });
+
+                // Chọn môn học đầu tiên nếu chưa có môn nào được chọn
+                if (currentSubjectId) {
+                    selectSubject(currentSubjectId);
+                } else if (allSubjects.length > 0) {
+                    selectSubject(allSubjects[0].id);
+                }
+            };
+        } catch (e) {
+            showMessage("Lỗi khi tải danh sách môn học.");
+        }
+      }
+
+      // Tạo một item môn học trong sidebar
+      function createSubjectListItem(subject) {
+          const li = document.createElement("li");
+          li.className = "subject-item";
+          li.dataset.id = subject.id;
+          li.innerHTML = `<span class="subject-name">${subject.name}</span><div class="subject-actions"></div>`;
+
+          const actionsDiv = li.querySelector(".subject-actions");
+
+          const editButton = document.createElement("button");
+          editButton.innerHTML = `<i class="fas fa-edit"></i>`;
+          editButton.onclick = (e) => {
+              e.stopPropagation(); // Ngăn sự kiện click lan truyền lên li
+              editSubject(subject.id, subject.name);
+          };
+          actionsDiv.appendChild(editButton);
+
+          const deleteButton = document.createElement("button");
+          deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i>`;
+          deleteButton.onclick = (e) => {
+              e.stopPropagation(); // Ngăn sự kiện click lan truyền lên li
+              deleteSubject(subject.id, subject.name);
+          };
+          actionsDiv.appendChild(deleteButton);
+
+          li.onclick = () => selectSubject(subject.id);
+          return li;
+      }
+      
+      // Thêm một môn học mới
+      async function addSubject() {
+          const subjectName = "Môn học mới";
+          try {
+              const store = getObjectStore("subjects", "readwrite");
+              const request = store.add({ name: subjectName });
+              request.onsuccess = (event) => {
+                  showMessage("Đã thêm môn học mới!");
+                  loadSubjects();
+              };
+              request.onerror = () => showMessage("Lỗi khi thêm môn học.");
+          } catch (e) {
+              showMessage("Lỗi khi thêm môn học.");
+          }
+      }
+
+      // Chỉnh sửa tên môn học
+      let subjectToEdit = null;
+      function editSubject(id, name) {
+          subjectToEdit = { id, name };
+          const modal = document.getElementById('editSubjectModal');
+          const input = document.getElementById('editSubjectTitle');
+          input.value = name;
+          modal.classList.add('visible');
+          input.focus();
+      }
+
+      // Lưu tên môn học đã chỉnh sửa
+      async function updateSubject() {
+          if (!subjectToEdit) return;
+          const newName = document.getElementById('editSubjectTitle').value.trim();
+          if (newName) {
+              try {
+                  const store = getObjectStore("subjects", "readwrite");
+                  const updatedSubject = { ...subjectToEdit, name: newName };
+                  const request = store.put(updatedSubject);
+                  request.onsuccess = () => {
+                      document.getElementById('editSubjectModal').classList.remove('visible');
+                      subjectToEdit = null;
+                      showMessage("Đã cập nhật tên môn học.");
+                      loadSubjects();
+                  };
+                  request.onerror = () => showMessage("Lỗi khi cập nhật tên môn học.");
+              } catch (e) {
+                  showMessage("Lỗi khi cập nhật tên môn học.");
+              }
+          } else {
+              showMessage("Tên môn học không được để trống.");
+          }
+      }
+
+      // Xóa một môn học và tất cả ghi chú liên quan
+      async function deleteSubject(id, name) {
+          showConfirm(`Bạn có chắc chắn muốn xóa môn học "${name}" và tất cả ghi chú của nó không?`, async (isConfirmed) => {
+              if (isConfirmed) {
+                  try {
+                      // Xóa tất cả ghi chú của môn học này
+                      const notesStore = getObjectStore("notes", "readwrite");
+                      const notesIndex = notesStore.index("subjectId");
+                      const notesRequest = notesIndex.openCursor(IDBKeyRange.only(id));
+                      notesRequest.onsuccess = (event) => {
+                          const cursor = event.target.result;
+                          if (cursor) {
+                              notesStore.delete(cursor.value.id);
+                              cursor.continue();
+                          }
+                      };
+
+                      // Xóa môn học
+                      const subjectsStore = getObjectStore("subjects", "readwrite");
+                      const subjectRequest = subjectsStore.delete(id);
+                      subjectRequest.onsuccess = () => {
+                          showMessage(`Đã xóa môn học "${name}".`);
+                          loadSubjects();
+                      };
+                  } catch (e) {
+                      showMessage("Lỗi khi xóa môn học.");
+                  }
+              }
+          });
+      }
+
+      // Chọn một môn học từ sidebar
+      async function selectSubject(id) {
+          currentSubjectId = id;
+          currentNoteId = null; // Reset note ID
+          
+          // Cập nhật trạng thái active trong sidebar
+          document.querySelectorAll('.subject-item').forEach(item => {
+              item.classList.remove('active');
+          });
+          const activeSubjectItem = document.querySelector(`.subject-item[data-id='${id}']`);
+          if (activeSubjectItem) {
+              activeSubjectItem.classList.add('active');
+          }
+
+          loadNotesForCurrentSubject();
+      }
+
+      // =========================================================================================================
+      // LOGIC QUẢN LÝ GHI CHÚ
+      // =========================================================================================================
+
+      // Tải và hiển thị danh sách ghi chú cho môn học hiện tại
+      async function loadNotesForCurrentSubject() {
+          if (!currentSubjectId) return;
+          
+          const selectedSubject = allSubjects.find(s => s.id === currentSubjectId);
+          document.getElementById('mainTitle').textContent = `Ghi chú cho môn: ${selectedSubject.name}`;
+          document.getElementById('note-list-view').style.display = 'block';
+          document.getElementById('note-editor-view').style.display = 'none';
+
+          const noteListContainer = document.getElementById('noteList');
+          noteListContainer.innerHTML = "";
+          
+          try {
+            const store = getObjectStore("notes", "readonly");
+            const index = store.index("subjectId");
+            const request = index.getAll(IDBKeyRange.only(currentSubjectId));
+            
+            request.onsuccess = (event) => {
+              const notes = event.target.result;
+              if (notes.length === 0) {
+                  noteListContainer.innerHTML = `<p style="text-align: center; font-style: italic; color: #888;">Chưa có ghi chú nào. Hãy thêm một cái!</p>`;
+                  return;
+              }
+              // Sắp xếp các ghi chú theo trường 'position' (nếu có)
+              notes.sort((a, b) => (a.position || 0) - (b.position || 0));
+              notes.forEach(note => {
+                  const noteItem = createNoteListItem(note);
+                  noteListContainer.appendChild(noteItem);
+              });
+            };
+            request.onerror = () => showMessage("Lỗi khi tải danh sách ghi chú.");
+          } catch (e) {
+            showMessage("Lỗi khi tải danh sách ghi chú.");
+          }
+      }
+
+      // Tạo một item ghi chú trong danh sách
+      function createNoteListItem(note) {
+          const div = document.createElement("div");
+          div.className = "note-list-item";
+          div.dataset.id = note.id;
+          div.setAttribute('draggable', true); // Thêm thuộc tính draggable
+          div.onclick = () => openNote(note.id);
+          div.innerHTML = `
+              <div>
+                  <h4>${note.title || "Không có tiêu đề"}</h4>
+                  <p>${note.content.substring(0, 100) || "Không có nội dung"}</p>
+              </div>
+              <span class="date">${formatDate(note.timestamp)}</span>
+          `;
+          return div;
+      }
+      
+      // Mở trình chỉnh sửa để tạo ghi chú mới
+      function createNewNote() {
+          if (!currentSubjectId) {
+              showMessage("Vui lòng chọn một môn học trước.");
+              return;
+          }
+          currentNoteId = null;
+          document.getElementById('noteTitle').value = "";
+          document.getElementById('noteContent').value = "";
+          document.getElementById('mainTitle').textContent = "Tạo ghi chú mới";
+          document.getElementById('note-list-view').style.display = 'none';
+          document.getElementById('note-editor-view').style.display = 'block';
+          document.getElementById('noteTitle').focus();
+      }
+
+      // Mở trình chỉnh sửa để xem/sửa ghi chú đã có
+      async function openNote(noteId) {
+          if (!currentSubjectId) return;
+          
+          try {
+            const store = getObjectStore("notes", "readonly");
+            const request = store.get(noteId);
+            
+            request.onsuccess = (event) => {
+              const note = event.target.result;
+              if (note) {
+                  currentNoteId = note.id;
+                  document.getElementById('noteTitle').value = note.title;
+                  document.getElementById('noteContent').value = note.content;
+                  document.getElementById('mainTitle').textContent = `Chỉnh sửa: ${note.title || "Ghi chú không tiêu đề"}`;
+                  document.getElementById('note-list-view').style.display = 'none';
+                  document.getElementById('note-editor-view').style.display = 'block';
+              }
+            };
+            request.onerror = () => showMessage("Không thể mở ghi chú.");
+          } catch (e) {
+            showMessage("Lỗi khi mở ghi chú.");
+          }
+      }
+
+      // Lưu ghi chú (mới hoặc đã có)
+      async function saveNote() {
+          if (!currentSubjectId) {
+              showMessage("Vui lòng chọn một môn học trước.");
+              return;
+          }
+          const title = document.getElementById('noteTitle').value.trim();
+          const content = document.getElementById('noteContent').value.trim();
+          
+          if (!title && !content) {
+              showMessage("Không có nội dung để lưu.");
+              return;
+          }
+
+          try {
+              const store = getObjectStore("notes", "readwrite");
+              
+              if (currentNoteId) {
+                  // Cập nhật ghi chú đã có
+                  const getRequest = store.get(currentNoteId);
+                  getRequest.onsuccess = (event) => {
+                      const existingNote = event.target.result;
+                      if (existingNote) {
+                          existingNote.title = title;
+                          existingNote.content = content;
+                          existingNote.timestamp = new Date().toISOString();
+                          const putRequest = store.put(existingNote);
+                          putRequest.onsuccess = () => {
+                              showMessage("Đã cập nhật ghi chú!");
+                              loadNotesForCurrentSubject();
+                          };
+                      }
+                  };
+              } else {
+                  // Tạo ghi chú mới
+                  const allNotesForSubject = await new Promise((resolve, reject) => {
+                      const req = store.index("subjectId").getAll(IDBKeyRange.only(currentSubjectId));
+                      req.onsuccess = () => resolve(req.result);
+                      req.onerror = () => reject(req.error);
+                  });
+                  const newPosition = allNotesForSubject.length > 0 ? Math.max(...allNotesForSubject.map(n => n.position || 0)) + 1 : 1;
+                  
+                  const noteToSave = {
+                      subjectId: currentSubjectId,
+                      title: title,
+                      content: content,
+                      timestamp: new Date().toISOString(),
+                      position: newPosition, // Thêm trường position cho việc sắp xếp
+                  };
+                  const addRequest = store.add(noteToSave);
+                  addRequest.onsuccess = () => {
+                      showMessage("Đã lưu ghi chú mới!");
+                      loadNotesForCurrentSubject();
+                  };
+              }
+          } catch (e) {
+              showMessage("Lỗi khi lưu ghi chú.");
+          }
+      }
+
+      // Xóa ghi chú hiện tại
+      async function deleteNote() {
+          if (!currentNoteId) {
+              showMessage("Không có ghi chú nào để xóa.");
+              return;
+          }
+          
+          showConfirm("Bạn có chắc chắn muốn xóa ghi chú này không?", async (isConfirmed) => {
+              if (isConfirmed) {
+                  try {
+                      const store = getObjectStore("notes", "readwrite");
+                      const request = store.delete(currentNoteId);
+                      request.onsuccess = () => {
+                          showMessage("Đã xóa ghi chú!");
+                          currentNoteId = null;
+                          loadNotesForCurrentSubject();
+                      };
+                      request.onerror = () => showMessage("Lỗi khi xóa ghi chú.");
+                  } catch (e) {
+                      showMessage("Lỗi khi xóa ghi chú.");
+                  }
+              }
+          });
+      }
+
+      // Cập nhật thứ tự các ghi chú sau khi kéo thả
+      async function updateNotePositions(notesToUpdate) {
+        try {
+            const transaction = db.transaction("notes", "readwrite");
+            const store = transaction.objectStore("notes");
+            
+            for (const note of notesToUpdate) {
+                const getRequest = store.get(note.id);
+                getRequest.onsuccess = (event) => {
+                    const existingNote = event.target.result;
+                    if (existingNote) {
+                        existingNote.position = note.position;
+                        store.put(existingNote);
+                    }
+                };
+            }
+
+            transaction.oncomplete = () => {
+                showMessage("Đã cập nhật thứ tự ghi chú.");
+            };
+            transaction.onerror = () => showMessage("Lỗi khi cập nhật thứ tự.");
+        } catch (e) {
+            showMessage("Lỗi khi cập nhật thứ tự.");
+        }
+      }
+
+      // =========================================================================================================
+      // CÁC HÀNH ĐỘNG VÀ SỰ KIỆN KHÁC
+      // =========================================================================================================
+
+      // Icon cỏ ba lá (để kéo)
+      const cloverIcon = document.getElementById("clover-reload-icon");
+      let isDragging = false;
+      let offsetX, offsetY;
+
+      cloverIcon.addEventListener("mousedown", (e) => {
+        isDragging = true;
+        cloverIcon.style.cursor = "grabbing";
+        offsetX = e.clientX - cloverIcon.getBoundingClientRect().left;
+        offsetY = e.clientY - cloverIcon.getBoundingClientRect().top;
+      });
+
+      document.addEventListener("mousemove", (e) => {
+        if (!isDragging) return;
+        cloverIcon.style.left = e.clientX - offsetX + "px";
+        cloverIcon.style.top = e.clientY - offsetY + "px";
+      });
+
+      document.addEventListener("mouseup", () => {
+        if (!isDragging) return;
+        isDragging = false;
+        cloverIcon.style.cursor = "grab";
+      });
+
+      // Lắng nghe các sự kiện kéo thả trên danh sách ghi chú
+      const noteList = document.getElementById('noteList');
+      noteList.addEventListener('dragstart', (e) => {
+          if (e.target.classList.contains('note-list-item')) {
+              draggedNoteId = e.target.dataset.id;
+              e.target.classList.add('dragging');
+              e.dataTransfer.effectAllowed = 'move';
+              e.dataTransfer.setData('text/plain', draggedNoteId);
+          }
+      });
+      noteList.addEventListener('dragend', (e) => {
+          e.target.classList.remove('dragging');
+          // Xóa tất cả các lớp drag-over
+          document.querySelectorAll('.note-list-item').forEach(item => {
+              item.classList.remove('drag-over', 'drag-over-bottom');
+          });
+      });
+      noteList.addEventListener('dragover', (e) => {
+          e.preventDefault(); // Cho phép thả
+          const draggedItem = document.querySelector('.note-list-item.dragging');
+          const dropTarget = e.target.closest('.note-list-item');
+          if (draggedItem && dropTarget && draggedItem !== dropTarget) {
+              const rect = dropTarget.getBoundingClientRect();
+              const centerY = rect.top + rect.height / 2;
+              
+              // Xóa các lớp drag-over cũ để chỉ có một đối tượng được highlight
+              document.querySelectorAll('.note-list-item').forEach(item => {
+                  item.classList.remove('drag-over', 'drag-over-bottom');
+              });
+
+              if (e.clientY < centerY) {
+                  dropTarget.classList.add('drag-over');
+              } else {
+                  dropTarget.classList.add('drag-over-bottom');
+              }
+          }
+      });
+      noteList.addEventListener('drop', (e) => {
+          e.preventDefault();
+          const draggedItem = document.querySelector('.note-list-item.dragging');
+          const dropTarget = e.target.closest('.note-list-item');
+
+          if (draggedItem && dropTarget && draggedItem !== dropTarget) {
+              const rect = dropTarget.getBoundingClientRect();
+              const centerY = rect.top + rect.height / 2;
+              
+              const isDropBefore = e.clientY < centerY;
+
+              if (isDropBefore) {
+                  noteList.insertBefore(draggedItem, dropTarget);
+              } else {
+                  noteList.insertBefore(draggedItem, dropTarget.nextSibling);
+              }
+              
+              // Cập nhật vị trí trong IndexedDB
+              const updatedNotes = Array.from(noteList.children).map((item, index) => ({
+                  id: parseInt(item.dataset.id),
+                  position: index + 1,
+              }));
+              updateNotePositions(updatedNotes);
+          }
+
+          // Xóa tất cả các lớp drag-over sau khi thả
+          document.querySelectorAll('.note-list-item').forEach(item => {
+              item.classList.remove('drag-over', 'drag-over-bottom');
+          });
+      });
+      
+      // Gắn sự kiện cho các nút trong modal chỉnh sửa tên môn học
+      document.getElementById('saveEditSubjectButton').addEventListener('click', updateSubject);
+      document.getElementById('cancelEditSubjectButton').addEventListener('click', () => {
+          document.getElementById('editSubjectModal').classList.remove('visible');
+          subjectToEdit = null;
+      });
+
+      // Khởi tạo ứng dụng khi DOM đã tải xong
+      window.addEventListener("DOMContentLoaded", async () => {
+        await openDB();
+        loadSubjects();
+      });
+    </script>
+  </body>
+</html>
